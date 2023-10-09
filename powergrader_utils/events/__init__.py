@@ -5,6 +5,7 @@ from powergrader_utils.events.course import *
 from powergrader_utils.events.user import *
 from powergrader_utils.events.grade import *
 from powergrader_utils.events.relationship import *
+from powergrader_utils.events.submission import *
 
 from enum import Enum
 
