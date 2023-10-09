@@ -1,0 +1,16 @@
+syntax = "proto3";
+package user;
+
+message Student {
+    string id = 1;
+    string org_id = 2;
+    string name = 3;
+    string email = 4;
+}
+
+message Instructor {
+    string id = 1;
+    string org_id = 2;
+    string name = 3;
+    string email = 4;
+}

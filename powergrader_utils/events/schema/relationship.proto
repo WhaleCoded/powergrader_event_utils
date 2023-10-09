@@ -1,0 +1,22 @@
+syntax = "proto3";
+package relationship;
+
+message AssignmentAddedToClass {
+    string assignment_id = 1;
+    string class_id = 2;
+}
+
+message AssignmentRemovedFromClass {
+    string assignment_id = 1;
+    string class_id = 2;
+}
+
+message StudentAddedToClass {
+    string student_id = 1;
+    string class_id = 2;
+}
+
+message StudentRemovedFromClass {
+    string student_id = 1;
+    string class_id = 2;
+}

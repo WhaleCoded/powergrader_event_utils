@@ -1,0 +1,16 @@
+syntax = "proto3";
+package submission;
+
+
+message Submission {
+    string id = 1;
+    string student_id = 2;
+    string assignment_id = 3;
+    FileContent file_content = 4;
+}
+
+message FileContent {
+    string file_name = 1;
+    string file_type = 2;
+    string content = 3;
+}

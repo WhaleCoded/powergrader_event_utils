@@ -1,0 +1,21 @@
+syntax = "proto3";
+package course;
+
+message Course {
+    string id = 1;
+    string organization_id = 2;
+    string name = 3;
+    string description = 4;
+}
+
+message Class {
+    string id = 1;
+    string course_id = 2;
+    string instructor_id = 3;
+}
+
+message Organization {
+    string id = 1;
+    string name = 2;
+    string code = 3;
+}
