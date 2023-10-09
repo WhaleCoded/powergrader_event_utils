@@ -1,11 +1,11 @@
-from powergrader_utils.events.base import PowerGraderEvent
+from powergrader_event_utils.events.base import PowerGraderEvent
 
-from powergrader_utils.events.assignment import *
-from powergrader_utils.events.course import *
-from powergrader_utils.events.user import *
-from powergrader_utils.events.grade import *
-from powergrader_utils.events.relationship import *
-from powergrader_utils.events.submission import *
+from powergrader_event_utils.events.assignment import *
+from powergrader_event_utils.events.course import *
+from powergrader_event_utils.events.user import *
+from powergrader_event_utils.events.grade import *
+from powergrader_event_utils.events.relationship import *
+from powergrader_event_utils.events.submission import *
 
 from enum import Enum
 
