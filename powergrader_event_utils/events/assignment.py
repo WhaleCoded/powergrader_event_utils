@@ -1,7 +1,7 @@
-from typing import Dict, List, Self
+from typing import Dict, List
 
-from powergrader_utils.events.base import PowerGraderEvent, generate_event_id
-from powergrader_utils.events.proto_events.assignment_pb2 import (
+from powergrader_event_utils.events.base import PowerGraderEvent, generate_event_id
+from powergrader_event_utils.events.proto_events.assignment_pb2 import (
     Assignment,
     Rubric,
     RubricCriterion,
@@ -68,7 +68,7 @@ class AssignmentEvent(PowerGraderEvent):
         return self.proto
 
     @classmethod
-    def deserialize(cls, event: bytes) -> bool or Self:
+    def deserialize(cls, event: bytes):
         assignment = Assignment()
         assignment.ParseFromString(event)
 
@@ -175,7 +175,7 @@ class RubricEvent(PowerGraderEvent):
         return self.proto
 
     @classmethod
-    def deserialize(cls, event: bytes) -> bool or Self:
+    def deserialize(cls, event: bytes):
         rubric = Rubric()
         rubric.ParseFromString(event)
 

@@ -1,4 +1,3 @@
-from typing import Self
 from uuid import uuid4
 from confluent_kafka import Producer
 
@@ -17,7 +16,7 @@ def generate_event_id(class_name: str) -> str:
 
 
 class PowerGraderEvent:
-    def __init__(self, key: str, event_type) -> Self:
+    def __init__(self, key: str, event_type):
         self.key = key
         self.event_type = event_type
 
@@ -48,5 +47,5 @@ class PowerGraderEvent:
         return False
 
     @classmethod
-    def deserialize(cls, event: str) -> bool or Self:
+    def deserialize(cls, event: str):
         pass

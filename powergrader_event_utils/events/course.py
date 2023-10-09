@@ -1,7 +1,11 @@
-from typing import Dict, List, Self
+from typing import Dict, List
 
-from powergrader_utils.events.base import PowerGraderEvent, generate_event_id
-from powergrader_utils.events.proto_events.course_pb2 import Course, Class, Organization
+from powergrader_event_utils.events.base import PowerGraderEvent, generate_event_id
+from powergrader_event_utils.events.proto_events.course_pb2 import (
+    Course,
+    Class,
+    Organization,
+)
 from google.protobuf.json_format import MessageToJson
 
 

@@ -1,7 +1,7 @@
-from typing import Dict, List, Self
+from typing import Dict, List
 
-from powergrader_utils.events.base import PowerGraderEvent, generate_event_id
-from powergrader_utils.events.proto_events.relationship_pb2 import (
+from powergrader_event_utils.events.base import PowerGraderEvent, generate_event_id
+from powergrader_event_utils.events.proto_events.relationship_pb2 import (
     AssignmentAddedToClass,
     AssignmentRemovedFromClass,
     StudentAddedToClass,
