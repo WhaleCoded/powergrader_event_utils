@@ -136,6 +136,17 @@ class RubricEvent(PowerGraderEvent):
             and self.get_id() is not None
             and self.get_criteria() is not None
         ):
+            # Validate the criteria
+            criteria = self.get_criteria()
+            for criterion in criteria.values():
+                if criterion["name"] == "" or criterion["id"] == "":
+                    return False
+
+                levels = criterion["levels"]
+                for level in levels:
+                    if level["score"] == "" or level["description"] == "":
+                        return False
+
             return True
 
         return False

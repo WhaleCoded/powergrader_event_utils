@@ -1,6 +1,13 @@
 syntax = "proto3";
 package grade;
 
+
+enum GradeType {
+    AI_GRADED = 0;
+    FACULTY_ADJUSTED = 1;
+    AI_INFERRED = 2;
+}
+
 message CriteriaGrade {
     string id = 1;
     string submission_id = 2;
@@ -23,11 +30,6 @@ message AssesmentSimilarity {
     repeated string simmilar_criteria_grade_ids = 4;
 }
 
-enum GradeType {
-    AI_GRADED = 0;
-    FACULTY_ADJUSTED = 1;
-    AI_INFERRED = 2;
-}
 
 message StudentRequestedRegrade {
     string id = 1;
