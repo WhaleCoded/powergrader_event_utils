@@ -2,39 +2,32 @@ syntax = "proto3";
 package grade;
 
 message CriteriaGrade {
-    string name = 1;
-    float score = 2;
-    string assesment = 3;
-}
-
-message GradingMethod {
-    string id = 1;
-    string name = 2;
-    string githash = 3;
-}
-
-message Grade {
     string id = 1;
     string submission_id = 2;
     string assignment_id = 3;
-    string method_id = 4;
-    map<string, CriteriaGrade> criteria = 5;
+    GradeType type = 4;
+    string grade_method_id = 5;
+    string name = 6;
+    float score = 7;
+    string assesment = 8;
 }
 
-message FacultyGradeAdjustment {
+message CriteriaEmbedding {
     string id = 1;
-    string submission_id = 2;
-    string assignment_id = 3;
-    string faculty_id = 4;
-    string grade_id = 5;
-    map<string, CriteriaGrade> criteria = 6;
+    string crit_grade_id = 2;
+    repeated float embedding = 5;
+}
+
+enum GradeType {
+    AI_GRADED = 0;
+    FACULTY_ADJUSTED = 1;
+    AI_INFERRED = 2;
 }
 
 message StudentRequestedRegrade {
     string id = 1;
     string student_id = 2;
     string submission_id = 3;
-    string grade_id = 4;
-    string reasoning = 5;
+    string reasoning = 4;
 }
 
