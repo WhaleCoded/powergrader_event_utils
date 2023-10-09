@@ -4,10 +4,9 @@ package grade;
 message CriteriaGrade {
     string id = 1;
     string submission_id = 2;
-    string assignment_id = 3;
+    string rubric_criteria_id = 3;
     GradeType type = 4;
     string grade_method_id = 5;
-    string name = 6;
     float score = 7;
     string assesment = 8;
 }
@@ -15,7 +14,13 @@ message CriteriaGrade {
 message CriteriaEmbedding {
     string id = 1;
     string crit_grade_id = 2;
-    repeated float embedding = 5;
+    string embedder_id = 3;
+    repeated float embedding = 4;
+}
+
+message AssesmentSimilarity {
+    string id = 1;
+    repeated string simmilar_criteria_grade_ids = 4;
 }
 
 enum GradeType {
@@ -29,5 +34,6 @@ message StudentRequestedRegrade {
     string student_id = 2;
     string submission_id = 3;
     string reasoning = 4;
+    repeated string criteria_grades_to_reevaluate = 5;
 }
 

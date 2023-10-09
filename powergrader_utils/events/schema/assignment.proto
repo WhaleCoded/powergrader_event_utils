@@ -15,8 +15,9 @@ message Rubric {
 }
 
 message RubricCriterion {
-    string name = 1;
-    repeated CriteriaLevel levels = 2;
+    string id = 1;
+    string name = 2;
+    repeated CriteriaLevel levels = 3;
 }
 
 message CriteriaLevel {
