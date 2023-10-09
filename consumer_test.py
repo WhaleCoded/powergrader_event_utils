@@ -1,6 +1,6 @@
 from confluent_kafka import Consumer
-from powergrader_utils.events.base import MAIN_TOPIC
-from powergrader_utils.events import deserialize_powergrader_event
+from powergrader_event_utils.events.base import MAIN_TOPIC
+from powergrader_event_utils.events import deserialize_powergrader_event
 import sys
 from confluent_kafka import KafkaError, KafkaException
 

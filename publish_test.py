@@ -1,5 +1,5 @@
-from powergrader_utils.events.assignment import AssignmentEvent, RubricEvent
-from powergrader_utils.events.base import MAIN_TOPIC
+from powergrader_event_utils.events.assignment import AssignmentEvent, RubricEvent
+from powergrader_event_utils.events.base import MAIN_TOPIC
 from confluent_kafka.admin import AdminClient
 from confluent_kafka import Producer
 
