@@ -23,7 +23,7 @@ class PowerGraderEvent:
     def publish(self, producer: Producer) -> bool:
         serialized_event = self.serialize()
         if isinstance(serialized_event, bytes):
-            producer.begin_transaction()
+            # producer.begin_transaction()
             producer.produce(
                 MAIN_TOPIC,
                 key=self.key,
@@ -31,7 +31,7 @@ class PowerGraderEvent:
                 headers={"event_type": self.event_type},
             )
             producer.flush()
-            producer.commit_transaction()
+            # producer.commit_transaction()
             return True
 
         return False
