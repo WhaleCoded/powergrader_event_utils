@@ -169,6 +169,11 @@ class RubricEvent(PowerGraderEvent):
             criterion_proto = RubricCriterion()
             criterion_proto.name = criterion["name"]
 
+            if "id" in criterion:
+                criterion_proto.id = criterion["id"]
+            else:
+                criterion_proto.id = generate_event_id("RubricCriterion")
+
             levels = criterion["levels"]
             for level in levels:
                 level_proto = CriteriaLevel()
