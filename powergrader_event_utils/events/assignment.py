@@ -97,7 +97,7 @@ class AssignmentEvent(PowerGraderEvent):
 
 
 class RubricEvent(PowerGraderEvent):
-    def __init__(self, instructor_id: str, criteria: Dict[str, dict]) -> None:
+    def __init__(self, instructor_id: str, criteria: List[dict]) -> None:
         if instructor_id is None:
             raise ValueError("instructor_id cannot be None")
 
@@ -162,10 +162,10 @@ class RubricEvent(PowerGraderEvent):
         return False
 
     def _package_criteria_into_proto(
-        self, criteria: Dict[str, dict]
+        self, criteria: List[dict]
     ) -> Dict[str, RubricCriterion]:
         criteria_proto = {}
-        for criterion in criteria.values():
+        for criterion in criteria:
             criterion_proto = RubricCriterion()
             criterion_proto.name = criterion["name"]
 
