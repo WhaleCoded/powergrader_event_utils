@@ -12,6 +12,13 @@ from google.protobuf.json_format import MessageToJson
 
 class AssignmentEvent(PowerGraderEvent):
     def __init__(self, rubric_id: str, name: str, instructions: str) -> None:
+        if rubric_id is None:
+            rubric_id = ""
+        if name is None:
+            name = ""
+        if instructions is None:
+            instructions = ""
+
         self.proto = Assignment()
         self.proto.rubric_id = rubric_id
         self.proto.name = name
@@ -91,6 +98,9 @@ class AssignmentEvent(PowerGraderEvent):
 
 class RubricEvent(PowerGraderEvent):
     def __init__(self, instructor_id: str, criteria: Dict[str, dict]) -> None:
+        if instructor_id is None:
+            raise ValueError("instructor_id cannot be None")
+
         self.proto = Rubric()
         self.proto.instructor_id = instructor_id
 

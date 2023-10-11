@@ -21,6 +21,9 @@ class CriteriaGradeEvent(PowerGraderEvent):
         score: float,
         assessment: str,
     ) -> None:
+        if assessment is None:
+            assessment = ""
+
         self.proto = CriteriaGrade()
         self.proto.submission_id = submission_id
         self.proto.rubric_criteria_id = rubric_criteria_id

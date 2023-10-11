@@ -19,7 +19,11 @@ class SubmissionEvent(PowerGraderEvent):
         for file_content in file_contents:
             fc_proto = FileContent()
             fc_proto.file_name = file_content["file_name"]
-            fc_proto.file_type = file_content["file_type"]
+            fc_proto.file_type = (
+                file_content["file_type"]
+                if file_content["file_type"] is not None
+                else ""
+            )
             fc_proto.content = file_content["content"]
             self.proto.file_content.append(fc_proto)
 

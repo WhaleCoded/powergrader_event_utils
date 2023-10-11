@@ -11,6 +11,9 @@ from google.protobuf.json_format import MessageToJson
 
 class CourseEvent(PowerGraderEvent):
     def __init__(self, organization_id: str, name: str, description: str) -> None:
+        if description is None:
+            description = ""
+
         self.proto = Course()
         self.proto.organization_id = organization_id
         self.proto.name = name
@@ -128,6 +131,9 @@ class ClassEvent(PowerGraderEvent):
 
 class OrganizationEvent(PowerGraderEvent):
     def __init__(self, name: str, code: str) -> None:
+        if code is None:
+            code = ""
+
         self.proto = Organization()
         self.proto.name = name
         self.proto.code = code
