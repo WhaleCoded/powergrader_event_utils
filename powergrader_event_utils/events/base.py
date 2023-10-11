@@ -9,7 +9,7 @@ def generate_event_id(class_name: str) -> str:
     Generates a unique event id for a given class name.
     """
 
-    return class_name + "--" + str(uuid4())
+    return class_name.replace("Event", "") + "--" + str(uuid4())
 
 
 # Setup a common interface for the event system
