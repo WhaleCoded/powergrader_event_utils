@@ -1,6 +1,10 @@
 from typing import Dict, List
 
-from powergrader_event_utils.events.base import PowerGraderEvent, generate_event_id
+from powergrader_event_utils.events.base import (
+    PowerGraderEvent,
+    generate_event_id,
+    EventType,
+)
 from powergrader_event_utils.events.proto_events.grade_pb2 import (
     CriteriaEmbedding,
     AssesmentSimilarity,
@@ -35,6 +39,10 @@ class CriteriaGradeEvent(PowerGraderEvent):
         self.proto.id = generate_event_id(self.__class__.__name__)
 
         super().__init__(key=self.proto.id, event_type=self.__class__.__name__)
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.CRITERIA_GRADE
 
     def get_id(self) -> str or None:
         _id = self.proto.id
@@ -112,6 +120,10 @@ class CriteriaEmbeddingEvent(PowerGraderEvent):
 
         super().__init__(key=self.proto.id, event_type=self.__class__.__name__)
 
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.CRITERIA_EMBEDDING
+
     def get_id(self) -> str or None:
         _id = self.proto.id
         return _id if _id != "" else None
@@ -171,6 +183,10 @@ class AssesmentSimilarityEvent(PowerGraderEvent):
 
         super().__init__(key=self.proto.id, event_type=self.__class__.__name__)
 
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.ASSESMENT_SIMILARITY
+
     def get_id(self) -> str or None:
         _id = self.proto.id
         return _id if _id != "" else None
@@ -228,6 +244,10 @@ class StudentRequestedRegradeEvent(PowerGraderEvent):
         self.proto.id = generate_event_id(self.__class__.__name__)
 
         super().__init__(key=self.proto.id, event_type=self.__class__.__name__)
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.STUDENT_REQUESTED_REGRADE
 
     def get_id(self) -> str or None:
         _id = self.proto.id

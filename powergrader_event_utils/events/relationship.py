@@ -1,6 +1,10 @@
 from typing import Dict, List
 
-from powergrader_event_utils.events.base import PowerGraderEvent, generate_event_id
+from powergrader_event_utils.events.base import (
+    PowerGraderEvent,
+    generate_event_id,
+    EventType,
+)
 from powergrader_event_utils.events.proto_events.relationship_pb2 import (
     AssignmentAddedToClass,
     AssignmentRemovedFromClass,
@@ -19,6 +23,10 @@ class AssignmentAddedToClassEvent(PowerGraderEvent):
         super().__init__(
             key=self.proto.assignment_id, event_type=self.__class__.__name__
         )
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.ASSIGNMENT_ADDED_TO_CLASS
 
     def get_assignment_id(self) -> str:
         return self.proto.assignment_id
@@ -57,6 +65,10 @@ class AssignmentRemovedFromClassEvent(PowerGraderEvent):
             key=self.proto.assignment_id, event_type=self.__class__.__name__
         )
 
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.ASSIGNMENT_REMOVED_FROM_CLASS
+
     def get_assignment_id(self) -> str:
         return self.proto.assignment_id
 
@@ -92,6 +104,10 @@ class StudentAddedToClassEvent(PowerGraderEvent):
 
         super().__init__(key=self.proto.student_id, event_type=self.__class__.__name__)
 
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.STUDENT_ADDED_TO_CLASS
+
     def get_student_id(self) -> str:
         return self.proto.student_id
 
@@ -126,6 +142,10 @@ class StudentRemovedFromClassEvent(PowerGraderEvent):
         self.proto.class_id = class_id
 
         super().__init__(key=self.proto.student_id, event_type=self.__class__.__name__)
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.STUDENT_REMOVED_FROM_CLASS
 
     def get_student_id(self) -> str:
         return self.proto.student_id

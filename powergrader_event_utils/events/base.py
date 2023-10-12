@@ -1,7 +1,33 @@
 from uuid import uuid4
+from enum import Enum
+
 from confluent_kafka import Producer
 
 MAIN_TOPIC = "main-record"
+
+
+class EventType(Enum):
+    """
+    An enum for the different types of events that can be published or recieved.
+    """
+
+    ASSIGNMENT = 0
+    RUBRIC = 1
+    COURSE = 2
+    CLASS = 3
+    ORGANIZATION = 4
+    CRITERIA_GRADE = 5
+    CRITERIA_EMBEDDING = 6
+    ASSESMENT_SIMILARITY = 7
+    STUDENT_REQUESTED_REGRADE = 8
+    ASSIGNMENT_ADDED_TO_CLASS = 9
+    ASSIGNMENT_REMOVED_FROM_CLASS = 10
+    STUDENT_ADDED_TO_CLASS = 11
+    STUDENT_REMOVED_FROM_CLASS = 12
+    SUBMISSION = 13
+    STUDENT = 14
+    INSTRUCTOR = 15
+    NOT_SPECIFIED = 16
 
 
 def generate_event_id(class_name: str) -> str:
@@ -51,3 +77,7 @@ class PowerGraderEvent:
     @classmethod
     def deserialize(cls, event: str):
         pass
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.NOT_SPECIFIED

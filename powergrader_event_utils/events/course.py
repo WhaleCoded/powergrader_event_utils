@@ -1,6 +1,10 @@
 from typing import Dict, List
 
-from powergrader_event_utils.events.base import PowerGraderEvent, generate_event_id
+from powergrader_event_utils.events.base import (
+    PowerGraderEvent,
+    generate_event_id,
+    EventType,
+)
 from powergrader_event_utils.events.proto_events.course_pb2 import (
     Course,
     Class,
@@ -22,6 +26,10 @@ class CourseEvent(PowerGraderEvent):
         self.proto.id = generate_event_id(self.__class__.__name__)
 
         super().__init__(key=self.proto.id, event_type=self.__class__.__name__)
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.COURSE
 
     def get_id(self) -> str or None:
         _id = self.proto.id
@@ -84,6 +92,10 @@ class ClassEvent(PowerGraderEvent):
 
         super().__init__(key=self.proto.id, event_type=self.__class__.__name__)
 
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.CLASS
+
     def get_id(self) -> str or None:
         _id = self.proto.id
         return _id if _id != "" else None
@@ -141,6 +153,10 @@ class OrganizationEvent(PowerGraderEvent):
         self.proto.id = generate_event_id(self.__class__.__name__)
 
         super().__init__(key=self.proto.id, event_type=self.__class__.__name__)
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.ORGANIZATION
 
     def get_id(self) -> str or None:
         _id = self.proto.id
