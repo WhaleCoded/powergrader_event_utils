@@ -209,6 +209,8 @@ class RubricEvent(PowerGraderEvent):
 
                 criterion_proto.levels.append(level_proto)
 
+            print(criterion_proto.levels)
+
             criteria_proto[criterion_proto.name] = criterion_proto
 
         return criteria_proto
