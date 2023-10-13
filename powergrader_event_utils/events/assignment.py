@@ -1,4 +1,5 @@
 from typing import Dict, List
+import json
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
@@ -156,7 +157,8 @@ class RubricEvent(PowerGraderEvent):
 
         json_criteria = {}
         for name, criterion in criteria.items():
-            json_criteria[name] = MessageToJson(criterion)
+            json_str = MessageToJson(criterion)
+            json_criteria[name] = json.loads(json_str)
 
         if len(json_criteria) == 0:
             return None
@@ -172,8 +174,6 @@ class RubricEvent(PowerGraderEvent):
             # Validate the criteria
             criteria = self.get_criteria()
             for criterion in criteria.values():
-                print(criterion)
-                print(type(criterion))
                 if criterion["name"] == "" or criterion["id"] == "":
                     return False
 
