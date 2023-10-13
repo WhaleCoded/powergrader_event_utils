@@ -189,7 +189,9 @@ class RubricEvent(PowerGraderEvent):
     ) -> Dict[str, RubricCriterion]:
         criteria_proto = {}
         for criterion in criteria:
+            print(type(criterion))
             criterion_proto = RubricCriterion()
+            print(type(criterion_proto))
             criterion_proto.name = criterion["name"]
 
             if "id" in criterion:
