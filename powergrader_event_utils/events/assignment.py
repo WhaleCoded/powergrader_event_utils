@@ -202,6 +202,7 @@ class RubricEvent(PowerGraderEvent):
 
             levels = criterion["levels"]
             for level in levels:
+                print(level)
                 level_proto = CriteriaLevel()
                 level_proto.score = level["score"]
                 level_proto.description = level["description"]
