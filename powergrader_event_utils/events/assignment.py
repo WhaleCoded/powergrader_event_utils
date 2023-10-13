@@ -172,6 +172,8 @@ class RubricEvent(PowerGraderEvent):
             # Validate the criteria
             criteria = self.get_criteria()
             for criterion in criteria.values():
+                print(criterion)
+                print(type(criterion))
                 if criterion["name"] == "" or criterion["id"] == "":
                     return False
 
