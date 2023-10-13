@@ -179,6 +179,7 @@ class RubricEvent(PowerGraderEvent):
 
                 levels = criterion["levels"]
                 for level in levels:
+                    print(level)
                     if level["score"] == "" or level["description"] == "":
                         return False
 
