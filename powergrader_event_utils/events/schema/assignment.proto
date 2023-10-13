@@ -11,7 +11,8 @@ message Assignment {
 message Rubric {
     string id = 1;
     string instructor_id = 2;
-    map<string, RubricCriterion> rubric_criteria = 5;
+    string name = 3;
+    map<string, RubricCriterion> rubric_criteria = 4;
 }
 
 message RubricCriterion {

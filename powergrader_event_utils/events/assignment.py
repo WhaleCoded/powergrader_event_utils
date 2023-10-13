@@ -105,12 +105,15 @@ class AssignmentEvent(PowerGraderEvent):
 
 
 class RubricEvent(PowerGraderEvent):
-    def __init__(self, instructor_id: str, criteria: List[dict]) -> None:
+    def __init__(self, instructor_id: str, name: str, criteria: List[dict]) -> None:
         if instructor_id is None:
             raise ValueError("instructor_id cannot be None")
 
         self.proto = Rubric()
         self.proto.instructor_id = instructor_id
+        if name is None:
+            name = ""
+        self.proto.name = name
 
         proto_criteria = self._package_criteria_into_proto(criteria)
         for name, criterion in proto_criteria.items():
@@ -139,6 +142,14 @@ class RubricEvent(PowerGraderEvent):
             return None
 
         return id
+
+    def get_name(self) -> str or None:
+        name = self.proto.name
+
+        if name == "":
+            return None
+
+        return name
 
     def get_criteria(self) -> Dict[str, RubricCriterion] or None:
         criteria = self.proto.rubric_criteria

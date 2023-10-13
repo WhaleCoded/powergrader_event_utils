@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='assignment',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x10\x61ssignment.proto\x12\nassignment\"O\n\nAssignment\x12\n\n\x02id\x18\x01 \x01(\t\x12\x11\n\trubric_id\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x14\n\x0cinstructions\x18\x04 \x01(\t\"\xc0\x01\n\x06Rubric\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rinstructor_id\x18\x02 \x01(\t\x12?\n\x0frubric_criteria\x18\x05 \x03(\x0b\x32&.assignment.Rubric.RubricCriteriaEntry\x1aR\n\x13RubricCriteriaEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.assignment.RubricCriterion:\x02\x38\x01\"V\n\x0fRubricCriterion\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12)\n\x06levels\x18\x03 \x03(\x0b\x32\x19.assignment.CriteriaLevel\"3\n\rCriteriaLevel\x12\r\n\x05score\x18\x01 \x01(\x05\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\tb\x06proto3')
+  serialized_pb=_b('\n\x10\x61ssignment.proto\x12\nassignment\"O\n\nAssignment\x12\n\n\x02id\x18\x01 \x01(\t\x12\x11\n\trubric_id\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x14\n\x0cinstructions\x18\x04 \x01(\t\"\xce\x01\n\x06Rubric\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rinstructor_id\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12?\n\x0frubric_criteria\x18\x04 \x03(\x0b\x32&.assignment.Rubric.RubricCriteriaEntry\x1aR\n\x13RubricCriteriaEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.assignment.RubricCriterion:\x02\x38\x01\"V\n\x0fRubricCriterion\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12)\n\x06levels\x18\x03 \x03(\x0b\x32\x19.assignment.CriteriaLevel\"3\n\rCriteriaLevel\x12\r\n\x05score\x18\x01 \x01(\x05\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\tb\x06proto3')
 )
 
 
@@ -110,8 +110,8 @@ _RUBRIC_RUBRICCRITERIAENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=224,
-  serialized_end=306,
+  serialized_start=238,
+  serialized_end=320,
 )
 
 _RUBRIC = _descriptor.Descriptor(
@@ -136,8 +136,15 @@ _RUBRIC = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
     _descriptor.FieldDescriptor(
-      name='rubric_criteria', full_name='assignment.Rubric.rubric_criteria', index=2,
-      number=5, type=11, cpp_type=10, label=3,
+      name='name', full_name='assignment.Rubric.name', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='rubric_criteria', full_name='assignment.Rubric.rubric_criteria', index=3,
+      number=4, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -155,7 +162,7 @@ _RUBRIC = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=114,
-  serialized_end=306,
+  serialized_end=320,
 )
 
 
@@ -199,8 +206,8 @@ _RUBRICCRITERION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=308,
-  serialized_end=394,
+  serialized_start=322,
+  serialized_end=408,
 )
 
 
@@ -237,8 +244,8 @@ _CRITERIALEVEL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=396,
-  serialized_end=447,
+  serialized_start=410,
+  serialized_end=461,
 )
 
 _RUBRIC_RUBRICCRITERIAENTRY.fields_by_name['value'].message_type = _RUBRICCRITERION
