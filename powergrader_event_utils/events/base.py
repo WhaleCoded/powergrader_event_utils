@@ -27,7 +27,8 @@ class EventType(Enum):
     SUBMISSION = 13
     STUDENT = 14
     INSTRUCTOR = 15
-    NOT_SPECIFIED = 16
+    PUBLIC_UUID_REGISTERED = 16
+    NOT_SPECIFIED = 17
 
 
 def generate_event_id(class_name: str) -> str:

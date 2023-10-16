@@ -10,8 +10,48 @@ from powergrader_event_utils.events.proto_events.relationship_pb2 import (
     AssignmentRemovedFromClass,
     StudentAddedToClass,
     StudentRemovedFromClass,
+    PublicUuidRegistered,
 )
 from google.protobuf.json_format import MessageToJson
+
+
+class PublicUuidRegisteredEvent(PowerGraderEvent):
+    def __init__(self, public_uuid: str, private_uuid: str) -> None:
+        self.proto = PublicUuidRegistered()
+        self.proto.public_uuid = public_uuid
+        self.proto.private_uuid = private_uuid
+
+        super().__init__(key=self.proto.public_uuid, event_type=self.__class__.__name__)
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.PUBLIC_UUID_REGISTERED
+
+    def get_public_uuid(self) -> str:
+        return self.proto.public_uuid
+
+    def get_private_uuid(self) -> str:
+        return self.proto.private_uuid
+
+    def validate(self) -> bool:
+        return self.get_private_uuid() != "" and self.get_public_uuid() != ""
+
+    def _package_into_proto(self) -> PublicUuidRegistered:
+        return self.proto
+
+    @classmethod
+    def deserialize(cls, event: bytes) -> bool or "PublicUuidRegisteredEvent":
+        data = PublicUuidRegistered()
+        data.ParseFromString(event)
+
+        if not data.public_uuid or not data.private_uuid:
+            return False
+
+        instance = cls(data.public_uuid, data.private_uuid)
+        if instance.validate():
+            return instance
+
+        return False
 
 
 class AssignmentAddedToClassEvent(PowerGraderEvent):
