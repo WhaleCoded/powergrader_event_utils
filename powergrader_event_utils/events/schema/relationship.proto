@@ -1,6 +1,11 @@
 syntax = "proto3";
 package relationship;
 
+message RegisterPublicUuid {
+    string private_uuid = 1;
+    string public_uuid = 2;
+}
+
 message AssignmentAddedToClass {
     string assignment_id = 1;
     string class_id = 2;
