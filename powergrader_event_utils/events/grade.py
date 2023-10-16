@@ -1,4 +1,5 @@
 from typing import Dict, List
+from enum import Enum
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
@@ -13,6 +14,12 @@ from powergrader_event_utils.events.proto_events.grade_pb2 import (
     StudentRequestedRegrade,
 )
 from google.protobuf.json_format import MessageToJson
+
+
+class GradeType(Enum):
+    AI_GRADED = 0
+    FACULTY_ADJUSTED = 1
+    AI_INFERRED = 2
 
 
 class CriteriaGradeEvent(PowerGraderEvent):
