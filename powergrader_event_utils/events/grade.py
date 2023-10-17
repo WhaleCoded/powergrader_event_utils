@@ -38,7 +38,7 @@ class CriteriaGradeEvent(PowerGraderEvent):
         self.proto = CriteriaGrade()
         self.proto.submission_id = submission_id
         self.proto.rubric_criteria_id = rubric_criteria_id
-        self.proto.type = grade_type
+        self.proto.type = grade_type.value
         self.proto.grade_method_id = grade_method_id
         self.proto.score = score
         self.proto.assesment = assessment
