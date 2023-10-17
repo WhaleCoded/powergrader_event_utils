@@ -29,7 +29,7 @@ class CriteriaGradeEvent(PowerGraderEvent):
         rubric_criteria_id: str,
         grade_type: GradeType,
         grade_method_id: str,
-        score: float,
+        score: int,
         assessment: str,
     ) -> None:
         if assessment is None:

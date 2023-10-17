@@ -14,7 +14,7 @@ message CriteriaGrade {
     string rubric_criteria_id = 3;
     GradeType type = 4;
     string grade_method_id = 5;
-    float score = 7;
+    int32 score = 7;
     string assesment = 8;
 }
 
