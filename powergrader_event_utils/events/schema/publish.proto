@@ -1,11 +1,6 @@
 syntax = "proto3";
 package publish;
 
-# we need to keep track of assignments, rubrics, and grades in our system and be able to publish results to the LMS after the fact. This means that we need to store the correct information in order to find the entity in the LMS.
-# We also need to be careful enforcing permissions. Because we will be using the all powerful api key to get and push changes to the lms in the background, we need to ensure users have the permissions to everything they could possibly change before allowing them to make requests.
-# pulling from the LMS could be automatic, but pushing to the LMS could be done using the OAuth2 credentials of the user.
-# how to make sure we keep the user straight in our system. They need to always be represented by the same instructor_id in our system and we need to be able to determine this by only the oauth2 login
-
 message RegisterCoursePublicID {
     string public_id = 1;
     string lms_id = 2;

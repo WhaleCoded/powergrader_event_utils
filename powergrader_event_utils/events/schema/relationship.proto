@@ -1,12 +1,12 @@
 syntax = "proto3";
 package relationship;
 
-message PublicUuidRegistered {
+message PrivateIDAddedToPublicID {
     string private_uuid = 1;
     string public_uuid = 2;
 }
 
-message PublicUuidUnregistered {
+message PrivateIDRemovedFromPublicID {
     string private_uuid = 1;
     string public_uuid = 2;
 }
