@@ -6,22 +6,37 @@ message PublicUuidRegistered {
     string public_uuid = 2;
 }
 
-message AssignmentAddedToClass {
+message PublicUuidUnregistered {
+    string private_uuid = 1;
+    string public_uuid = 2;
+}
+
+message AssignmentAddedToCourse {
     string assignment_id = 1;
-    string class_id = 2;
+    string course_id = 2;
 }
 
-message AssignmentRemovedFromClass {
+message AssignmentRemovedFromCourse {
     string assignment_id = 1;
-    string class_id = 2;
+    string course_id = 2;
 }
 
-message StudentAddedToClass {
+message StudentAddedToSection {
     string student_id = 1;
-    string class_id = 2;
+    string section_id = 2;
 }
 
-message StudentRemovedFromClass {
+message StudentRemovedFromSection {
     string student_id = 1;
-    string class_id = 2;
+    string section_id = 2;
+}
+
+message InstuctorAddedToCourse {
+    string instructor_id = 1;
+    string course_id = 2;
+}
+
+message InstructorRemovedFromCourse {
+    string instructor_id = 1;
+    string course_id = 2;
 }

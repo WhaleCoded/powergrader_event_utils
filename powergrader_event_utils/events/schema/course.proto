@@ -4,14 +4,15 @@ package course;
 message Course {
     string id = 1;
     string organization_id = 2;
-    string name = 3;
-    string description = 4;
+    string instructor_id = 3;
+    string name = 4;
+    string description = 5;
 }
 
-message Class {
+message Section {
     string id = 1;
     string course_id = 2;
-    string instructor_id = 3;
+    string name = 3;
 }
 
 message Organization {
