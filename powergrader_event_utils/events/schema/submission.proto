@@ -1,12 +1,18 @@
 syntax = "proto3";
 package submission;
 
-
 message Submission {
     string id = 1;
     string student_id = 2;
     string assignment_id = 3;
-    repeated FileContent file_content = 4;
+    int64 submission_date = 4;
+    string submission_files_id = 5;
+}
+
+message SubmissionFiles {
+    string id = 1;
+    string student_id = 2;
+    repeated FileContent file_content = 3;
 }
 
 message FileContent {
