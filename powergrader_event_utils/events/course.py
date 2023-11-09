@@ -7,7 +7,7 @@ from powergrader_event_utils.events.base import (
 )
 from powergrader_event_utils.events.proto_events.course_pb2 import (
     Course,
-    Class,
+    Section,
     Organization,
 )
 from google.protobuf.json_format import MessageToJson

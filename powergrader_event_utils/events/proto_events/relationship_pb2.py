@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12relationship.proto\x12\x0crelationship\"E\n\x18PrivateIDAddedToPublicID\x12\x14\n\x0cprivate_uuid\x18\x01 \x01(\t\x12\x13\n\x0bpublic_uuid\x18\x02 \x01(\t\"I\n\x1cPrivateIDRemovedFromPublicID\x12\x14\n\x0cprivate_uuid\x18\x01 \x01(\t\x12\x13\n\x0bpublic_uuid\x18\x02 \x01(\t\"C\n\x17\x41ssignmentAddedToCourse\x12\x15\n\rassignment_id\x18\x01 \x01(\t\x12\x11\n\tcourse_id\x18\x02 \x01(\t\"G\n\x1b\x41ssignmentRemovedFromCourse\x12\x15\n\rassignment_id\x18\x01 \x01(\t\x12\x11\n\tcourse_id\x18\x02 \x01(\t\"?\n\x15StudentAddedToSection\x12\x12\n\nstudent_id\x18\x01 \x01(\t\x12\x12\n\nsection_id\x18\x02 \x01(\t\"C\n\x19StudentRemovedFromSection\x12\x12\n\nstudent_id\x18\x01 \x01(\t\x12\x12\n\nsection_id\x18\x02 \x01(\t\"B\n\x16InstuctorAddedToCourse\x12\x15\n\rinstructor_id\x18\x01 \x01(\t\x12\x11\n\tcourse_id\x18\x02 \x01(\t\"G\n\x1bInstructorRemovedFromCourse\x12\x15\n\rinstructor_id\x18\x01 \x01(\t\x12\x11\n\tcourse_id\x18\x02 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12relationship.proto\x12\x0crelationship\"E\n\x18PrivateIDAddedToPublicID\x12\x14\n\x0cprivate_uuid\x18\x01 \x01(\t\x12\x13\n\x0bpublic_uuid\x18\x02 \x01(\t\"I\n\x1cPrivateIDRemovedFromPublicID\x12\x14\n\x0cprivate_uuid\x18\x01 \x01(\t\x12\x13\n\x0bpublic_uuid\x18\x02 \x01(\t\"C\n\x17\x41ssignmentAddedToCourse\x12\x15\n\rassignment_id\x18\x01 \x01(\t\x12\x11\n\tcourse_id\x18\x02 \x01(\t\"G\n\x1b\x41ssignmentRemovedFromCourse\x12\x15\n\rassignment_id\x18\x01 \x01(\t\x12\x11\n\tcourse_id\x18\x02 \x01(\t\"?\n\x15StudentAddedToSection\x12\x12\n\nstudent_id\x18\x01 \x01(\t\x12\x12\n\nsection_id\x18\x02 \x01(\t\"C\n\x19StudentRemovedFromSection\x12\x12\n\nstudent_id\x18\x01 \x01(\t\x12\x12\n\nsection_id\x18\x02 \x01(\t\"C\n\x17InstructorAddedToCourse\x12\x15\n\rinstructor_id\x18\x01 \x01(\t\x12\x11\n\tcourse_id\x18\x02 \x01(\t\"G\n\x1bInstructorRemovedFromCourse\x12\x15\n\rinstructor_id\x18\x01 \x01(\t\x12\x11\n\tcourse_id\x18\x02 \x01(\tb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'relationship_pb2', globals())
@@ -32,8 +32,8 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _STUDENTADDEDTOSECTION._serialized_end=387
   _STUDENTREMOVEDFROMSECTION._serialized_start=389
   _STUDENTREMOVEDFROMSECTION._serialized_end=456
-  _INSTUCTORADDEDTOCOURSE._serialized_start=458
-  _INSTUCTORADDEDTOCOURSE._serialized_end=524
-  _INSTRUCTORREMOVEDFROMCOURSE._serialized_start=526
-  _INSTRUCTORREMOVEDFROMCOURSE._serialized_end=597
+  _INSTRUCTORADDEDTOCOURSE._serialized_start=458
+  _INSTRUCTORADDEDTOCOURSE._serialized_end=525
+  _INSTRUCTORREMOVEDFROMCOURSE._serialized_start=527
+  _INSTRUCTORREMOVEDFROMCOURSE._serialized_end=598
 # @@protoc_insertion_point(module_scope)

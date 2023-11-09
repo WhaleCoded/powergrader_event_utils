@@ -31,7 +31,7 @@ message StudentRemovedFromSection {
     string section_id = 2;
 }
 
-message InstuctorAddedToCourse {
+message InstructorAddedToCourse {
     string instructor_id = 1;
     string course_id = 2;
 }
