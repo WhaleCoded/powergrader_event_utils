@@ -12,6 +12,8 @@ from powergrader_event_utils.events.proto_events.grade_pb2 import (
     CriteriaGrade,
     GradeType,
     StudentRequestedRegrade,
+    GradingStarted,
+    InstructorReview,
 )
 from google.protobuf.json_format import MessageToJson
 
@@ -306,5 +308,174 @@ class StudentRequestedRegradeEvent(PowerGraderEvent):
 
         if new_regrade_request_instance.validate():
             return new_regrade_request_instance
+
+        return False
+
+
+class GradingStartedEvent(PowerGraderEvent):
+    def __init__(
+        self,
+        id: str,
+        submission_id: str,
+        assignment_id: str,
+        grade_method_id: str,
+        criteria_to_be_graded: list,
+    ) -> None:
+        self.proto = GradingStarted()
+        self.proto.id = id
+        self.proto.submission_id = submission_id
+        self.proto.assignment_id = assignment_id
+        self.proto.grade_method_id = grade_method_id
+
+        if len(criteria_to_be_graded) == 0:
+            raise ValueError("At least one criterion must be specified.")
+        for criterion in criteria_to_be_graded:
+            self.proto.criteria_to_be_graded.append(criterion)
+
+        super().__init__(key=self.proto.id, event_type=self.__class__.__name__)
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.GRADING_STARTED
+
+    def get_id(self) -> str:
+        return self.proto.id
+
+    def get_submission_id(self) -> str:
+        return self.proto.submission_id
+
+    def get_assignment_id(self) -> str:
+        return self.proto.assignment_id
+
+    def get_grade_method_id(self) -> str:
+        return self.proto.grade_method_id
+
+    def get_criteria_to_be_graded(self) -> list:
+        # This method returns a list of criteria to be graded.
+        return list(self.proto.criteria_to_be_graded)
+
+    def validate(self) -> bool:
+        # Validate that all identifiers and at least one grading criterion are present.
+        return bool(
+            self.get_id()
+            and self.get_submission_id()
+            and self.get_assignment_id()
+            and self.get_grade_method_id()
+            and len(self.get_criteria_to_be_graded()) > 0
+        )
+
+    def _package_into_proto(self) -> GradingStarted:
+        # Return the protobuf message instance.
+        return self.proto
+
+    @classmethod
+    def deserialize(cls, event: bytes) -> "GradingStartedEvent" or bool:
+        # Deserialize the event bytes back to a protobuf message.
+        data = GradingStarted()
+        data.ParseFromString(event)
+
+        # Check the integrity of the deserialized data.
+        if not (
+            data.id
+            and data.submission_id
+            and data.assignment_id
+            and data.grade_method_id
+            and len(list(data.criteria_to_be_graded)) > 0
+        ):
+            return False
+
+        # Create and return an event instance if validation is successful.
+        instance = cls(
+            data.id,
+            data.submission_id,
+            data.assignment_id,
+            data.grade_method_id,
+            list(data.criteria_to_be_graded),
+        )
+        if instance.validate():
+            return instance
+
+        return False
+
+
+class InstructorReviewEvent(PowerGraderEvent):
+    def __init__(
+        self,
+        id: str,
+        submission_id: str,
+        assignment_id: str,
+        instructor_id: str,
+        criteria_grade_ids: list,
+    ) -> None:
+        self.proto = InstructorReview()
+        self.proto.id = id
+        self.proto.submission_id = submission_id
+        self.proto.assignment_id = assignment_id
+        self.proto.instructor_id = instructor_id
+        for criteria_grade_id in criteria_grade_ids:
+            self.proto.criteria_grade_ids.append(criteria_grade_id)
+
+        super().__init__(key=self.proto.id, event_type=self.__class__.__name__)
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.INSTRUCTOR_REVIEW
+
+    def get_id(self) -> str:
+        return self.proto.id
+
+    def get_submission_id(self) -> str:
+        return self.proto.submission_id
+
+    def get_assignment_id(self) -> str:
+        return self.proto.assignment_id
+
+    def get_instructor_id(self) -> str:
+        return self.proto.instructor_id
+
+    def get_criteria_grade_ids(self) -> list:
+        # This method returns a list of criteria grade IDs.
+        return list(self.proto.criteria_grade_ids)
+
+    def validate(self) -> bool:
+        # Validate that all identifiers and at least one criteria grade ID are present.
+        return bool(
+            self.get_id()
+            and self.get_submission_id()
+            and self.get_assignment_id()
+            and self.get_instructor_id()
+            and len(self.get_criteria_grade_ids()) > 0
+        )
+
+    def _package_into_proto(self) -> InstructorReview:
+        # Return the protobuf message instance.
+        return self.proto
+
+    @classmethod
+    def deserialize(cls, event: bytes) -> "InstructorReviewEvent" or bool:
+        # Deserialize the event bytes back to a protobuf message.
+        data = InstructorReview()
+        data.ParseFromString(event)
+
+        # Check the integrity of the deserialized data.
+        if not (
+            data.id
+            and data.submission_id
+            and data.assignment_id
+            and data.instructor_id
+            and len(list(data.criteria_grade_ids)) > 0
+        ):
+            return False
+
+        # Create and return an event instance if validation is successful.
+        instance = cls(
+            data.id,
+            data.submission_id,
+            data.assignment_id,
+            data.instructor_id,
+            list(data.criteria_grade_ids),
+        )
+        if instance.validate():
+            return instance
 
         return False

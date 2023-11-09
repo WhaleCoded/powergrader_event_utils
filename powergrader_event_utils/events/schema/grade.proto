@@ -30,12 +30,27 @@ message AssesmentSimilarity {
     repeated string simmilar_criteria_grade_ids = 4;
 }
 
-
 message StudentRequestedRegrade {
     string id = 1;
     string student_id = 2;
     string submission_id = 3;
     string reasoning = 4;
     repeated string criteria_grades_to_reevaluate = 5;
+}
+
+message GradingStarted {
+    string id = 1;
+    string submission_id = 2;
+    string assignment_id = 3;
+    string grade_method_id = 4;
+    repeated string criteria_to_be_graded = 5;
+}
+
+message InstructorReview {
+    string id = 1;
+    string submission_id = 2;
+    string assignment_id = 3;
+    string instructor_id = 4;
+    repeated string criteria_grade_ids = 5;
 }
 
