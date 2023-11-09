@@ -183,10 +183,10 @@ class AssignmentRemovedFromCourseEvent(PowerGraderEvent):
 
 
 class StudentAddedToSectionEvent(PowerGraderEvent):
-    def __init__(self, student_id: str, course_id: str) -> None:
+    def __init__(self, student_id: str, section_id: str) -> None:
         self.proto = StudentAddedToSection()
         self.proto.student_id = student_id
-        self.proto.course_id = course_id
+        self.proto.section_id = section_id
 
         super().__init__(key=self.proto.student_id, event_type=self.__class__.__name__)
 
@@ -197,11 +197,11 @@ class StudentAddedToSectionEvent(PowerGraderEvent):
     def get_student_id(self) -> str:
         return self.proto.student_id
 
-    def get_course_id(self) -> str:
-        return self.proto.course_id
+    def get_section_id(self) -> str:
+        return self.proto.section_id
 
     def validate(self) -> bool:
-        return all([self.get_student_id(), self.get_course_id()])
+        return all([self.get_student_id(), self.get_section_id()])
 
     def _package_into_proto(self) -> StudentAddedToSection:
         return self.proto
@@ -211,10 +211,10 @@ class StudentAddedToSectionEvent(PowerGraderEvent):
         data = StudentAddedToSection()
         data.ParseFromString(event)
 
-        if not data.student_id or not data.course_id:
+        if not data.student_id or not data.section_id:
             return False
 
-        instance = cls(data.student_id, data.course_id)
+        instance = cls(data.student_id, data.section_id)
         if instance.validate():
             return instance
 
@@ -222,10 +222,10 @@ class StudentAddedToSectionEvent(PowerGraderEvent):
 
 
 class StudentRemovedFromCourseEvent(PowerGraderEvent):
-    def __init__(self, student_id: str, course_id: str) -> None:
+    def __init__(self, student_id: str, section_id: str) -> None:
         self.proto = StudentRemovedFromSection()
         self.proto.student_id = student_id
-        self.proto.course_id = course_id
+        self.proto.section_id = section_id
 
         super().__init__(key=self.proto.student_id, event_type=self.__class__.__name__)
 
@@ -236,11 +236,11 @@ class StudentRemovedFromCourseEvent(PowerGraderEvent):
     def get_student_id(self) -> str:
         return self.proto.student_id
 
-    def get_course_id(self) -> str:
-        return self.proto.course_id
+    def get_section_id(self) -> str:
+        return self.proto.section_id
 
     def validate(self) -> bool:
-        return all([self.get_student_id(), self.get_course_id()])
+        return all([self.get_student_id(), self.get_section_id()])
 
     def _package_into_proto(self) -> StudentRemovedFromSection:
         return self.proto
@@ -250,10 +250,10 @@ class StudentRemovedFromCourseEvent(PowerGraderEvent):
         data = StudentRemovedFromSection()
         data.ParseFromString(event)
 
-        if not data.student_id or not data.course_id:
+        if not data.student_id or not data.section_id:
             return False
 
-        instance = cls(data.student_id, data.course_id)
+        instance = cls(data.student_id, data.section_id)
         if instance.validate():
             return instance
 
