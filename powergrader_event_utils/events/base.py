@@ -77,6 +77,22 @@ class PowerGraderEvent:
 
         return False
 
+    def publish_to_custom_topic(self, producer: Producer, topic_name: str) -> bool:
+        serialized_event = self.serialize()
+        if isinstance(serialized_event, bytes):
+            # producer.begin_transaction()
+            producer.produce(
+                topic_name,
+                key=self.key,
+                value=serialized_event,
+                headers={"event_type": self.event_type},
+            )
+            producer.flush()
+            # producer.commit_transaction()
+            return True
+
+        return False
+
     def validate(self) -> bool:
         pass
 
