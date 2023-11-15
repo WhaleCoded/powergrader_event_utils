@@ -42,7 +42,9 @@ class EventType(Enum):
     PRIAVTE_ID_REMOVED_FROM_PUBLIC_ID = 28
     GRADING_STARTED = 29
     INSTRUCTOR_REVIEW = 30
-    NOT_SPECIFIED = 31
+    RETRY = 31
+    DEAD_LETTER = 32
+    NOT_SPECIFIED = 33
 
 
 def generate_event_id(class_name: str) -> str:

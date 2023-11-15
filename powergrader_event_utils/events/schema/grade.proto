@@ -8,14 +8,30 @@ enum GradeType {
     AI_INFERRED = 2;
 }
 
-message CriteriaGrade {
+message GradeIdentifier {
+    string submission_id = 1;
+    string assignment_id = 2;
+    string grade_method_id = 3;
+}
+
+message GradingStarted {
     string id = 1;
     string submission_id = 2;
-    string rubric_criteria_id = 3;
-    GradeType type = 4;
-    string grade_method_id = 5;
-    int32 score = 7;
-    string assesment = 8;
+    string assignment_id = 3;
+    string grade_method_id = 4;
+    repeated string criteria_to_be_graded = 5;
+}
+
+message CriteriaGrade {
+    string id = 1;
+    oneof grade_id {
+        string grading_started_id = 2;
+        GradeIdentifier grade_identifier = 3;
+    }
+    string rubric_criteria_id = 4;
+    GradeType type = 5;
+    int32 score = 6;
+    string assesment = 7;
 }
 
 message CriteriaEmbedding {
@@ -36,14 +52,6 @@ message StudentRequestedRegrade {
     string submission_id = 3;
     string reasoning = 4;
     repeated string criteria_grades_to_reevaluate = 5;
-}
-
-message GradingStarted {
-    string id = 1;
-    string submission_id = 2;
-    string assignment_id = 3;
-    string grade_method_id = 4;
-    repeated string criteria_to_be_graded = 5;
 }
 
 message InstructorReview {

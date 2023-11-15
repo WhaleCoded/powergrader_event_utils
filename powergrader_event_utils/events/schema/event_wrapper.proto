@@ -1,0 +1,85 @@
+syntax = "proto3";
+package event_wrapper;
+
+import "assignment.proto";
+import "course.proto";
+import "grade.proto";
+import "publish.proto";
+import "relationship.proto";
+import "submission.proto";
+import "user.proto";
+
+message Retry {
+    int32 retry = 1;
+    string retry_reason = 2;
+    oneof event {
+        assignment.Assignment assignment = 3;
+        assignment.Rubric rubric = 4;
+        course.Course course = 5;
+        course.Section section = 6;
+        course.Organization organization = 7;
+        grade.CriteriaGrade criteria_grade = 8;
+        grade.CriteriaEmbedding criteria_embedding = 9;
+        grade.AssesmentSimilarity assesment_similarity = 10;
+        grade.StudentRequestedRegrade student_requested_regrade = 11;
+        grade.GradingStarted grading_started = 12;
+        grade.InstructorReview instructor_reviewed = 13;
+        publish.RegisterCoursePublicID register_course_public_id = 14;
+        publish.RegisterSectionPublicID register_section_public_id = 15;
+        publish.RegisterInstructorPublicID register_instructor_public_id = 16;
+        publish.RegisterStudentPublicID register_student_public_id = 17;
+        publish.RegisterAssignmentPublicID register_assignment_public_id = 18;
+        publish.RegisterRubricPublicID register_rubric_public_id = 19;
+        publish.RegisterSubmissionPublicID register_submission_public_id = 20;
+        publish.PublishedToLMS published_to_lms = 21;
+        relationship.PrivateIDAddedToPublicID private_id_added_to_public_id = 22;
+        relationship.PrivateIDRemovedFromPublicID private_id_removed_from_public_id = 23;
+        relationship.AssignmentAddedToCourse assignment_added_to_course = 24;
+        relationship.AssignmentRemovedFromCourse assignment_removed_from_course = 25;
+        relationship.StudentAddedToSection student_added_to_section = 26;
+        relationship.StudentRemovedFromSection student_removed_from_section = 27;
+        relationship.InstructorAddedToCourse instructor_added_to_course = 28;
+        relationship.InstructorRemovedFromCourse instructor_removed_from_course = 29;
+        submission.Submission submission = 30;
+        submission.SubmissionFiles submission_files = 31;
+        user.Student student = 32;
+        user.Instructor instructor = 33;
+    }
+}
+
+message DeadLetter {
+    string dead_letter_reason = 1;
+    oneof event {
+        assignment.Assignment assignment = 3;
+        assignment.Rubric rubric = 4;
+        course.Course course = 5;
+        course.Section section = 6;
+        course.Organization organization = 7;
+        grade.CriteriaGrade criteria_grade = 8;
+        grade.CriteriaEmbedding criteria_embedding = 9;
+        grade.AssesmentSimilarity assesment_similarity = 10;
+        grade.StudentRequestedRegrade student_requested_regrade = 11;
+        grade.GradingStarted grading_started = 12;
+        grade.InstructorReview instructor_reviewed = 13;
+        publish.RegisterCoursePublicID register_course_public_id = 14;
+        publish.RegisterSectionPublicID register_section_public_id = 15;
+        publish.RegisterInstructorPublicID register_instructor_public_id = 16;
+        publish.RegisterStudentPublicID register_student_public_id = 17;
+        publish.RegisterAssignmentPublicID register_assignment_public_id = 18;
+        publish.RegisterRubricPublicID register_rubric_public_id = 19;
+        publish.RegisterSubmissionPublicID register_submission_public_id = 20;
+        publish.PublishedToLMS published_to_lms = 21;
+        relationship.PrivateIDAddedToPublicID private_id_added_to_public_id = 22;
+        relationship.PrivateIDRemovedFromPublicID private_id_removed_from_public_id = 23;
+        relationship.AssignmentAddedToCourse assignment_added_to_course = 24;
+        relationship.AssignmentRemovedFromCourse assignment_removed_from_course = 25;
+        relationship.StudentAddedToSection student_added_to_section = 26;
+        relationship.StudentRemovedFromSection student_removed_from_section = 27;
+        relationship.InstructorAddedToCourse instructor_added_to_course = 28;
+        relationship.InstructorRemovedFromCourse instructor_removed_from_course = 29;
+        submission.Submission submission = 30;
+        submission.SubmissionFiles submission_files = 31;
+        user.Student student = 32;
+        user.Instructor instructor = 33;
+    }
+}
