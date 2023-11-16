@@ -15,11 +15,20 @@ from google.protobuf.json_format import MessageToJson
 
 class SubmissionFilesEvent(PowerGraderEvent):
     def __init__(self, student_id: str, file_contents: List[dict]) -> None:
+        if not student_id or not file_contents:
+            raise ValueError("student_id and file_contents are required.")
+
+        if len(file_contents) == 0:
+            raise ValueError("file_contents must contain at least one file content.")
+
         self.proto = SubmissionFiles()
         self.proto.id = generate_event_id(self.__class__.__name__)
         self.proto.student_id = student_id
 
         for file_content in file_contents:
+            if "file_name" not in file_content or "content" not in file_content:
+                raise ValueError("file_contents must contain file_name and content")
+
             fc_proto = FileContent()
             fc_proto.file_name = file_content["file_name"]
             fc_proto.file_type = (
@@ -42,12 +51,12 @@ class SubmissionFilesEvent(PowerGraderEvent):
     def get_student_id(self) -> str:
         return self.proto.student_id
 
-    def get_file_contents(self) -> list:
+    def get_file_contents(self) -> List[dict]:
         # This method will return a list of dicts representing the file contents
         return [
             {
                 "file_name": fc.file_name,
-                "file_type": fc.file_type,
+                "file_type": fc.file_type if fc.file_type != "" else None,
                 "content": fc.content,
             }
             for fc in self.proto.file_content
@@ -55,11 +64,15 @@ class SubmissionFilesEvent(PowerGraderEvent):
 
     def validate(self) -> bool:
         # Validate that there's at least one file content and all necessary IDs are present.
-        for fc in self.get_file_content():
-            if not all([fc["file_name"], fc["file_type"], fc["content"]]):
+        for fc in self.get_file_contents():
+            if not bool(fc["file_name"] and fc["content"]):
                 return False
 
-        return bool(self.get_id() and self.get_student_id())
+        return bool(
+            self.get_id()
+            and self.get_student_id()
+            and len(self.get_file_contents()) > 0
+        )
 
     def _package_into_proto(self) -> SubmissionFiles:
         # Return the protobuf message instance.
@@ -71,24 +84,16 @@ class SubmissionFilesEvent(PowerGraderEvent):
         data = SubmissionFiles()
         data.ParseFromString(event)
 
-        # Check the integrity of the deserialized data.
-        if not (data.id and data.student_id and data.file_content):
-            return False
-
-        # Repackage the file_content into the required format for the wrapper.
-        file_contents = [
-            {
-                "file_name": fc.file_name,
-                "file_type": fc.file_type,
-                "content": fc.content,
-            }
-            for fc in data.file_content
-        ]
-
         # Create and return an event instance if validation is successful.
-        instance = cls(data.id, data.student_id, file_contents)
-        if instance.validate():
-            return instance
+        new_event_instance = cls.__new__(cls)
+        new_event_instance.proto = data
+        super(cls, new_event_instance).__init__(
+            key=data.id,
+            event_type=new_event_instance.__class__.__name__,
+        )
+
+        if new_event_instance.validate():
+            return new_event_instance
 
         return False
 
@@ -97,6 +102,11 @@ class SubmissionEvent(PowerGraderEvent):
     def __init__(
         self, student_id: str, assignment_id: str, submission_files_id: str
     ) -> None:
+        if not student_id or not assignment_id or not submission_files_id:
+            raise ValueError(
+                "student_id, assignment_id, and submission_files_id are required."
+            )
+
         self.proto = Submission()
         self.proto.student_id = student_id
         self.proto.assignment_id = assignment_id
@@ -122,16 +132,12 @@ class SubmissionEvent(PowerGraderEvent):
         return self.proto.submission_files_id
 
     def validate(self) -> bool:
-        if not all(
-            [
-                self.get_id(),
-                self.get_student_id(),
-                self.get_assignment_id(),
-                self.get_submission_files_id(),
-            ]
-        ):
-            return False
-        return True
+        return bool(
+            self.get_id()
+            and self.get_student_id()
+            and self.get_assignment_id()
+            and self.get_submission_files_id()
+        )
 
     def _package_into_proto(self) -> Submission:
         return self.proto
@@ -141,11 +147,15 @@ class SubmissionEvent(PowerGraderEvent):
         data = Submission()
         data.ParseFromString(event)
 
-        if not data.id:
-            return False
-        instance = cls(data.student_id, data.assignment_id, data.submission_files_id)
-        instance.proto.id = data.id  # Set ID after creating the instance
-        if instance.validate():
-            return instance
+        # Create and return an event instance if validation is successful.
+        new_event_instance = cls.__new__(cls)
+        new_event_instance.proto = data
+        super(cls, new_event_instance).__init__(
+            key=data.id,
+            event_type=new_event_instance.__class__.__name__,
+        )
+
+        if new_event_instance.validate():
+            return new_event_instance
 
         return False

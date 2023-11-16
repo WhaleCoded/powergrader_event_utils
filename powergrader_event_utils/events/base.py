@@ -1,50 +1,71 @@
 from uuid import uuid4
-from enum import Enum
+from enum import StrEnum
+from typing import Tuple
 
 from confluent_kafka import Producer
 
 MAIN_TOPIC = "main-record"
 
 
-class EventType(Enum):
+# This could be replaced with a dynamically created enum with the following syntax: DynamicEnum = enum.Enum('DynamicEnum', {'foo':42, 'bar':24})
+# However, this would mean that there would be no type hints for the enum.
+class EventType(StrEnum):
     """
     An enum for the different types of events that can be published or recieved.
+    The value will be the name of the corresponding event class.
     """
 
-    ASSIGNMENT = 0
-    RUBRIC = 1
-    COURSE = 2
-    CLASS = 3
-    ORGANIZATION = 4
-    CRITERIA_GRADE = 5
-    CRITERIA_EMBEDDING = 6
-    ASSESMENT_SIMILARITY = 7
-    STUDENT_REQUESTED_REGRADE = 8
-    ASSIGNMENT_ADDED_TO_COURSE = 9
-    ASSIGNMENT_REMOVED_FROM_COURSE = 10
-    STUDENT_ADDED_TO_SECTION = 11
-    STUDENT_REMOVED_FROM_SECTION = 12
-    INSTRUCTOR_ADDED_TO_COURSE = 13
-    INSTRUCTOR_REMOVED_FROM_COURSE = 14
-    SUBMISSION = 15
-    SUBMISSION_FILES = 16
-    STUDENT = 17
-    INSTRUCTOR = 18
-    COURSE_PUBLIC_ID = 19
-    SECTION_PUBLIC_ID = 20
-    INSTRUCTOR_PUBLIC_ID = 21
-    STUDENT_PUBLIC_ID = 22
-    ASSIGNMENT_PUBLIC_ID = 23
-    RUBRIC_PUBLIC_ID = 24
-    SUBMISSION_PUBLIC_ID = 25
-    PUBLISHED_TO_LMS = 26
-    PRIVATE_ID_ADDED_TO_PUBLIC_ID = 27
-    PRIAVTE_ID_REMOVED_FROM_PUBLIC_ID = 28
-    GRADING_STARTED = 29
-    INSTRUCTOR_REVIEW = 30
-    RETRY = 31
-    DEAD_LETTER = 32
-    NOT_SPECIFIED = 33
+    # Assignment events
+    ASSIGNMENT = "AssignmentEvent"
+    RUBRIC = "RubricEvent"
+
+    # Course events
+    COURSE = "CourseEvent"
+    SECTION = "SectionEvent"
+    ORGANIZATION = "OrganizationEvent"
+
+    # Event Wrapper events
+    RETRY = "RetryEvent"
+    DEAD_LETTER = "DeadLetterEvent"
+
+    # Grade events
+    CRITERIA_GRADE = "CriteriaGradeEvent"
+    CRITERIA_EMBEDDING = "CriteriaEmbeddingEvent"
+    ASSESMENT_SIMILARITY = "AssesmentSimilarityEvent"
+    STUDENT_REQUESTED_REGRADE = "StudentRequestedRegradeEvent"
+    GRADING_STARTED = "GradingStartedEvent"
+    INSTRUCTOR_REVIEW = "InstructorReviewEvent"
+
+    # Publish events
+    COURSE_PUBLIC_ID = "RegisterCoursePublicIDEvent"
+    SECTION_PUBLIC_ID = "RegisterSectionPublicIDEvent"
+    INSTRUCTOR_PUBLIC_ID = "RegisterInstructorPublicIDEvent"
+    STUDENT_PUBLIC_ID = "RegisterStudentPublicIDEvent"
+    ASSIGNMENT_PUBLIC_ID = "RegisterAssignmentPublicIDEvent"
+    RUBRIC_PUBLIC_ID = "RegisterRubricPublicIDEvent"
+    SUBMISSION_PUBLIC_ID = "RegisterSubmissionPublicIDEvent"
+    PUBLISHED_TO_LMS = "PublishedToLMSEvent"
+
+    # Relationship events
+    ASSIGNMENT_ADDED_TO_COURSE = "AssignmentAddedToCourseEvent"
+    ASSIGNMENT_REMOVED_FROM_COURSE = "AssignmentRemovedFromCourseEvent"
+    STUDENT_ADDED_TO_SECTION = "StudentAddedToSectionEvent"
+    STUDENT_REMOVED_FROM_SECTION = "StudentRemovedFromSectionEvent"
+    INSTRUCTOR_ADDED_TO_COURSE = "InstructorAddedToCourseEvent"
+    INSTRUCTOR_REMOVED_FROM_COURSE = "InstructorRemovedFromCourseEvent"
+    PRIVATE_ID_ADDED_TO_PUBLIC_ID = "PrivateIDAddedToPublicIDEvent"
+    PRIAVTE_ID_REMOVED_FROM_PUBLIC_ID = "PrivateIDRemovedFromPublicIDEvent"
+
+    # Submission events
+    SUBMISSION = "SubmissionEvent"
+    SUBMISSION_FILES = "SubmissionFilesEvent"
+
+    # User events
+    STUDENT = "StudentEvent"
+    INSTRUCTOR = "InstructorEvent"
+
+    # Other
+    NOT_SPECIFIED = "DOES_NOT_EXIST"
 
 
 def generate_event_id(class_name: str) -> str:
@@ -53,6 +74,23 @@ def generate_event_id(class_name: str) -> str:
     """
 
     return class_name.replace("Event", "") + "--" + str(uuid4())
+
+
+def get_event_type_from_uuid(uuid: str) -> EventType:
+    """
+    Returns the event type for a given class name.
+    """
+
+    if "--" not in uuid:
+        return EventType.NOT_SPECIFIED
+
+    class_name = uuid.split("--")[0]
+    class_name = class_name + "Event"
+
+    if class_name not in EventType.__members__:
+        return EventType.NOT_SPECIFIED
+
+    return EventType(class_name)
 
 
 # Setup a common interface for the event system
@@ -114,3 +152,23 @@ class PowerGraderEvent:
     @staticmethod
     def get_event_type() -> EventType:
         return EventType.NOT_SPECIFIED
+
+
+def deserialize_powergrader_event(
+    event_type: bytes, event: bytes
+) -> Tuple[PowerGraderEvent, EventType] or None:
+    str_event_type = event_type.decode("utf-8")
+
+    powergrader_event_classes = {}
+    for event_class in PowerGraderEvent.__subclasses__():
+        powergrader_event_classes[event_class.__name__] = event_class
+
+    if str_event_type in powergrader_event_classes:
+        deserialized_event = powergrader_event_classes[str_event_type].deserialize(
+            event
+        )
+        event_type = powergrader_event_classes[str_event_type].get_event_type()
+
+        return deserialized_event, event_type
+
+    return None

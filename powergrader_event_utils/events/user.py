@@ -14,6 +14,9 @@ from google.protobuf.json_format import MessageToJson
 
 class StudentEvent(PowerGraderEvent):
     def __init__(self, org_id: str, name: str, email: str) -> None:
+        if not org_id or not name or not email:
+            raise ValueError("org_id, name, and email are required.")
+
         self.proto = Student()
         self.proto.org_id = org_id
         self.proto.name = name
@@ -39,8 +42,8 @@ class StudentEvent(PowerGraderEvent):
         return self.proto.email
 
     def validate(self) -> bool:
-        return all(
-            [self.get_id(), self.get_org_id(), self.get_name(), self.get_email()]
+        return bool(
+            self.get_id() and self.get_org_id() and self.get_name() and self.get_email()
         )
 
     def _package_into_proto(self) -> Student:
@@ -51,19 +54,25 @@ class StudentEvent(PowerGraderEvent):
         data = Student()
         data.ParseFromString(event)
 
-        if not data.id:
-            return False
+        # Create and return an event instance if validation is successful.
+        new_event_instance = cls.__new__(cls)
+        new_event_instance.proto = data
+        super(cls, new_event_instance).__init__(
+            key=data.id,
+            event_type=new_event_instance.__class__.__name__,
+        )
 
-        instance = cls(data.org_id, data.name, data.email)
-        instance.proto.id = data.id  # Set ID after creating the instance
-        if instance.validate():
-            return instance
+        if new_event_instance.validate():
+            return new_event_instance
 
         return False
 
 
 class InstructorEvent(PowerGraderEvent):
     def __init__(self, org_id: str, name: str, email: str) -> None:
+        if not org_id or not name or not email:
+            raise ValueError("org_id, name, and email are required.")
+
         self.proto = Instructor()
         self.proto.org_id = org_id
         self.proto.name = name
@@ -101,12 +110,15 @@ class InstructorEvent(PowerGraderEvent):
         data = Instructor()
         data.ParseFromString(event)
 
-        if not data.id:
-            return False
+        # Create and return an event instance if validation is successful.
+        new_event_instance = cls.__new__(cls)
+        new_event_instance.proto = data
+        super(cls, new_event_instance).__init__(
+            key=data.id,
+            event_type=new_event_instance.__class__.__name__,
+        )
 
-        instance = cls(data.org_id, data.name, data.email)
-        instance.proto.id = data.id  # Set ID after creating the instance
-        if instance.validate():
-            return instance
+        if new_event_instance.validate():
+            return new_event_instance
 
         return False

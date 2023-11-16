@@ -1,5 +1,6 @@
 from typing import Dict, List
 from enum import Enum
+from dataclasses import dataclass
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
@@ -10,7 +11,8 @@ from powergrader_event_utils.events.proto_events.grade_pb2 import (
     CriteriaEmbedding,
     AssesmentSimilarity,
     CriteriaGrade,
-    GradeType,
+    GradeIdentifier,
+    GradeType as ProtoGradeType,
     StudentRequestedRegrade,
     GradingStarted,
     InstructorReview,
@@ -24,26 +26,54 @@ class GradeType(Enum):
     AI_INFERRED = 2
 
 
+@dataclass
+class GradeIdentifiers:
+    submission_id: str
+    assignment_id: str
+    grade_method_id: str
+
+
 class CriteriaGradeEvent(PowerGraderEvent):
     def __init__(
         self,
-        submission_id: str,
+        grade_identifier: GradeIdentifiers or str,
         rubric_criteria_id: str,
         grade_type: GradeType,
-        grade_method_id: str,
         score: int,
         assessment: str,
     ) -> None:
+        """
+        grade_identifier: GradeIdentifiers or str. grade_identifiers can be the id of a GradingStartedEvent or a GradeIdentifiers object.
+        This allows us to not duplicate information and still allow for faculty and AI to use this event.
+        """
         if assessment is None:
             assessment = ""
 
+        if (
+            not grade_identifier
+            or not rubric_criteria_id
+            or not grade_type
+            or not score
+        ):
+            raise ValueError(
+                "Grade identifier, rubric criteria ID, grade type, and score must be specified."
+            )
+
         self.proto = CriteriaGrade()
-        self.proto.submission_id = submission_id
         self.proto.rubric_criteria_id = rubric_criteria_id
         self.proto.type = grade_type.value
-        self.proto.grade_method_id = grade_method_id
         self.proto.score = score
         self.proto.assesment = assessment
+
+        if isinstance(grade_identifier, str):
+            self.proto.grading_started_id = grade_identifier
+        else:
+            grade_identifier_proto = GradeIdentifier()
+            grade_identifier_proto.submission_id = grade_identifier.submission_id
+            grade_identifier_proto.assignment_id = grade_identifier.assignment_id
+            grade_identifier_proto.grade_method_id = grade_identifier.grade_method_id
+
+            self.proto.grade_identifier.CopyFrom(grade_identifier_proto)
 
         self.proto.id = generate_event_id(self.__class__.__name__)
 
@@ -57,20 +87,23 @@ class CriteriaGradeEvent(PowerGraderEvent):
         _id = self.proto.id
         return _id if _id != "" else None
 
-    def get_submission_id(self) -> str or None:
-        submission_id = self.proto.submission_id
-        return submission_id if submission_id != "" else None
+    def get_grade_identifier(self) -> GradeIdentifiers or str:
+        grade_identifier = getattr(self.proto, self.proto.WhichOneof("grade_id"))
+        if isinstance(grade_identifier, str):
+            return grade_identifier
+
+        return GradeIdentifiers(
+            grade_identifier.submission_id,
+            grade_identifier.assignment_id,
+            grade_identifier.grade_method_id,
+        )
 
     def get_rubric_criteria_id(self) -> str or None:
         rubric_criteria_id = self.proto.rubric_criteria_id
         return rubric_criteria_id if rubric_criteria_id != "" else None
 
     def get_grade_type(self) -> GradeType:
-        return self.proto.type
-
-    def get_grade_method_id(self) -> str or None:
-        grade_method_id = self.proto.grade_method_id
-        return grade_method_id if grade_method_id != "" else None
+        return GradeType(self.proto.type)
 
     def get_score(self) -> float:
         return self.proto.score
@@ -80,16 +113,12 @@ class CriteriaGradeEvent(PowerGraderEvent):
         return assessment if assessment != "" else None
 
     def validate(self) -> bool:
-        return all(
-            [
-                self.get_id() is not None,
-                self.get_submission_id() is not None,
-                self.get_rubric_criteria_id() is not None,
-                self.get_grade_method_id() is not None,
-                self.get_grade_type() is not None,
-                isinstance(self.get_score(), float),
-                self.get_assessment() is not None,
-            ]
+        return bool(
+            self.get_id()
+            and self.get_grade_identifier()
+            and self.get_rubric_criteria_id()
+            and self.get_grade_type()
+            and self.get_score() >= 0.0
         )
 
     def _package_into_proto(self) -> CriteriaGrade:
@@ -99,9 +128,6 @@ class CriteriaGradeEvent(PowerGraderEvent):
     def deserialize(cls, event: bytes) -> bool or "CriteriaGradeEvent":
         criteria_grade = CriteriaGrade()
         criteria_grade.ParseFromString(event)
-
-        if criteria_grade.id == "":
-            return False
 
         new_criteria_grade_instance = cls.__new__(cls)
         new_criteria_grade_instance.proto = criteria_grade
@@ -150,13 +176,13 @@ class CriteriaEmbeddingEvent(PowerGraderEvent):
         return embedding if embedding else None
 
     def validate(self) -> bool:
-        return all(
-            [
-                self.get_id() is not None,
-                self.get_crit_grade_id() is not None,
-                self.get_embedder_id() is not None,
-                self.get_embedding() is not None,
-            ]
+        return bool(
+            self.get_id()
+            and self.get_crit_grade_id()
+            and self.get_embedding()
+            and self.get_embedder_id()
+            and len(self.get_embedding()) > 0
+            and all([isinstance(x, float) for x in self.get_embedding()])
         )
 
     def _package_into_proto(self) -> CriteriaEmbedding:
@@ -166,9 +192,6 @@ class CriteriaEmbeddingEvent(PowerGraderEvent):
     def deserialize(cls, event: bytes) -> bool or "CriteriaEmbeddingEvent":
         criteria_embedding = CriteriaEmbedding()
         criteria_embedding.ParseFromString(event)
-
-        if criteria_embedding.id == "":
-            return False
 
         new_criteria_embedding_instance = cls.__new__(cls)
         new_criteria_embedding_instance.proto = criteria_embedding
@@ -205,11 +228,13 @@ class AssesmentSimilarityEvent(PowerGraderEvent):
         return simmilar_criteria_grade_ids if simmilar_criteria_grade_ids else None
 
     def validate(self) -> bool:
-        return all(
-            [
-                self.get_id() is not None,
-                self.get_simmilar_criteria_grade_ids() is not None,
-            ]
+        return bool(
+            self.get_id()
+            and self.get_simmilar_criteria_grade_ids()
+            and len(self.get_simmilar_criteria_grade_ids()) > 0
+            and all(
+                [isinstance(x, str) for x in self.get_simmilar_criteria_grade_ids()]
+            )
         )
 
     def _package_into_proto(self) -> AssesmentSimilarity:
@@ -219,9 +244,6 @@ class AssesmentSimilarityEvent(PowerGraderEvent):
     def deserialize(cls, event: bytes) -> bool or "AssesmentSimilarityEvent":
         assesment_similarity = AssesmentSimilarity()
         assesment_similarity.ParseFromString(event)
-
-        if assesment_similarity.id == "":
-            return False
 
         new_assesment_similarity_instance = cls.__new__(cls)
         new_assesment_similarity_instance.proto = assesment_similarity
@@ -244,6 +266,13 @@ class StudentRequestedRegradeEvent(PowerGraderEvent):
         reasoning: str,
         criteria_grades: List[str],
     ) -> None:
+        if not student_id or not submission_id:
+            raise ValueError(
+                "Student ID, submission ID, and reasoning must be specified."
+            )
+        if len(criteria_grades) == 0:
+            raise ValueError("At least one criterion must be specified.")
+
         self.proto = StudentRequestedRegrade()
         self.proto.student_id = student_id
         self.proto.submission_id = submission_id
@@ -278,14 +307,14 @@ class StudentRequestedRegradeEvent(PowerGraderEvent):
         return list(self.proto.criteria_grades_to_reevaluate)
 
     def validate(self) -> bool:
-        return all(
-            [
-                self.get_id() is not None,
-                self.get_student_id() is not None,
-                self.get_submission_id() is not None,
-                self.get_reasoning() is not None,
-                bool(self.get_criteria_grades_to_reevaluate()),
-            ]
+        return bool(
+            self.get_id()
+            and self.get_student_id()
+            and self.get_submission_id()
+            and len(self.get_criteria_grades_to_reevaluate()) > 0
+            and all(
+                [isinstance(x, str) for x in self.get_criteria_grades_to_reevaluate()]
+            )
         )
 
     def _package_into_proto(self) -> StudentRequestedRegrade:
@@ -295,9 +324,6 @@ class StudentRequestedRegradeEvent(PowerGraderEvent):
     def deserialize(cls, event: bytes) -> bool or "StudentRequestedRegradeEvent":
         regrade_request = StudentRequestedRegrade()
         regrade_request.ParseFromString(event)
-
-        if regrade_request.id == "":
-            return False
 
         new_regrade_request_instance = cls.__new__(cls)
         new_regrade_request_instance.proto = regrade_request
@@ -315,14 +341,18 @@ class StudentRequestedRegradeEvent(PowerGraderEvent):
 class GradingStartedEvent(PowerGraderEvent):
     def __init__(
         self,
-        id: str,
         submission_id: str,
         assignment_id: str,
         grade_method_id: str,
-        criteria_to_be_graded: list,
+        criteria_to_be_graded: List[str],
     ) -> None:
+        if not submission_id or not assignment_id or not grade_method_id:
+            raise ValueError(
+                "Submission ID, assignment ID, and grade method ID must be specified."
+            )
+
         self.proto = GradingStarted()
-        self.proto.id = id
+        self.proto.id = generate_event_id(self.__class__.__name__)
         self.proto.submission_id = submission_id
         self.proto.assignment_id = assignment_id
         self.proto.grade_method_id = grade_method_id
@@ -330,7 +360,8 @@ class GradingStartedEvent(PowerGraderEvent):
         if len(criteria_to_be_graded) == 0:
             raise ValueError("At least one criterion must be specified.")
         for criterion in criteria_to_be_graded:
-            self.proto.criteria_to_be_graded.append(criterion)
+            if criterion:
+                self.proto.criteria_to_be_graded.append(criterion)
 
         super().__init__(key=self.proto.id, event_type=self.__class__.__name__)
 
@@ -374,26 +405,16 @@ class GradingStartedEvent(PowerGraderEvent):
         data = GradingStarted()
         data.ParseFromString(event)
 
-        # Check the integrity of the deserialized data.
-        if not (
-            data.id
-            and data.submission_id
-            and data.assignment_id
-            and data.grade_method_id
-            and len(list(data.criteria_to_be_graded)) > 0
-        ):
-            return False
-
         # Create and return an event instance if validation is successful.
-        instance = cls(
-            data.id,
-            data.submission_id,
-            data.assignment_id,
-            data.grade_method_id,
-            list(data.criteria_to_be_graded),
+        new_gradeing_started = cls.__new__(cls)
+        new_gradeing_started.proto = data
+        super(cls, new_gradeing_started).__init__(
+            key=data.id,
+            event_type=new_gradeing_started.__class__.__name__,
         )
-        if instance.validate():
-            return instance
+
+        if new_gradeing_started.validate():
+            return new_gradeing_started
 
         return False
 
@@ -401,14 +422,21 @@ class GradingStartedEvent(PowerGraderEvent):
 class InstructorReviewEvent(PowerGraderEvent):
     def __init__(
         self,
-        id: str,
         submission_id: str,
         assignment_id: str,
         instructor_id: str,
-        criteria_grade_ids: list,
+        criteria_grade_ids: List[str],
     ) -> None:
+        if not submission_id or not assignment_id or not instructor_id:
+            raise ValueError(
+                "Submission ID, assignment ID, and instructor ID must be specified."
+            )
+
+        if len(criteria_grade_ids) == 0:
+            raise ValueError("At least one criteria grade ID must be specified.")
+
         self.proto = InstructorReview()
-        self.proto.id = id
+        self.proto.id = generate_event_id(self.__class__.__name__)
         self.proto.submission_id = submission_id
         self.proto.assignment_id = assignment_id
         self.proto.instructor_id = instructor_id
@@ -424,18 +452,18 @@ class InstructorReviewEvent(PowerGraderEvent):
     def get_id(self) -> str:
         return self.proto.id
 
-    def get_submission_id(self) -> str:
-        return self.proto.submission_id
+    def get_submission_id(self) -> str or None:
+        return self.proto.submission_id if self.proto.submission_id != "" else None
 
-    def get_assignment_id(self) -> str:
-        return self.proto.assignment_id
+    def get_assignment_id(self) -> str or None:
+        return self.proto.assignment_id if self.proto.assignment_id != "" else None
 
-    def get_instructor_id(self) -> str:
-        return self.proto.instructor_id
+    def get_instructor_id(self) -> str or None:
+        return self.proto.instructor_id if self.proto.instructor_id != "" else None
 
     def get_criteria_grade_ids(self) -> list:
         # This method returns a list of criteria grade IDs.
-        return list(self.proto.criteria_grade_ids)
+        return self.proto.criteria_grade_ids
 
     def validate(self) -> bool:
         # Validate that all identifiers and at least one criteria grade ID are present.
@@ -457,25 +485,15 @@ class InstructorReviewEvent(PowerGraderEvent):
         data = InstructorReview()
         data.ParseFromString(event)
 
-        # Check the integrity of the deserialized data.
-        if not (
-            data.id
-            and data.submission_id
-            and data.assignment_id
-            and data.instructor_id
-            and len(list(data.criteria_grade_ids)) > 0
-        ):
-            return False
-
         # Create and return an event instance if validation is successful.
-        instance = cls(
-            data.id,
-            data.submission_id,
-            data.assignment_id,
-            data.instructor_id,
-            list(data.criteria_grade_ids),
+        new_instructor_review = cls.__new__(cls)
+        new_instructor_review.proto = data
+        super(cls, new_instructor_review).__init__(
+            key=data.id,
+            event_type=new_instructor_review.__class__.__name__,
         )
-        if instance.validate():
-            return instance
+
+        if new_instructor_review.validate():
+            return new_instructor_review
 
         return False

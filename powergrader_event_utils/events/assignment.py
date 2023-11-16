@@ -70,15 +70,7 @@ class AssignmentEvent(PowerGraderEvent):
         return instructions
 
     def validate(self) -> bool:
-        if (
-            self.get_instructions() is not None
-            and self.get_name() is not None
-            and self.get_rubric_id() is not None
-            and self.get_id() is not None
-        ):
-            return True
-
-        return False
+        return bool(self.get_id())
 
     def _package_into_proto(self) -> Assignment:
         return self.proto
@@ -87,10 +79,6 @@ class AssignmentEvent(PowerGraderEvent):
     def deserialize(cls, event: bytes):
         assignment = Assignment()
         assignment.ParseFromString(event)
-
-        if assignment.id == "":
-            # This is not a valid event
-            return False
 
         new_assignment_class = cls.__new__(cls)
         new_assignment_class.proto = assignment
@@ -166,21 +154,19 @@ class RubricEvent(PowerGraderEvent):
         return json_criteria
 
     def validate(self) -> bool:
-        if (
-            self.get_instructor_id() is not None
-            and self.get_id() is not None
-            and self.get_criteria() is not None
-        ):
+        if self.get_instructor_id() and self.get_id():
             # Validate the criteria
             criteria = self.get_criteria()
-            for criterion in criteria.values():
-                if criterion["name"] == "" or criterion["id"] == "":
-                    return False
 
-                levels = criterion["levels"]
-                for level in levels:
-                    if level["description"] == "":
+            if criteria:
+                for criterion in criteria.values():
+                    if not criterion["name"] or not criterion["id"]:
                         return False
+
+                    levels = criterion["levels"]
+                    for level in levels:
+                        if not level["description"] or not level["score"]:
+                            return False
 
             return True
 
@@ -218,10 +204,6 @@ class RubricEvent(PowerGraderEvent):
     def deserialize(cls, event: bytes):
         rubric = Rubric()
         rubric.ParseFromString(event)
-
-        if rubric.id == "":
-            # This is not a valid event
-            return False
 
         new_rubric_class = cls.__new__(cls)
         new_rubric_class.proto = rubric
