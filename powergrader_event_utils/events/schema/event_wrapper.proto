@@ -10,7 +10,7 @@ import "submission.proto";
 import "user.proto";
 
 message Retry {
-    int32 retry = 1;
+    int32 retry_number = 1;
     string retry_reason = 2;
     oneof event {
         assignment.Assignment assignment = 3;
@@ -23,7 +23,7 @@ message Retry {
         grade.AssesmentSimilarity assesment_similarity = 10;
         grade.StudentRequestedRegrade student_requested_regrade = 11;
         grade.GradingStarted grading_started = 12;
-        grade.InstructorReview instructor_reviewed = 13;
+        grade.InstructorReview instructor_review = 13;
         publish.RegisterCoursePublicID register_course_public_id = 14;
         publish.RegisterSectionPublicID register_section_public_id = 15;
         publish.RegisterInstructorPublicID register_instructor_public_id = 16;
