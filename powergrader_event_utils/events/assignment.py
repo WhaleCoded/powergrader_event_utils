@@ -1,5 +1,6 @@
 from typing import Dict, List
 import json
+from dataclasses import dataclass
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
@@ -9,211 +10,120 @@ from powergrader_event_utils.events.base import (
 from powergrader_event_utils.events.proto_events.assignment_pb2 import (
     Assignment,
     Rubric,
-    RubricCriterion,
-    CriteriaLevel,
+    RubricCriterion as RubricCriterionProto,
+    CriteriaLevel as CriteriaLevelProto,
 )
+
+from powergrader_event_utils.events.utils import ProtoWrapper, general_deserialization
 from google.protobuf.json_format import MessageToJson
 
 
-class AssignmentEvent(PowerGraderEvent):
+class AssignmentEvent(PowerGraderEvent, ProtoWrapper[Assignment]):
+    id: str
+    rubric_id: str
+    name: str
+    instructions: str
+
     def __init__(self, rubric_id: str, name: str, instructions: str) -> None:
-        if rubric_id is None:
-            rubric_id = ""
-        if name is None:
-            name = ""
-        if instructions is None:
-            instructions = ""
+        proto = Assignment()
 
-        self.proto = Assignment()
-        self.proto.rubric_id = rubric_id
-        self.proto.name = name
-        self.proto.instructions = instructions
+        if rubric_id is not None:
+            proto.rubric_id = rubric_id
 
-        self.proto.id = generate_event_id(self.__class__.__name__)
+        if name is not None:
+            proto.name = name
 
-        super().__init__(key=self.proto.id, event_type=self.__class__.__name__)
+        if instructions is not None:
+            proto.instructions = instructions
+
+        proto.id = generate_event_id(self.__class__.__name__)
+
+        ProtoWrapper.__init__(self, Assignment, proto)
+        PowerGraderEvent.__init__(
+            self, key=proto.id, event_type=self.__class__.__name__
+        )
+
+    def _package_into_proto(self) -> Assignment:
+        return self.proto
 
     @staticmethod
     def get_event_type() -> EventType:
         return EventType.ASSIGNMENT
 
-    def get_id(self) -> str or None:
-        id = self.proto.id
-
-        if id == "":
-            return None
-
-        return id
-
-    def get_rubric_id(self) -> str or None:
-        rubric_id = self.proto.rubric_id
-
-        if rubric_id == "":
-            return None
-
-        return rubric_id
-
-    def get_name(self) -> str or None:
-        name = self.proto.name
-
-        if name == "":
-            return None
-
-        return name
-
-    def get_instructions(self) -> str or None:
-        instructions = self.proto.instructions
-
-        if instructions == "":
-            return None
-
-        return instructions
-
-    def validate(self) -> bool:
-        return bool(self.get_id())
-
-    def _package_into_proto(self) -> Assignment:
-        return self.proto
-
     @classmethod
-    def deserialize(cls, event: bytes):
-        assignment = Assignment()
-        assignment.ParseFromString(event)
+    def deserialize(cls, event: bytes) -> "AssignmentEvent":
+        return general_deserialization(Assignment, cls, event, "id")
 
-        new_assignment_class = cls.__new__(cls)
-        new_assignment_class.proto = assignment
-        super(cls, new_assignment_class).__init__(
-            key=assignment.id,
-            event_type=new_assignment_class.__class__.__name__,
+
+@dataclass
+class CriteriaLevel:
+    score: int
+    description: str
+
+
+@dataclass
+class RubricCriterion:
+    name: str
+    id: str
+    levels: List[CriteriaLevel]
+
+
+class RubricEvent(PowerGraderEvent, ProtoWrapper[Rubric]):
+    id: str
+    instructor_id: str
+    name: str
+    rubric_criteria: Dict[str, ProtoWrapper[RubricCriterionProto]]
+
+    def __init__(
+        self, instructor_id: str, name: str, rubric_criteria: Dict[str, RubricCriterion]
+    ) -> None:
+        proto = Rubric()
+
+        if instructor_id is not None:
+            proto.instructor_id = instructor_id
+
+        if name is not None:
+            proto.name = name
+
+        if rubric_criteria is not None:
+            for key, criterion in rubric_criteria.items():
+                if criterion is not None:
+                    crit_proto = RubricCriterionProto()
+
+                    if criterion.name is not None:
+                        crit_proto.name = criterion.name
+
+                    if criterion.id is not None:
+                        crit_proto.id = criterion.id
+
+                    if criterion.levels is not None:
+                        for level in criterion.levels:
+                            if level is not None:
+                                level_proto = CriteriaLevelProto()
+
+                                if level.score is not None:
+                                    level_proto.score = level.score
+
+                                if level.description is not None:
+                                    level_proto.description = level.description
+
+                                crit_proto.levels.append(level_proto)
+                    proto.rubric_criteria[key].CopyFrom(crit_proto)
+
+        proto.id = generate_event_id(self.__class__.__name__)
+
+        ProtoWrapper.__init__(self, Rubric, proto)
+        PowerGraderEvent.__init__(
+            self, key=proto.id, event_type=self.__class__.__name__
         )
 
-        if new_assignment_class.validate():
-            return new_assignment_class
-
-        return False
-
-
-class RubricEvent(PowerGraderEvent):
-    def __init__(self, instructor_id: str, name: str, criteria: List[dict]) -> None:
-        if instructor_id is None:
-            raise ValueError("instructor_id cannot be None")
-
-        self.proto = Rubric()
-        self.proto.instructor_id = instructor_id
-        if name is None:
-            name = ""
-        self.proto.name = name
-
-        proto_criteria = self._package_criteria_into_proto(criteria)
-        for name, criterion in proto_criteria.items():
-            self.proto.rubric_criteria[name].CopyFrom(criterion)
-
-        self.proto.id = generate_event_id(self.__class__.__name__)
-
-        super().__init__(key=self.proto.id, event_type=self.__class__.__name__)
+    def _package_into_proto(self) -> Rubric:
+        return self.proto
 
     @staticmethod
     def get_event_type() -> EventType:
         return EventType.RUBRIC
 
-    def get_instructor_id(self) -> str or None:
-        instructor_id = self.proto.instructor_id
-
-        if instructor_id == "":
-            return None
-
-        return instructor_id
-
-    def get_id(self) -> str or None:
-        id = self.proto.id
-
-        if id == "":
-            return None
-
-        return id
-
-    def get_name(self) -> str or None:
-        name = self.proto.name
-
-        if name == "":
-            return None
-
-        return name
-
-    def get_criteria(self) -> Dict[str, RubricCriterion] or None:
-        criteria = self.proto.rubric_criteria
-
-        json_criteria = {}
-        for name, criterion in criteria.items():
-            json_str = MessageToJson(criterion)
-            json_criteria[name] = json.loads(json_str)
-
-        if len(json_criteria) == 0:
-            return None
-
-        return json_criteria
-
-    def validate(self) -> bool:
-        if self.get_instructor_id() and self.get_id():
-            # Validate the criteria
-            criteria = self.get_criteria()
-
-            if criteria:
-                for criterion in criteria.values():
-                    if not criterion["name"] or not criterion["id"]:
-                        return False
-
-                    levels = criterion["levels"]
-                    for level in levels:
-                        if not level["description"] or not level["score"]:
-                            return False
-
-            return True
-
-        return False
-
-    def _package_criteria_into_proto(
-        self, criteria: List[dict]
-    ) -> Dict[str, RubricCriterion]:
-        criteria_proto = {}
-        for criterion in criteria:
-            criterion_proto = RubricCriterion()
-            criterion_proto.name = criterion["name"]
-
-            if "id" in criterion:
-                criterion_proto.id = criterion["id"]
-            else:
-                criterion_proto.id = generate_event_id("RubricCriterion")
-
-            levels = criterion["levels"]
-            for level in levels:
-                level_proto = CriteriaLevel()
-                level_proto.score = level["score"]
-                level_proto.description = level["description"]
-
-                criterion_proto.levels.append(level_proto)
-
-            criteria_proto[criterion_proto.name] = criterion_proto
-
-        return criteria_proto
-
-    def _package_into_proto(self) -> Rubric:
-        return self.proto
-
     @classmethod
-    def deserialize(cls, event: bytes):
-        rubric = Rubric()
-        rubric.ParseFromString(event)
-
-        new_rubric_class = cls.__new__(cls)
-        new_rubric_class.proto = rubric
-
-        super(cls, new_rubric_class).__init__(
-            key=new_rubric_class.proto.id,
-            event_type=new_rubric_class.__class__.__name__,
-        )
-
-        if new_rubric_class.validate():
-            return new_rubric_class
-
-        return False
+    def deserialize(cls, event: bytes) -> "RubricEvent":
+        return general_deserialization(Rubric, cls, event, "id")

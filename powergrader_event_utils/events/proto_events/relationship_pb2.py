@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12relationship.proto\x12\x0crelationship\"E\n\x18PrivateIDAddedToPublicID\x12\x14\n\x0cprivate_uuid\x18\x01 \x01(\t\x12\x13\n\x0bpublic_uuid\x18\x02 \x01(\t\"I\n\x1cPrivateIDRemovedFromPublicID\x12\x14\n\x0cprivate_uuid\x18\x01 \x01(\t\x12\x13\n\x0bpublic_uuid\x18\x02 \x01(\t\"C\n\x17\x41ssignmentAddedToCourse\x12\x15\n\rassignment_id\x18\x01 \x01(\t\x12\x11\n\tcourse_id\x18\x02 \x01(\t\"G\n\x1b\x41ssignmentRemovedFromCourse\x12\x15\n\rassignment_id\x18\x01 \x01(\t\x12\x11\n\tcourse_id\x18\x02 \x01(\t\"?\n\x15StudentAddedToSection\x12\x12\n\nstudent_id\x18\x01 \x01(\t\x12\x12\n\nsection_id\x18\x02 \x01(\t\"C\n\x19StudentRemovedFromSection\x12\x12\n\nstudent_id\x18\x01 \x01(\t\x12\x12\n\nsection_id\x18\x02 \x01(\t\"C\n\x17InstructorAddedToCourse\x12\x15\n\rinstructor_id\x18\x01 \x01(\t\x12\x11\n\tcourse_id\x18\x02 \x01(\t\"G\n\x1bInstructorRemovedFromCourse\x12\x15\n\rinstructor_id\x18\x01 \x01(\t\x12\x11\n\tcourse_id\x18\x02 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12relationship.proto\x12\x0crelationship\"Q\n\x18PrivateIDAddedToPublicID\x12\n\n\x02id\x18\x01 \x01(\t\x12\x14\n\x0cprivate_uuid\x18\x02 \x01(\t\x12\x13\n\x0bpublic_uuid\x18\x03 \x01(\t\"U\n\x1cPrivateIDRemovedFromPublicID\x12\n\n\x02id\x18\x01 \x01(\t\x12\x14\n\x0cprivate_uuid\x18\x02 \x01(\t\x12\x13\n\x0bpublic_uuid\x18\x03 \x01(\t\"O\n\x17\x41ssignmentAddedToCourse\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rassignment_id\x18\x02 \x01(\t\x12\x11\n\tcourse_id\x18\x03 \x01(\t\"S\n\x1b\x41ssignmentRemovedFromCourse\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rassignment_id\x18\x02 \x01(\t\x12\x11\n\tcourse_id\x18\x03 \x01(\t\"K\n\x15StudentAddedToSection\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\nstudent_id\x18\x02 \x01(\t\x12\x12\n\nsection_id\x18\x03 \x01(\t\"O\n\x19StudentRemovedFromSection\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\nstudent_id\x18\x02 \x01(\t\x12\x12\n\nsection_id\x18\x03 \x01(\t\"O\n\x17InstructorAddedToCourse\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rinstructor_id\x18\x02 \x01(\t\x12\x11\n\tcourse_id\x18\x03 \x01(\t\"S\n\x1bInstructorRemovedFromCourse\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rinstructor_id\x18\x02 \x01(\t\x12\x11\n\tcourse_id\x18\x03 \x01(\tb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'relationship_pb2', globals())
@@ -21,19 +21,19 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _PRIVATEIDADDEDTOPUBLICID._serialized_start=36
-  _PRIVATEIDADDEDTOPUBLICID._serialized_end=105
-  _PRIVATEIDREMOVEDFROMPUBLICID._serialized_start=107
-  _PRIVATEIDREMOVEDFROMPUBLICID._serialized_end=180
-  _ASSIGNMENTADDEDTOCOURSE._serialized_start=182
-  _ASSIGNMENTADDEDTOCOURSE._serialized_end=249
-  _ASSIGNMENTREMOVEDFROMCOURSE._serialized_start=251
-  _ASSIGNMENTREMOVEDFROMCOURSE._serialized_end=322
-  _STUDENTADDEDTOSECTION._serialized_start=324
-  _STUDENTADDEDTOSECTION._serialized_end=387
-  _STUDENTREMOVEDFROMSECTION._serialized_start=389
-  _STUDENTREMOVEDFROMSECTION._serialized_end=456
-  _INSTRUCTORADDEDTOCOURSE._serialized_start=458
-  _INSTRUCTORADDEDTOCOURSE._serialized_end=525
-  _INSTRUCTORREMOVEDFROMCOURSE._serialized_start=527
-  _INSTRUCTORREMOVEDFROMCOURSE._serialized_end=598
+  _PRIVATEIDADDEDTOPUBLICID._serialized_end=117
+  _PRIVATEIDREMOVEDFROMPUBLICID._serialized_start=119
+  _PRIVATEIDREMOVEDFROMPUBLICID._serialized_end=204
+  _ASSIGNMENTADDEDTOCOURSE._serialized_start=206
+  _ASSIGNMENTADDEDTOCOURSE._serialized_end=285
+  _ASSIGNMENTREMOVEDFROMCOURSE._serialized_start=287
+  _ASSIGNMENTREMOVEDFROMCOURSE._serialized_end=370
+  _STUDENTADDEDTOSECTION._serialized_start=372
+  _STUDENTADDEDTOSECTION._serialized_end=447
+  _STUDENTREMOVEDFROMSECTION._serialized_start=449
+  _STUDENTREMOVEDFROMSECTION._serialized_end=528
+  _INSTRUCTORADDEDTOCOURSE._serialized_start=530
+  _INSTRUCTORADDEDTOCOURSE._serialized_end=609
+  _INSTRUCTORREMOVEDFROMCOURSE._serialized_start=611
+  _INSTRUCTORREMOVEDFROMCOURSE._serialized_end=694
 # @@protoc_insertion_point(module_scope)

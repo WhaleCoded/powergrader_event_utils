@@ -30,8 +30,8 @@ class EventType(StrEnum):
 
     # Grade events
     CRITERIA_GRADE = "CriteriaGradeEvent"
-    CRITERIA_EMBEDDING = "CriteriaEmbeddingEvent"
-    ASSESMENT_SIMILARITY = "AssesmentSimilarityEvent"
+    CRITERIA_GRADE_EMBEDDING = "CriteriaGradeEmbeddingEvent"
+    ASSESSMENT_SIMILARITY = "AssessmentSimilarityEvent"
     STUDENT_REQUESTED_REGRADE = "StudentRequestedRegradeEvent"
     GRADING_STARTED = "GradingStartedEvent"
     INSTRUCTOR_REVIEW = "InstructorReviewEvent"
@@ -68,6 +68,36 @@ class EventType(StrEnum):
     NOT_SPECIFIED = "DOES_NOT_EXIST"
 
 
+def get_kafka_topic_name_for_event_type(event_type: EventType) -> str:
+    """
+    Returns the kafka topic names for a given event type.
+    """
+
+    return event_type.value.replace("Event", "")
+
+
+def get_kafka_topic_names_for_event_types(event_types: list[EventType]) -> list[str]:
+    """
+    Returns the kafka topic names for a given list of event types.
+    """
+
+    if event_types is None:
+        # Return all topics
+        all_topics = set(
+            [
+                get_kafka_topic_name_for_event_type(event_type)
+                for event_type in EventType
+            ]
+        )
+        all_topics.remove(EventType.NOT_SPECIFIED.value)
+
+        return list(all_topics)
+
+    return [
+        get_kafka_topic_name_for_event_type(event_type) for event_type in event_types
+    ]
+
+
 def generate_event_id(class_name: str) -> str:
     """
     Generates a unique event id for a given class name.
@@ -97,7 +127,7 @@ def get_event_type_from_uuid(uuid: str) -> EventType:
 
 
 class PowerGraderEvent:
-    def __init__(self, key: str, event_type):
+    def __init__(self, key: str, event_type: EventType):
         self.key = key
         self.event_type = event_type
 
@@ -106,10 +136,10 @@ class PowerGraderEvent:
         if isinstance(serialized_event, bytes):
             # producer.begin_transaction()
             producer.produce(
-                MAIN_TOPIC,
+                self.event_type.value,
                 key=self.key,
                 value=serialized_event,
-                headers={"event_type": self.event_type},
+                headers={"event_type": self.event_type.value},
             )
             producer.flush()
             # producer.commit_transaction()
@@ -133,17 +163,11 @@ class PowerGraderEvent:
 
         return False
 
-    def validate(self) -> bool:
-        pass
-
     def _package_into_proto(self) -> object:
         pass
 
-    def serialize(self) -> str or bool:
-        if self.validate():
-            return self._package_into_proto().SerializeToString()
-
-        return False
+    def serialize(self) -> str:
+        return self._package_into_proto().SerializeToString()
 
     @classmethod
     def deserialize(cls, event: str):

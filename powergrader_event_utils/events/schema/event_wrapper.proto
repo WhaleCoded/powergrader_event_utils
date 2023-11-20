@@ -19,8 +19,8 @@ message Retry {
         course.Section section = 6;
         course.Organization organization = 7;
         grade.CriteriaGrade criteria_grade = 8;
-        grade.CriteriaEmbedding criteria_embedding = 9;
-        grade.AssesmentSimilarity assesment_similarity = 10;
+        grade.CriteriaGradeEmbedding criteria_grade_embedding = 9;
+        grade.AssessmentSimilarity assessment_similarity = 10;
         grade.StudentRequestedRegrade student_requested_regrade = 11;
         grade.GradingStarted grading_started = 12;
         grade.InstructorReview instructor_review = 13;
@@ -56,8 +56,8 @@ message DeadLetter {
         course.Section section = 6;
         course.Organization organization = 7;
         grade.CriteriaGrade criteria_grade = 8;
-        grade.CriteriaEmbedding criteria_embedding = 9;
-        grade.AssesmentSimilarity assesment_similarity = 10;
+        grade.CriteriaGradeEmbedding criteria_grade_embedding = 9;
+        grade.AssessmentSimilarity assessment_similarity = 10;
         grade.StudentRequestedRegrade student_requested_regrade = 11;
         grade.GradingStarted grading_started = 12;
         grade.InstructorReview instructor_reviewed = 13;

@@ -3,9 +3,10 @@ package grade;
 
 
 enum GradeType {
-    AI_GRADED = 0;
-    FACULTY_ADJUSTED = 1;
-    AI_INFERRED = 2;
+    UNSECIFIED = 0;
+    AI_GRADED = 1;
+    FACULTY_ADJUSTED = 2;
+    AI_INFERRED = 3;
 }
 
 message GradeIdentifier {
@@ -30,18 +31,18 @@ message CriteriaGrade {
     }
     string rubric_criteria_id = 4;
     GradeType type = 5;
-    int32 score = 6;
+    optional uint32 score = 6;
     string assesment = 7;
 }
 
-message CriteriaEmbedding {
+message CriteriaGradeEmbedding {
     string id = 1;
     string crit_grade_id = 2;
     string embedder_id = 3;
     repeated float embedding = 4;
 }
 
-message AssesmentSimilarity {
+message AssessmentSimilarity {
     string id = 1;
     repeated string simmilar_criteria_grade_ids = 4;
 }
