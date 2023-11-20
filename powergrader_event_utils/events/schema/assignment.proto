@@ -22,6 +22,6 @@ message RubricCriterion {
 }
 
 message CriteriaLevel {
-    int32 score = 1;
+    uint32 score = 1;
     string description = 2;
 }

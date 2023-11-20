@@ -14,5 +14,5 @@ if __name__ == "__main__":
         author="WhaleCoded",
         author_email="d.hutchison@apporto.com",
         packages=find_packages(),
-        install_requires=["kafka-python", "protobuf"],
+        install_requires=["kafka-python", "protobuf", "strenum"],
     )

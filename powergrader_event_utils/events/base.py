@@ -1,5 +1,5 @@
 from uuid import uuid4
-from enum import StrEnum
+from strenum import StrEnum
 from typing import Tuple
 
 from confluent_kafka import Producer
