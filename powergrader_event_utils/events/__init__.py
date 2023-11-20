@@ -14,6 +14,7 @@ from powergrader_event_utils.events.user import *
 from powergrader_event_utils.events.grade import *
 from powergrader_event_utils.events.relationship import *
 from powergrader_event_utils.events.submission import *
+from powergrader_event_utils.events.publish import *
 
 
 def convert_event_type_to_event_class_type(
