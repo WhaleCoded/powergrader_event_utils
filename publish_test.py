@@ -97,16 +97,14 @@ criteria = {
     },
 }
 print("Creating rubric event")
-rub_event = RubricEvent(instructor_id="Mr.Bean", criteria=criteria)
-print(rub_event.validate())
-print(rub_event.serialize())
-print(type(rub_event.serialize()))
+# # rub_event = RubricEvent(instructor_id="Mr.Bean", criteria=criteria)
+# print(rub_event.validate())
+# print(rub_event.serialize())
+# print(type(rub_event.serialize()))
 
 print("Creating assignment event")
-ass_event = AssignmentEvent(
-    rubric_id=rub_event.get_id(), name="good soup", instructions="kylo ren"
-)
-print(ass_event.validate())
+ass_event = AssignmentEvent(rubric_id=None, name="good soup", instructions="kylo ren")
+# print(ass_event.validate())
 print(ass_event.serialize())
 print(type(ass_event.serialize()))
 
@@ -129,7 +127,7 @@ producer.begin_transaction()
 
 
 print("Sending Rubric event")
-rub_event.publish(producer)
+# rub_event.publish(producer)
 
 print("Sending Assignment event")
 ass_event.publish(producer)
