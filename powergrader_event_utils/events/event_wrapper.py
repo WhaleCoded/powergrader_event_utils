@@ -180,6 +180,7 @@ class RetryEvent(PowerGraderEvent):
 
         if event is not None:
             self._put_event_into_proto(event)
+            self.event = event
 
         super().__init__(key=str(event.key), event_type=self.__class__.__name__)
 
@@ -221,7 +222,9 @@ class RetryEvent(PowerGraderEvent):
 
         new_retry_instance = cls.__new__(cls)
         new_retry_instance.proto = data
-        new_retry_instance.packaged_event = packaged_event
+        new_retry_instance.event = packaged_event
+        new_retry_instance.retry_number = data.retry_number
+        new_retry_instance.retry_reason = data.retry_reason
         super(cls, new_retry_instance).__init__(
             key=packaged_event.key,
             event_type=new_retry_instance.__class__.__name__,
@@ -290,7 +293,8 @@ class DeadLetterEvent(PowerGraderEvent):
 
         new_dead_letter_instance = cls.__new__(cls)
         new_dead_letter_instance.proto = data
-        new_dead_letter_instance.packaged_event = packaged_event
+        new_dead_letter_instance.event = packaged_event
+        new_dead_letter_instance.dead_letter_reason = data.dead_letter_reason
         super(cls, new_dead_letter_instance).__init__(
             key=packaged_event.key,
             event_type=new_dead_letter_instance.__class__.__name__,

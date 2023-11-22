@@ -1,7 +1,10 @@
 from powergrader_event_utils.events.assignment import AssignmentEvent, RubricEvent
+from powergrader_event_utils.events import RegisterCoursePublicIDEvent
 from powergrader_event_utils.events.base import MAIN_TOPIC
 from confluent_kafka.admin import AdminClient
 from confluent_kafka import Producer
+from uuid import uuid4
+from random import randint
 
 print("Starting the script")
 
@@ -108,6 +111,13 @@ ass_event = AssignmentEvent(rubric_id=None, name="good soup", instructions="kylo
 print(ass_event.serialize())
 print(type(ass_event.serialize()))
 
+print("Creating RegisterCoursePublicIdEvent")
+# reg_course = RegisterCoursePublicIDEvent(
+#     public_id=str(uuid4()), lms_id=str(randint(0, 100000000))
+# )
+reg_course = RegisterCoursePublicIDEvent(public_id=str(uuid4()), lms_id="1")
+print(reg_course.serialize())
+
 import socket
 
 conf = {
@@ -126,10 +136,13 @@ producer.init_transactions()
 producer.begin_transaction()
 
 
-print("Sending Rubric event")
+# print("Sending Rubric event")
 # rub_event.publish(producer)
 
-print("Sending Assignment event")
-ass_event.publish(producer)
+# print("Sending Assignment event")
+# ass_event.publish(producer)
+
+reg_course.publish(producer)
+print("Published the reg_course event")
 
 producer.commit_transaction()
