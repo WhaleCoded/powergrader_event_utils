@@ -136,6 +136,16 @@ for crit in rub_criteria.values():
         print("\t", level.score)
 # print(rub_event.serialize())
 print(type(rub_event.serialize()))
+serialized = rub_event.serialize()
+
+new_rub_event = RubricEvent.deserialize(serialized)
+new_rub_criteria = new_rub_event.rubric_criteria
+print("\n\nNEW DESERIALIZED EVENT\n\n")
+for crit in new_rub_criteria.values():
+    print(crit.name)
+    for level in crit.levels:
+        print("\t", level.description)
+        print("\t", level.score)
 
 print("Creating assignment event")
 ass_event = AssignmentEvent(
