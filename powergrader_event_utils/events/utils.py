@@ -3,6 +3,14 @@ from enum import Enum
 import sys
 
 from powergrader_event_utils.events import PowerGraderEvent
+from powergrader_event_utils.events.proto_events.assignment_pb2 import *
+from powergrader_event_utils.events.proto_events.course_pb2 import *
+from powergrader_event_utils.events.proto_events.grade_pb2 import *
+from powergrader_event_utils.events.proto_events.publish_pb2 import *
+from powergrader_event_utils.events.proto_events.relationship_pb2 import *
+from powergrader_event_utils.events.proto_events.submission_pb2 import *
+from powergrader_event_utils.events.proto_events.user_pb2 import *
+
 
 T = TypeVar("T")
 

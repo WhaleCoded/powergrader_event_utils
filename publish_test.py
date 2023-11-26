@@ -1,5 +1,11 @@
 from powergrader_event_utils.events.assignment import AssignmentEvent, RubricEvent
-from powergrader_event_utils.events import RegisterCoursePublicIDEvent
+from powergrader_event_utils.events import (
+    RegisterCoursePublicIDEvent,
+    InstructorEvent,
+    RubricCriterion,
+    CriteriaLevel,
+    OrganizationEvent,
+)
 from powergrader_event_utils.events.base import MAIN_TOPIC
 from confluent_kafka.admin import AdminClient
 from confluent_kafka import Producer
@@ -7,6 +13,12 @@ from uuid import uuid4
 from random import randint
 
 print("Starting the script")
+org_event = OrganizationEvent(name="test", code=None)
+
+print("Creating instructor")
+instructor = InstructorEvent(
+    org_id=org_event.id, name="Mr.Bean", email="bean@email.com"
+)
 
 
 criteria = {
@@ -100,13 +112,27 @@ criteria = {
     },
 }
 print("Creating rubric event")
-# # rub_event = RubricEvent(instructor_id="Mr.Bean", criteria=criteria)
-# print(rub_event.validate())
-# print(rub_event.serialize())
-# print(type(rub_event.serialize()))
+# Package the criteria into a RubricCriterion object
+criterion = {}
+for key, value in criteria.items():
+    criterion[key] = RubricCriterion(
+        name=value["name"],
+        id=str(uuid4()),
+        levels=[
+            CriteriaLevel(description=level["description"], score=level["score"])
+            for level in value["levels"]
+        ],
+    )
+rub_event = RubricEvent(
+    instructor_id="Mr.Bean", name="Test Rubric #1", rubric_criteria=criterion
+)
+print(rub_event.serialize())
+print(type(rub_event.serialize()))
 
 print("Creating assignment event")
-ass_event = AssignmentEvent(rubric_id=None, name="good soup", instructions="kylo ren")
+ass_event = AssignmentEvent(
+    rubric_id=rub_event.id, name="good soup", instructions="kylo ren"
+)
 # print(ass_event.validate())
 print(ass_event.serialize())
 print(type(ass_event.serialize()))
@@ -135,14 +161,21 @@ print("Created producer")
 producer.init_transactions()
 producer.begin_transaction()
 
+print("Sending org event")
+org_event.publish(producer)
 
-# print("Sending Rubric event")
-# rub_event.publish(producer)
+print("Sending INstructor event")
+instructor.publish(producer)
 
-# print("Sending Assignment event")
-# ass_event.publish(producer)
 
-reg_course.publish(producer)
+print("Sending Rubric event")
+rub_event.publish(producer)
+
+print("Sending Assignment event")
+ass_event.publish(producer)
+
+# reg_course.publish(producer)
+# reg_course.publish(producer)
 print("Published the reg_course event")
 
 producer.commit_transaction()
