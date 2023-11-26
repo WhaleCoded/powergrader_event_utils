@@ -115,6 +115,10 @@ print("Creating rubric event")
 # Package the criteria into a RubricCriterion object
 criterion = {}
 for key, value in criteria.items():
+    for level in value["levels"]:
+        if level["score"] is None:
+            print("Score is None")
+
     criterion[key] = RubricCriterion(
         name=value["name"],
         id=str(uuid4()),
@@ -124,9 +128,9 @@ for key, value in criteria.items():
         ],
     )
 rub_event = RubricEvent(
-    instructor_id="Mr.Bean", name="Test Rubric #1", rubric_criteria=criterion
+    instructor_id=instructor.id, name="Test Rubric #1", rubric_criteria=criterion
 )
-print(rub_event.serialize())
+# print(rub_event.serialize())
 print(type(rub_event.serialize()))
 
 print("Creating assignment event")
@@ -172,7 +176,7 @@ print("Sending Rubric event")
 rub_event.publish(producer)
 
 print("Sending Assignment event")
-ass_event.publish(producer)
+# ass_event.publish(producer)
 
 # reg_course.publish(producer)
 # reg_course.publish(producer)
