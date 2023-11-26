@@ -138,9 +138,9 @@ class ProtoWrapper(Generic[T]):
             return object.__getattribute__(self, __name)
 
         # Figure out if we are trying to access a oneof or optional field
-        one_of_group_name = None
+        oneof_group_name = None
         if __name in object.__getattribute__(self, "oneof_group_name"):
-            one_of_group_name = __name
+            oneof_group_name = __name
         elif __name in object.__getattribute__(self, "oneof_field_names"):
             # This means that we are trying to access an optional field
             # If the field is not set, return None.
@@ -149,19 +149,22 @@ class ProtoWrapper(Generic[T]):
                 self, "oneof_field_to_group_name"
             )[__name]
 
-        if one_of_group_name is not None:
+        if oneof_group_name is not None:
             oneof_field_name = proto_object.WhichOneof(oneof_group_name)
 
             if oneof_field_name is None:
                 return None
 
             # Check if the oneof field is a sub message
-            oneof_field_descriptor = (
-                object.__getattribute__(self, "proto_type")
-                .DESCRIPTOR.oneofs_by_name[one_of_group_name]
-                .fields_by_name[oneof_field_name]
-            )
+            oneof_field_descriptor = [
+                descriptor
+                for descriptor in object.__getattribute__(self, "proto_type")
+                .DESCRIPTOR.oneofs_by_name[oneof_group_name]
+                .fields
+                if descriptor.name == oneof_field_name
+            ][0]
             proto_field_value = getattr(proto_object, oneof_field_name)
+
             if oneof_field_descriptor.message_type:
                 # Return a ProtoWrapper object
                 return _handle_message_type(oneof_field_descriptor, proto_field_value)

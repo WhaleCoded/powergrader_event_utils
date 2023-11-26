@@ -27,7 +27,7 @@ criteria = {
         "levels": [
             {
                 "description": "The program does not run due to syntax errors. Behavior is entirely incorrect or incomplete.",
-                "score": 0,
+                # "score": 0,
             },
             {
                 "description": "The program runs, but will throw uncaught errors. Behavior is significantly incorrect or incomplete.",
@@ -115,21 +115,25 @@ print("Creating rubric event")
 # Package the criteria into a RubricCriterion object
 criterion = {}
 for key, value in criteria.items():
-    for level in value["levels"]:
-        if level["score"] is None:
-            print("Score is None")
-
     criterion[key] = RubricCriterion(
         name=value["name"],
         id=str(uuid4()),
         levels=[
             CriteriaLevel(description=level["description"], score=level["score"])
+            if "score" in level
+            else CriteriaLevel(description=level["description"], score=None)
             for level in value["levels"]
         ],
     )
 rub_event = RubricEvent(
     instructor_id=instructor.id, name="Test Rubric #1", rubric_criteria=criterion
 )
+rubric_crit = rub_event.rubric_criteria
+for crit in rubric_crit.values():
+    print(crit.name)
+    for level in crit.levels:
+        print(level.description)
+        print(level.score)
 # print(rub_event.serialize())
 print(type(rub_event.serialize()))
 
@@ -165,17 +169,17 @@ print("Created producer")
 producer.init_transactions()
 producer.begin_transaction()
 
-print("Sending org event")
-org_event.publish(producer)
+# print("Sending org event")
+# org_event.publish(producer)
 
-print("Sending INstructor event")
-instructor.publish(producer)
+# print("Sending INstructor event")
+# instructor.publish(producer)
 
 
-print("Sending Rubric event")
-rub_event.publish(producer)
+# print("Sending Rubric event")
+# rub_event.publish(producer)
 
-print("Sending Assignment event")
+# print("Sending Assignment event")
 # ass_event.publish(producer)
 
 # reg_course.publish(producer)
