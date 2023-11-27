@@ -13,12 +13,16 @@ from powergrader_event_utils.events import (
     SubmissionEvent,
     StudentEvent,
     FileContent,
+    GradeType,
+    GradeIdentifier,
 )
 from powergrader_event_utils.events.base import MAIN_TOPIC
 from confluent_kafka.admin import AdminClient
 from confluent_kafka import Producer
 from uuid import uuid4
 from random import randint
+import datetime
+import time
 
 print("Starting the script")
 org_event = OrganizationEvent(name="test", code=None)
@@ -229,6 +233,53 @@ if __name__ == "__main__":
 file_obj = FileContent(file_name="submission", file_type="py", content=file_content)
 sub_files = SubmissionFilesEvent(student_id=student.id, file_content=[file_obj])
 
+print("Creating Submission Event")
+sub_event = SubmissionEvent(
+    student_id=student.id,
+    assignment_id=ass_event.id,
+    submission_date=None,
+    submission_files_id=sub_files.id,
+)
+
+
+print("Create AI Grading Started Event")
+crit_ids = [crit.id for crit in rub_event.rubric_criteria.values()]
+ai_grade_event = GradingStartedEvent(
+    sub_event.id, ass_event.id, "GPT-3.5 Turbo", crit_ids
+)
+
+print("Create ai graded crit event")
+crit_graded = CriteriaGradeEvent(
+    ai_grade_event.id, crit_ids[0], GradeType.AI_GRADED, 1, "Their code did not run."
+)
+
+print("Create Faculty graded crit event")
+grade_identifier = GradeIdentifier(sub_event.id, ass_event.id, instructor.id)
+faculty_crit_graded = CriteriaGradeEvent(
+    grade_identifier,
+    crit_ids[1],
+    GradeType.FACULTY_ADJUSTED,
+    3,
+    "The student's code was nearly flawless",
+)
+
+print("Create criteria grade embeddigns")
+ai_grade_embedding = CriteriaGradeEmbeddingEvent(
+    crit_graded.id, "Roberta-3", [0.0 for i in range(20)]
+)
+faculty_grade_embedding = CriteriaGradeEmbeddingEvent(
+    faculty_crit_graded.id, "Roberta-3", [1.0 for i in range(20)]
+)
+
+print("Create instructor review event")
+instructor_review_event = InstructorReviewEvent(
+    sub_event.id,
+    ass_event.id,
+    instructor.id,
+    time_reviewed=int(time.time()),
+    criteria_grade_ids=[crit_graded.id, faculty_crit_graded.id],
+)
+
 import socket
 
 conf = {
@@ -258,6 +309,33 @@ rub_event.publish(producer)
 
 print("Sending Assignment event")
 ass_event.publish(producer)
+
+print("Sending student event")
+student.publish(producer)
+
+print("Sending submission files event")
+sub_files.publish(producer)
+
+print("Sending submission event")
+sub_event.publish(producer)
+
+print("Grading started event")
+ai_grade_event.publish(producer)
+
+print("Sending ai grade event")
+crit_graded.publish(producer)
+
+print("Sending faculty grade event")
+faculty_crit_graded.publish(producer)
+
+print("Send ai embedding event")
+ai_grade_embedding.publish(producer)
+
+print("Senidng faculty grade embedding")
+faculty_grade_embedding.publish(producer)
+
+print("Sending an instructor review")
+instructor_review_event.publish(producer)
 
 # reg_course.publish(producer)
 # reg_course.publish(producer)

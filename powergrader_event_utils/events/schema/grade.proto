@@ -32,7 +32,7 @@ message CriteriaGrade {
     string rubric_criteria_id = 4;
     GradeType type = 5;
     optional uint32 score = 6;
-    string assesment = 7;
+    string assessment = 7;
 }
 
 message CriteriaGradeEmbedding {
