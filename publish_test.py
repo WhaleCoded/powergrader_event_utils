@@ -5,6 +5,14 @@ from powergrader_event_utils.events import (
     RubricCriterion,
     CriteriaLevel,
     OrganizationEvent,
+    CriteriaGradeEvent,
+    CriteriaGradeEmbeddingEvent,
+    GradingStartedEvent,
+    InstructorReviewEvent,
+    SubmissionFilesEvent,
+    SubmissionEvent,
+    StudentEvent,
+    FileContent,
 )
 from powergrader_event_utils.events.base import MAIN_TOPIC
 from confluent_kafka.admin import AdminClient
@@ -148,8 +156,19 @@ for crit in new_rub_criteria.values():
         print("\t", level.score)
 
 print("Creating assignment event")
+instructions = """Assignment 4: Recursion
+
+Write a Python program to get the Fibonacci number at N.
+
+Note : The Fibonacci Sequence is the series of numbers :
+0, 1, 1, 2, 3, 5, 8, 13, 21, ....
+Every next number is found by adding up the two numbers before it.
+
+Remember to implement your solution using recursion. 
+The final program should take user input from the terminal specifying the desired Fibonacci number and display the calculated result. 
+(Note: The first entry is N=1)"""
 ass_event = AssignmentEvent(
-    rubric_id=rub_event.id, name="good soup", instructions="kylo ren"
+    rubric_id=rub_event.id, name="Fibonacci", instructions=instructions
 )
 # print(ass_event.validate())
 print(ass_event.serialize())
@@ -161,6 +180,54 @@ print("Creating RegisterCoursePublicIdEvent")
 # )
 reg_course = RegisterCoursePublicIDEvent(public_id=str(uuid4()), lms_id="1")
 print(reg_course.serialize())
+
+print("Creating Student event")
+student = StudentEvent(
+    org_id=org_event.id, name="Jimmy Newtron", email="jimmy@email.com"
+)
+
+print("Creating Submission Files Event")
+file_content = """def fibonacci(n):
+    \"\"\"
+    Calculates the Fibonacci number at the given position and generates the Fibonacci series up to that position using recursion.
+
+    Args:
+        n (int): The position of the Fibonacci number.
+
+    Returns:
+        list: The Fibonacci series up to the given position.
+    \"\"\"
+    if n <= 0:
+        raise ValueError("Invalid input. Please enter a positive integer.")
+    elif n == 1:
+        return [0]
+    elif n == 2:
+        return [0, 1]
+    else:
+        series = fibonacci(n - 1)
+        series.append(series[-1] + series[-2])
+        return series
+
+
+def main():
+    \"\"\"
+    Entrypoint of the program.
+    \"\"\"
+    try:
+        n = int(input("Enter the position of the Fibonacci number: "))
+        series = fibonacci(n)
+
+        print(f"The Fibonacci series up to position {n} is:")
+        for i, num in enumerate(series, start=1):
+            print(f"{i}: {num}")
+    except ValueError:
+        print("Invalid input. Please enter a valid integer.")
+
+
+if __name__ == "__main__":
+    main()"""
+file_obj = FileContent(file_name="submission", file_type="py", content=file_content)
+sub_files = SubmissionFilesEvent(student_id=student.id, file_content=[file_obj])
 
 import socket
 

@@ -60,6 +60,7 @@ message InstructorReview {
     string submission_id = 2;
     string assignment_id = 3;
     string instructor_id = 4;
-    repeated string criteria_grade_ids = 5;
+    uint32 time_reviewed = 5;
+    repeated string criteria_grade_ids = 6;
 }
 

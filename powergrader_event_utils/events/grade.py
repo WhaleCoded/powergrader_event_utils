@@ -266,6 +266,7 @@ class InstructorReviewEvent(PowerGraderEvent, ProtoWrapper[InstructorReview]):
     submission_id: str
     assignment_id: str
     instructor_id: str
+    time_reviewed: int
     criteria_grade_ids: List[str]
 
     def __init__(
@@ -273,6 +274,7 @@ class InstructorReviewEvent(PowerGraderEvent, ProtoWrapper[InstructorReview]):
         submission_id: str,
         assignment_id: str,
         instructor_id: str,
+        time_reviewed: int,
         criteria_grade_ids: List[str],
     ) -> None:
         proto = InstructorReview()
@@ -288,6 +290,9 @@ class InstructorReviewEvent(PowerGraderEvent, ProtoWrapper[InstructorReview]):
 
         if criteria_grade_ids:
             proto.criteria_grade_ids.extend(criteria_grade_ids)
+
+        if time_reviewed is not None:
+            proto.time_reviewed = time_reviewed
 
         proto.id = generate_event_id(self.__class__.__name__)
 
