@@ -1,4 +1,5 @@
 from typing import Dict, List
+from uuid import uuid4
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
@@ -13,15 +14,31 @@ from powergrader_event_utils.events.utils import ProtoWrapper, general_deseriali
 
 
 class StudentEvent(PowerGraderEvent, ProtoWrapper[Student]):
+    public_id: str
     id: str
-    org_id: str
+    organization_id: str
     name: str
     email: str
+    when: int
 
-    def __init__(self, org_id: str, name: str, email: str) -> None:
+    def __init__(
+        self,
+        organization_id: str,
+        name: str,
+        email: str,
+        when: int,
+        public_id: str = None,
+    ) -> None:
         proto = Student()
-        if org_id is not None:
-            proto.org_id = org_id
+        if organization_id is not None:
+            proto.organization_id = organization_id
+
+        if when is not None:
+            proto.when = when
+
+        if public_id is None:
+            public_id = str(uuid4())
+        proto.public_id = public_id
 
         if name is not None:
             proto.name = name
@@ -33,7 +50,7 @@ class StudentEvent(PowerGraderEvent, ProtoWrapper[Student]):
 
         ProtoWrapper.__init__(self, Student, proto)
         PowerGraderEvent.__init__(
-            self, key=proto.id, event_type=self.__class__.__name__
+            self, key=proto.public_id, event_type=self.__class__.__name__
         )
 
     def _package_into_proto(self) -> Student:
@@ -45,20 +62,36 @@ class StudentEvent(PowerGraderEvent, ProtoWrapper[Student]):
 
     @classmethod
     def deserialize(cls, event: bytes) -> "StudentEvent":
-        return general_deserialization(Student, cls, event, "id")
+        return general_deserialization(Student, cls, event, "public_id")
 
 
 class InstructorEvent(PowerGraderEvent, ProtoWrapper[Instructor]):
+    public_id: str
     id: str
-    org_id: str
+    organization_id: str
     name: str
     email: str
+    when: int
 
-    def __init__(self, org_id: str, name: str, email: str) -> None:
+    def __init__(
+        self,
+        organization_id: str,
+        name: str,
+        email: str,
+        when: int,
+        public_id: str = None,
+    ) -> None:
         proto = Instructor()
 
-        if org_id is not None:
-            proto.org_id = org_id
+        if organization_id is not None:
+            proto.organization_id = organization_id
+
+        if when is not None:
+            proto.when = when
+
+        if public_id is None:
+            public_id = str(uuid4())
+        proto.public_id = public_id
 
         if name is not None:
             proto.name = name

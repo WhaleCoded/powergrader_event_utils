@@ -14,27 +14,27 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bgrade.proto\x12\x05grade\"A\n\x0fGradeIdentifier\x12\x15\n\rsubmission_id\x18\x01 \x01(\t\x12\x17\n\x0fgrade_method_id\x18\x02 \x01(\t\"k\n\x0eGradingStarted\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rsubmission_id\x18\x02 \x01(\t\x12\x17\n\x0fgrade_method_id\x18\x03 \x01(\t\x12\x1d\n\x15\x63riteria_to_be_graded\x18\x04 \x03(\t\"\xe7\x01\n\rCriteriaGrade\x12\n\n\x02id\x18\x01 \x01(\t\x12\x1c\n\x12grading_started_id\x18\x02 \x01(\tH\x00\x12\x32\n\x10grade_identifier\x18\x03 \x01(\x0b\x32\x16.grade.GradeIdentifierH\x00\x12\x1a\n\x12rubric_criteria_id\x18\x04 \x01(\t\x12\x1e\n\x04type\x18\x05 \x01(\x0e\x32\x10.grade.GradeType\x12\x12\n\x05score\x18\x06 \x01(\rH\x01\x88\x01\x01\x12\x12\n\nassessment\x18\x07 \x01(\tB\n\n\x08grade_idB\x08\n\x06_score\"c\n\x16\x43riteriaGradeEmbedding\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rcrit_grade_id\x18\x02 \x01(\t\x12\x13\n\x0b\x65mbedder_id\x18\x03 \x01(\t\x12\x11\n\tembedding\x18\x04 \x03(\x02\"G\n\x14\x41ssessmentSimilarity\x12\n\n\x02id\x18\x01 \x01(\t\x12#\n\x1bsimmilar_criteria_grade_ids\x18\x04 \x03(\t\"v\n\x17StudentRequestedRegrade\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rsubmission_id\x18\x03 \x01(\t\x12\x11\n\treasoning\x18\x04 \x01(\t\x12%\n\x1d\x63riteria_grades_to_reevaluate\x18\x05 \x03(\t\"\x7f\n\x10InstructorReview\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rsubmission_id\x18\x02 \x01(\t\x12\x15\n\rinstructor_id\x18\x03 \x01(\t\x12\x15\n\rtime_reviewed\x18\x04 \x01(\r\x12\x1a\n\x12\x63riteria_grade_ids\x18\x05 \x03(\t*Q\n\tGradeType\x12\x0e\n\nUNSECIFIED\x10\x00\x12\r\n\tAI_GRADED\x10\x01\x12\x14\n\x10\x46\x41\x43ULTY_ADJUSTED\x10\x02\x12\x0f\n\x0b\x41I_INFERRED\x10\x03\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bgrade.proto\x12\x05grade\"e\n\x0fGradeIdentifier\x12\x15\n\rsubmission_id\x18\x01 \x01(\t\x12\x17\n\x0fgrade_method_id\x18\x02 \x01(\t\x12\"\n\x1aprevious_criteria_grade_id\x18\x03 \x01(\t\"k\n\x0eGradingStarted\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rsubmission_id\x18\x02 \x01(\t\x12\x17\n\x0fgrade_method_id\x18\x03 \x01(\t\x12\x1d\n\x15\x63riteria_to_be_graded\x18\x04 \x03(\t\"\xe7\x01\n\rCriteriaGrade\x12\n\n\x02id\x18\x01 \x01(\t\x12\x1c\n\x12grading_started_id\x18\x02 \x01(\tH\x00\x12\x32\n\x10grade_identifier\x18\x03 \x01(\x0b\x32\x16.grade.GradeIdentifierH\x00\x12\x1a\n\x12rubric_criteria_id\x18\x04 \x01(\t\x12\x1e\n\x04type\x18\x05 \x01(\x0e\x32\x10.grade.GradeType\x12\x12\n\x05score\x18\x06 \x01(\rH\x01\x88\x01\x01\x12\x12\n\nassessment\x18\x07 \x01(\tB\n\n\x08grade_idB\x08\n\x06_score\"c\n\x16\x43riteriaGradeEmbedding\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rcrit_grade_id\x18\x02 \x01(\t\x12\x13\n\x0b\x65mbedder_id\x18\x03 \x01(\t\x12\x11\n\tembedding\x18\x04 \x03(\x02\"G\n\x14\x41ssessmentSimilarity\x12\n\n\x02id\x18\x01 \x01(\t\x12#\n\x1bsimmilar_criteria_grade_ids\x18\x04 \x03(\t\"v\n\x17StudentRequestedRegrade\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rsubmission_id\x18\x03 \x01(\t\x12\x11\n\treasoning\x18\x04 \x01(\t\x12%\n\x1d\x63riteria_grades_to_reevaluate\x18\x05 \x03(\t\"\x7f\n\x10InstructorReview\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rsubmission_id\x18\x02 \x01(\t\x12\x15\n\rinstructor_id\x18\x03 \x01(\t\x12\x15\n\rtime_reviewed\x18\x04 \x01(\r\x12\x1a\n\x12\x63riteria_grade_ids\x18\x05 \x03(\t*Q\n\tGradeType\x12\x0e\n\nUNSECIFIED\x10\x00\x12\r\n\tAI_GRADED\x10\x01\x12\x14\n\x10\x46\x41\x43ULTY_ADJUSTED\x10\x02\x12\x0f\n\x0b\x41I_INFERRED\x10\x03\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'grade_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
-  _globals['_GRADETYPE']._serialized_start=855
-  _globals['_GRADETYPE']._serialized_end=936
+  _globals['_GRADETYPE']._serialized_start=891
+  _globals['_GRADETYPE']._serialized_end=972
   _globals['_GRADEIDENTIFIER']._serialized_start=22
-  _globals['_GRADEIDENTIFIER']._serialized_end=87
-  _globals['_GRADINGSTARTED']._serialized_start=89
-  _globals['_GRADINGSTARTED']._serialized_end=196
-  _globals['_CRITERIAGRADE']._serialized_start=199
-  _globals['_CRITERIAGRADE']._serialized_end=430
-  _globals['_CRITERIAGRADEEMBEDDING']._serialized_start=432
-  _globals['_CRITERIAGRADEEMBEDDING']._serialized_end=531
-  _globals['_ASSESSMENTSIMILARITY']._serialized_start=533
-  _globals['_ASSESSMENTSIMILARITY']._serialized_end=604
-  _globals['_STUDENTREQUESTEDREGRADE']._serialized_start=606
-  _globals['_STUDENTREQUESTEDREGRADE']._serialized_end=724
-  _globals['_INSTRUCTORREVIEW']._serialized_start=726
-  _globals['_INSTRUCTORREVIEW']._serialized_end=853
+  _globals['_GRADEIDENTIFIER']._serialized_end=123
+  _globals['_GRADINGSTARTED']._serialized_start=125
+  _globals['_GRADINGSTARTED']._serialized_end=232
+  _globals['_CRITERIAGRADE']._serialized_start=235
+  _globals['_CRITERIAGRADE']._serialized_end=466
+  _globals['_CRITERIAGRADEEMBEDDING']._serialized_start=468
+  _globals['_CRITERIAGRADEEMBEDDING']._serialized_end=567
+  _globals['_ASSESSMENTSIMILARITY']._serialized_start=569
+  _globals['_ASSESSMENTSIMILARITY']._serialized_end=640
+  _globals['_STUDENTREQUESTEDREGRADE']._serialized_start=642
+  _globals['_STUDENTREQUESTEDREGRADE']._serialized_end=760
+  _globals['_INSTRUCTORREVIEW']._serialized_start=762
+  _globals['_INSTRUCTORREVIEW']._serialized_end=889
 # @@protoc_insertion_point(module_scope)

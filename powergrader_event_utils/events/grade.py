@@ -23,21 +23,16 @@ from powergrader_event_utils.events.utils import ProtoWrapper, general_deseriali
 class GradingStartedEvent(PowerGraderEvent, ProtoWrapper[GradingStarted]):
     id: str
     submission_id: str
-    assignment_id: str
     grade_method_id: str
     criteria_to_be_graded: List[str]
 
     def __init__(
         self,
-        submission_id: str,
         assignment_id: str,
         grade_method_id: str,
         criteria_to_be_graded: List[str],
     ) -> None:
         proto = GradingStarted()
-
-        if submission_id is not None:
-            proto.submission_id = submission_id
 
         if assignment_id is not None:
             proto.assignment_id = assignment_id
@@ -77,8 +72,8 @@ class GradeType(Enum):
 @dataclass
 class GradeIdentifier:
     submission_id: str
-    assignment_id: str
     grade_method_id: str
+    previous_criteria_grade_id: str = None
 
 
 class CriteriaGradeEvent(PowerGraderEvent, ProtoWrapper[CriteriaGrade]):
@@ -106,8 +101,12 @@ class CriteriaGradeEvent(PowerGraderEvent, ProtoWrapper[CriteriaGrade]):
         elif isinstance(grade_id, GradeIdentifier):
             grade_identifier_proto = GradeIdentifierProto()
             grade_identifier_proto.submission_id = grade_id.submission_id
-            grade_identifier_proto.assignment_id = grade_id.assignment_id
             grade_identifier_proto.grade_method_id = grade_id.grade_method_id
+
+            if grade_id.previous_criteria_grade_id is not None:
+                grade_identifier_proto.previous_criteria_grade_id = (
+                    grade_id.previous_criteria_grade_id
+                )
 
             proto.grade_identifier.CopyFrom(grade_identifier_proto)
 
@@ -216,22 +215,17 @@ class StudentRequestedRegradeEvent(
     PowerGraderEvent, ProtoWrapper[StudentRequestedRegrade]
 ):
     id: str
-    student_id: str
     submission_id: str
     reasoning: str
     criteria_grades_to_reevaluate: List[str]
 
     def __init__(
         self,
-        student_id: str,
         submission_id: str,
         reasoning: str,
         criteria_grades_to_reevaluate: List[str],
     ) -> None:
         proto = StudentRequestedRegrade()
-
-        if student_id is not None:
-            proto.student_id = student_id
 
         if submission_id is not None:
             proto.submission_id = submission_id
@@ -272,7 +266,6 @@ class InstructorReviewEvent(PowerGraderEvent, ProtoWrapper[InstructorReview]):
     def __init__(
         self,
         submission_id: str,
-        assignment_id: str,
         instructor_id: str,
         time_reviewed: int,
         criteria_grade_ids: List[str],
@@ -281,9 +274,6 @@ class InstructorReviewEvent(PowerGraderEvent, ProtoWrapper[InstructorReview]):
 
         if submission_id is not None:
             proto.submission_id = submission_id
-
-        if assignment_id is not None:
-            proto.assignment_id = assignment_id
 
         if instructor_id is not None:
             proto.instructor_id = instructor_id

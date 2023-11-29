@@ -11,6 +11,7 @@ from powergrader_event_utils.events.proto_events.publish_pb2 import (
     RegisterRubricPublicID,
     RegisterSubmissionPublicID,
     PublishedToLMS,
+    PublishedGradeToLMS,
 )
 from powergrader_event_utils.events.utils import ProtoWrapper, general_deserialization
 
@@ -154,8 +155,9 @@ class RegisterAssignmentPublicIDEvent(
 ):
     public_id: str
     lms_id: str
+    organization_id: str
 
-    def __init__(self, public_id: str, lms_id: str) -> None:
+    def __init__(self, public_id: str, lms_id: str, organization_id: str) -> None:
         proto = RegisterAssignmentPublicID()
 
         if public_id is not None:
@@ -163,6 +165,9 @@ class RegisterAssignmentPublicIDEvent(
 
         if lms_id is not None:
             proto.lms_id = lms_id
+
+        if organization_id is not None:
+            proto.organization_id = organization_id
 
         ProtoWrapper.__init__(self, RegisterAssignmentPublicID, proto)
         PowerGraderEvent.__init__(
@@ -188,9 +193,13 @@ class RegisterRubricPublicIDEvent(
 ):
     public_id: str
     lms_id: str
+    organization_id: str
 
-    def __init__(self, public_id: str, lms_id: str) -> None:
+    def __init__(self, public_id: str, lms_id: str, organization_id: str) -> None:
         proto = RegisterRubricPublicID()
+
+        if organization_id is not None:
+            proto.organization_id = organization_id
 
         if public_id is not None:
             proto.public_id = public_id
@@ -221,11 +230,19 @@ class RegisterSubmissionPublicIDEvent(
     public_id: str
     lms_assignment_id: str
     lms_student_id: str
+    organization_id: str
 
     def __init__(
-        self, public_id: str, lms_assignment_id: str, lms_student_id: str
+        self,
+        public_id: str,
+        lms_assignment_id: str,
+        lms_student_id: str,
+        organization_id: str,
     ) -> None:
         proto = RegisterSubmissionPublicID()
+
+        if organization_id is not None:
+            proto.organization_id = organization_id
 
         if public_id is not None:
             proto.public_id = public_id
@@ -256,11 +273,18 @@ class RegisterSubmissionPublicIDEvent(
 class PublishedToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedToLMS]):
     public_id_of_published_entity: str
     private_id_of_published_entity: str
+    when: int
 
     def __init__(
-        self, public_id_of_published_entity: str, private_id_of_published_entity: str
+        self,
+        public_id_of_published_entity: str,
+        private_id_of_published_entity: str,
+        when: int,
     ) -> None:
         proto = PublishedToLMS()
+
+        if when is not None:
+            proto.when = when
 
         if public_id_of_published_entity is not None:
             proto.public_id_of_published_entity = public_id_of_published_entity
@@ -283,3 +307,41 @@ class PublishedToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedToLMS]):
     @classmethod
     def deserialize(cls, event: bytes) -> "PublishedToLMSEvent":
         return general_deserialization(PublishedToLMS, cls, event, "public_id")
+
+
+class PublishedGradeToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedGradeToLMS]):
+    public_submission_id: str
+    instructor_review_id: str
+    when: int
+
+    def __init__(
+        self, public_submission_id: str, instructor_review_id: str, when: int
+    ) -> None:
+        proto = PublishedToLMS()
+
+        if when is not None:
+            proto.when = when
+
+        if public_submission_id is not None:
+            proto.public_submission_id = public_submission_id
+
+        if instructor_review_id is not None:
+            proto.instructor_review_id = instructor_review_id
+
+        ProtoWrapper.__init__(self, PublishedGradeToLMS, proto)
+        PowerGraderEvent.__init__(
+            self, key=proto.public_submission_id, event_type=self.__class__.__name__
+        )
+
+    def _package_into_proto(self) -> PublishedGradeToLMS:
+        return self.proto
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.PUBLISHED_GRADE_TO_LMS
+
+    @classmethod
+    def deserialize(cls, event: bytes) -> "PublishedToLMSEvent":
+        return general_deserialization(
+            PublishedGradeToLMS, cls, event, "public_submission_id"
+        )

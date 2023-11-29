@@ -45,6 +45,7 @@ class EventType(StrEnum):
     RUBRIC_PUBLIC_ID = "RegisterRubricPublicIDEvent"
     SUBMISSION_PUBLIC_ID = "RegisterSubmissionPublicIDEvent"
     PUBLISHED_TO_LMS = "PublishedToLMSEvent"
+    PUBLISHED_GRADE_TO_LMS = "PublishedGradeToLMSEvent"
 
     # Relationship events
     ASSIGNMENT_ADDED_TO_COURSE = "AssignmentAddedToCourseEvent"
@@ -53,8 +54,7 @@ class EventType(StrEnum):
     STUDENT_REMOVED_FROM_SECTION = "StudentRemovedFromSectionEvent"
     INSTRUCTOR_ADDED_TO_COURSE = "InstructorAddedToCourseEvent"
     INSTRUCTOR_REMOVED_FROM_COURSE = "InstructorRemovedFromCourseEvent"
-    PRIVATE_ID_ADDED_TO_PUBLIC_ID = "PrivateIDAddedToPublicIDEvent"
-    PRIAVTE_ID_REMOVED_FROM_PUBLIC_ID = "PrivateIDRemovedFromPublicIDEvent"
+    PUBLIC_ID_REFERENCE_CHANGED = "PublicIDReferenceChanged"
 
     # Submission events
     SUBMISSION = "SubmissionEvent"

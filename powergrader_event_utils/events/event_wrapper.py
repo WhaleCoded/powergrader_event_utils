@@ -54,10 +54,10 @@ def convert_event_type_to_member_name(event_type: EventType) -> str:
         member_name = "register_submission_public_id"
     elif event_type == EventType.PUBLISHED_TO_LMS:
         member_name = "published_to_lms"
-    elif event_type == EventType.PRIVATE_ID_ADDED_TO_PUBLIC_ID:
-        member_name = "private_id_added_to_public_id"
-    elif event_type == EventType.PRIAVTE_ID_REMOVED_FROM_PUBLIC_ID:
-        member_name = "private_id_removed_from_public_id"
+    elif event_type == EventType.PUBLISHED_GRADE_TO_LMS:
+        member_name = "published_grade_to_lms"
+    elif event_type == EventType.PUBLIC_ID_REFERENCE_CHANGED:
+        member_name = "public_id_reference_change"
     elif event_type == EventType.ASSIGNMENT_ADDED_TO_COURSE:
         member_name = "assignment_added_to_course"
     elif event_type == EventType.ASSIGNMENT_REMOVED_FROM_COURSE:
@@ -125,10 +125,10 @@ def convert_member_name_to_event_type(member_name: str) -> EventType:
         event_type = EventType.SUBMISSION_PUBLIC_ID
     elif member_name == "published_to_lms":
         event_type = EventType.PUBLISHED_TO_LMS
-    elif member_name == "private_id_added_to_public_id":
-        event_type = EventType.PRIVATE_ID_ADDED_TO_PUBLIC_ID
-    elif member_name == "private_id_removed_from_public_id":
-        event_type = EventType.PRIAVTE_ID_REMOVED_FROM_PUBLIC_ID
+    elif member_name == "published_grade_to_lms":
+        event_type = EventType.PUBLISHED_GRADE_TO_LMS
+    elif member_name == "public_id_reference_change":
+        event_type = EventType.PUBLIC_ID_REFERENCE_CHANGED
     elif member_name == "assignment_added_to_course":
         event_type = EventType.ASSIGNMENT_ADDED_TO_COURSE
     elif member_name == "assignment_removed_from_course":

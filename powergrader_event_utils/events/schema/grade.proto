@@ -12,6 +12,7 @@ enum GradeType {
 message GradeIdentifier {
     string submission_id = 1;
     string grade_method_id = 2;
+    string previous_criteria_grade_id = 3;
 }
 
 message GradingStarted {

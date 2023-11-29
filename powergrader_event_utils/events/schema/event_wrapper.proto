@@ -32,6 +32,7 @@ message Retry {
         publish.RegisterRubricPublicID register_rubric_public_id = 19;
         publish.RegisterSubmissionPublicID register_submission_public_id = 20;
         publish.PublishedToLMS published_to_lms = 21;
+        publish.PublishedGradeToLMS published_grade_to_lms = 23;
         relationship.PublicIDReferenceChanged public_id_reference_change = 22;
         relationship.AssignmentAddedToCourse assignment_added_to_course = 24;
         relationship.AssignmentRemovedFromCourse assignment_removed_from_course = 25;
@@ -68,6 +69,7 @@ message DeadLetter {
         publish.RegisterRubricPublicID register_rubric_public_id = 19;
         publish.RegisterSubmissionPublicID register_submission_public_id = 20;
         publish.PublishedToLMS published_to_lms = 21;
+        publish.PublishedGradeToLMS published_grade_to_lms = 23;
         relationship.PublicIDReferenceChanged public_id_reference_change = 22;
         relationship.AssignmentAddedToCourse assignment_added_to_course = 24;
         relationship.AssignmentRemovedFromCourse assignment_removed_from_course = 25;

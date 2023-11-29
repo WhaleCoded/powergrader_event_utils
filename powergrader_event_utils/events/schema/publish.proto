@@ -4,26 +4,22 @@ package publish;
 message RegisterCoursePublicID {
     string public_id = 1;
     string lms_id = 2;
-    string organization_id = 3;
 }
 
 message RegisterSectionPublicID {
     string public_id = 1;
     string lms_id = 2;
-    string organization_id = 3;
 }
 
 message RegisterInstructorPublicID {
     string public_id = 1;
     string lms_id = 2;
     string user_type = 3;
-    string organization_id = 4;
 }
 
 message RegisterStudentPublicID {
     string public_id = 1;
     string lms_id = 2;
-    string organization_id = 3;
 }
 
 message RegisterAssignmentPublicID {
@@ -48,6 +44,12 @@ message RegisterSubmissionPublicID {
 message PublishedToLMS {
     string public_id_of_published_entity = 1;
     string private_id_of_published_entity = 2;
+    uint64 when = 3;
+}
+
+message PublishedGradeToLMS {
+    string public_submission_id = 1;
+    string instructor_review_id = 2;
     uint64 when = 3;
 }
 

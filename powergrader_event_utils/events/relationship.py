@@ -12,22 +12,22 @@ from powergrader_event_utils.events.proto_events.relationship_pb2 import (
     StudentRemovedFromSection,
     InstructorAddedToCourse,
     InstructorRemovedFromCourse,
-    PrivateIDAddedToPublicID,
-    PrivateIDRemovedFromPublicID,
+    PublicIDReferenceChanged,
 )
 
 from powergrader_event_utils.events.utils import ProtoWrapper, general_deserialization
 
 
-class PrivateIDAddedToPublicIDEvent(
-    PowerGraderEvent, ProtoWrapper[PrivateIDAddedToPublicID]
+class PublicIDReferenceChangedEvent(
+    PowerGraderEvent, ProtoWrapper[PublicIDReferenceChanged]
 ):
     id: str
     private_uuid: str
     public_uuid: str
+    when: int
 
-    def __init__(self, private_uuid: str, public_uuid: str) -> None:
-        proto = PrivateIDAddedToPublicID()
+    def __init__(self, private_uuid: str, public_uuid: str, when: int) -> None:
+        proto = PublicIDReferenceChanged()
 
         if private_uuid is not None:
             proto.private_uuid = private_uuid
@@ -35,106 +35,26 @@ class PrivateIDAddedToPublicIDEvent(
         if public_uuid is not None:
             proto.public_uuid = public_uuid
 
+        if when is not None:
+            proto.when = when
+
         proto.id = generate_event_id(self.__class__.__name__)
 
-        ProtoWrapper.__init__(self, PrivateIDAddedToPublicID, proto)
+        ProtoWrapper.__init__(self, PublicIDReferenceChanged, proto)
         PowerGraderEvent.__init__(
             self, key=proto.id, event_type=self.__class__.__name__
         )
 
-    def _package_into_proto(self) -> PrivateIDAddedToPublicID:
+    def _package_into_proto(self) -> PublicIDReferenceChanged:
         return self.proto
 
     @staticmethod
     def get_event_type() -> EventType:
-        return EventType.PRIVATE_ID_ADDED_TO_PUBLIC_ID
+        return EventType.PUBLIC_ID_REFERENCE_CHANGED
 
     @classmethod
-    def deserialize(cls, event: bytes) -> "PrivateIDAddedToPublicIDEvent":
-        return general_deserialization(PrivateIDAddedToPublicID, cls, event, "id")
-
-
-class PrivateIDRemovedFromPublicIDEvent(
-    PowerGraderEvent, ProtoWrapper[PrivateIDRemovedFromPublicID]
-):
-    id: str
-    private_uuid: str
-    public_uuid: str
-
-    def __init__(self, private_uuid: str, public_uuid: str) -> None:
-        proto = PrivateIDRemovedFromPublicID()
-
-        if private_uuid is not None:
-            proto.private_uuid = private_uuid
-
-        if public_uuid is not None:
-            proto.public_uuid = public_uuid
-
-        proto.id = generate_event_id(self.__class__.__name__)
-
-        ProtoWrapper.__init__(self, PrivateIDRemovedFromPublicID, proto)
-        PowerGraderEvent.__init__(
-            self, key=proto.id, event_type=self.__class__.__name__
-        )
-
-    def _package_into_proto(self) -> PrivateIDRemovedFromPublicID:
-        return self.proto
-
-    @staticmethod
-    def get_event_type() -> EventType:
-        return EventType.PRIVATE_ID_REMOVED_FROM_PUBLIC_ID
-
-    @classmethod
-    def deserialize(cls, event: bytes) -> "PrivateIDRemovedFromPublicIDEvent":
-        return general_deserialization(PrivateIDRemovedFromPublicID, cls, event, "id")
-
-
-class PrivateIDRemovedFromPublicIDEvent(PowerGraderEvent):
-    def __init__(self, private_uuid: str, public_uuid: str) -> None:
-        if not private_uuid or not public_uuid:
-            raise ValueError("Private ID and Public ID must be provided")
-
-        self.proto = PrivateIDRemovedFromPublicID()
-        self.proto.private_uuid = private_uuid
-        self.proto.public_uuid = public_uuid
-
-        super().__init__(
-            key=self.proto.private_uuid, event_type=self.__class__.__name__
-        )
-
-    @staticmethod
-    def get_event_type() -> EventType:
-        return EventType.PRIAVTE_ID_REMOVED_FROM_PUBLIC_ID
-
-    def get_private_uuid(self) -> str:
-        return self.proto.private_uuid
-
-    def get_public_uuid(self) -> str:
-        return self.proto.public_uuid
-
-    def validate(self) -> bool:
-        return bool(self.get_public_uuid() and self.get_private_uuid())
-
-    def _package_into_proto(self) -> PrivateIDRemovedFromPublicID:
-        return self.proto
-
-    @classmethod
-    def deserialize(cls, event: bytes) -> bool or "PrivateIDRemovedFromPublicIDEvent":
-        data = PrivateIDRemovedFromPublicID()
-        data.ParseFromString(event)
-
-        # Create and return an event instance if validation is successful.
-        new_event_instance = cls.__new__(cls)
-        new_event_instance.proto = data
-        super(cls, new_event_instance).__init__(
-            key=data.private_uuid,
-            event_type=new_event_instance.__class__.__name__,
-        )
-
-        if new_event_instance.validate():
-            return new_event_instance
-
-        return False
+    def deserialize(cls, event: bytes) -> "PublicIDReferenceChanged":
+        return general_deserialization(PublicIDReferenceChanged, cls, event, "id")
 
 
 class AssignmentAddedToCourseEvent(

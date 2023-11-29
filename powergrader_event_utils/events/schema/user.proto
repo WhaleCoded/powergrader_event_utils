@@ -2,15 +2,19 @@ syntax = "proto3";
 package user;
 
 message Student {
-    string id = 1;
-    string organization_id = 2;
-    string name = 3;
-    string email = 4;
+    string public_id = 1;
+    string id = 2;
+    string organization_id = 3;
+    string name = 4;
+    string email = 5;
+    uint64 when = 6;
 }
 
 message Instructor {
-    string id = 1;
-    string organization_id = 2;
-    string name = 3;
-    string email = 4;
+    string public_id = 1;
+    string id = 2;
+    string organization_id = 3;
+    string name = 4;
+    string email = 5;
+    uint64 when = 6;
 }

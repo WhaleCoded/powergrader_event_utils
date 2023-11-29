@@ -79,6 +79,7 @@ class SubmissionEvent(PowerGraderEvent, ProtoWrapper[Submission]):
     assignment_id: str
     submission_date: int
     submission_files_id: str
+    when: int
 
     def __init__(
         self,
@@ -86,6 +87,7 @@ class SubmissionEvent(PowerGraderEvent, ProtoWrapper[Submission]):
         assignment_id: str,
         submission_date: int,
         submission_files_id: str,
+        when: int,
     ) -> None:
         proto = Submission()
 
@@ -100,6 +102,9 @@ class SubmissionEvent(PowerGraderEvent, ProtoWrapper[Submission]):
 
         if submission_files_id is not None:
             proto.submission_files_id = submission_files_id
+
+        if when is not None:
+            proto.when = when
 
         proto.id = generate_event_id(self.__class__.__name__)
 
