@@ -177,15 +177,15 @@ class RetryEvent(PowerGraderEvent):
 
         if retry_number is not None:
             self.proto.retry_number = retry_number
-            self.retry_number = retry_number
+        self.retry_number = retry_number
 
         if retry_reason is not None:
             self.proto.retry_reason = retry_reason
-            self.retry_reason = retry_reason
+        self.retry_reason = retry_reason
 
         if instance_name is not None:
             self.proto.instance_name = instance_name
-            self.instance_name = instance_name
+        self.instance_name = instance_name
 
         if event is not None:
             self._put_event_into_proto(event)
@@ -261,11 +261,11 @@ class DeadLetterEvent(PowerGraderEvent):
 
         if instance_name is not None:
             self.proto.instance_name = instance_name
-            self.instance_name = instance_name
+        self.instance_name = instance_name
 
         if dead_letter_reason is not None:
             self.proto.dead_letter_reason = dead_letter_reason
-            self.dead_letter_reason = dead_letter_reason
+        self.dead_letter_reason = dead_letter_reason
 
         if event is not None:
             self._put_event_into_proto(event)

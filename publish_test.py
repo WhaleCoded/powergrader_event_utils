@@ -24,6 +24,7 @@ from powergrader_event_utils.events import (
     InstructorAddedToCourseEvent,
     InstructorRemovedFromCourseEvent,
     convert_proto_when_to_date_time,
+    RetryEvent,
 )
 from powergrader_event_utils.events.base import MAIN_TOPIC
 from confluent_kafka.admin import AdminClient
@@ -73,6 +74,11 @@ section = SectionEvent(
     is_active=True,
 )
 events_to_send.append(section)
+
+retry_event = RetryEvent(1, "test", "test", section)
+print(retry_event.get_event_type())
+print(retry_event.topic_name)
+print(retry_event.event_type)
 
 print("Creating Student event")
 student = StudentEvent(
