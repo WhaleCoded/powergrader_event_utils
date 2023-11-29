@@ -191,7 +191,11 @@ class RetryEvent(PowerGraderEvent):
             self._put_event_into_proto(event)
             self.event = event
 
-        super().__init__(key=str(event.key), event_type=self.event.event_type.value)
+        super().__init__(
+            key=str(event.key),
+            event_type=self.__class__.__name__,
+            alternate_topic_event_type=event.get_event_type(),
+        )
 
     def _put_event_into_proto(self, event: PowerGraderEvent) -> None:
         """

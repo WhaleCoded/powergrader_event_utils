@@ -23,6 +23,7 @@ from powergrader_event_utils.events import (
     StudentRemovedFromSectionEvent,
     InstructorAddedToCourseEvent,
     InstructorRemovedFromCourseEvent,
+    convert_proto_when_to_date_time,
 )
 from powergrader_event_utils.events.base import MAIN_TOPIC
 from confluent_kafka.admin import AdminClient
@@ -60,18 +61,59 @@ course = CourseEvent(
     instructor_id=instructor.id,
     name="CS 101",
     description=None,
+    when=get_miliseconds_since_epoch(),
 )
 events_to_send.append(course)
 
-section = SectionEvent(course_id=course.id, name="Section 1")
+
+section = SectionEvent(
+    course_id=course.id,
+    name="Section 1",
+    when=get_miliseconds_since_epoch(),
+    is_active=True,
+)
 events_to_send.append(section)
 
 print("Creating Student event")
 student = StudentEvent(
-    org_id=org_event.id, name="Jimmy Newtron", email="jimmy@email.com"
+    organization_id=org_event.id,
+    name="Jimmy Newtron",
+    email="jimmy@email.com",
+    when=get_miliseconds_since_epoch(),
 )
 events_to_send.append(student)
+time.sleep(0.1)
 
+# update_course = CourseEvent(
+#     organization_id=org_event.id,
+#     instructor_id=instructor.id,
+#     name="CS 42",
+#     description=None,
+#     when=get_miliseconds_since_epoch(),
+#     public_id=course.public_id,
+# )
+# events_to_send.append(update_course)
+
+# update_section = SectionEvent(
+#     course_id=course.id,
+#     name="Section 42",
+#     when=get_miliseconds_since_epoch(),
+#     is_active=False,
+#     public_id=section.public_id,
+# )
+# print(update_section.is_active)
+# unserialized_section = SectionEvent.deserialize(update_section.serialize())
+# print(unserialized_section.is_active)
+# events_to_send.append(update_section)
+
+update_instructor = InstructorEvent(
+    organization_id=org_event.id,
+    name="Senor Bean",
+    email="bean@email.com",
+    when=get_miliseconds_since_epoch(),
+    public_id=instructor.public_id,
+)
+events_to_send.append(update_instructor)
 
 # criteria = {
 #     "Functionality": {
@@ -358,7 +400,6 @@ conf = {
     # 'sasl.username': '<CLUSTER_API_KEY>',
     # 'sasl.password': '<CLUSTER_API_SECRET>',
     "linger.ms": 30,
-    "transactional.id": "test",
     "client.id": socket.gethostname(),
 }
 
@@ -369,6 +410,7 @@ for event in tqdm(events_to_send):
     event.publish(producer)
     # producer.flush()
     # producer.commit_transaction()
+producer.flush()
 
 
 # def publish_event(event):
