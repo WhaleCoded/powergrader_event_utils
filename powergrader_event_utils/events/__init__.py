@@ -1,4 +1,5 @@
 from typing import Type
+from datetime import datetime
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
@@ -29,3 +30,7 @@ def convert_event_type_to_event_class_type(
         return None
 
     return globals()[class_name]
+
+
+def convert_proto_when_to_date_time(when: int) -> datetime:
+    return datetime.fromtimestamp(when / 1000.0)
