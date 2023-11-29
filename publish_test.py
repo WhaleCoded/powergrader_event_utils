@@ -75,10 +75,6 @@ section = SectionEvent(
 )
 events_to_send.append(section)
 
-retry_event = RetryEvent(1, "test", "test", section)
-print(retry_event.get_event_type())
-print(retry_event.topic_name)
-print(retry_event.event_type)
 
 print("Creating Student event")
 student = StudentEvent(
