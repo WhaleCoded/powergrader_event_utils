@@ -238,6 +238,7 @@ class RetryEvent(PowerGraderEvent):
         new_retry_instance.event = packaged_event
         new_retry_instance.retry_number = data.retry_number
         new_retry_instance.retry_reason = data.retry_reason
+        new_retry_instance.instance_name = data.instance_name
         super(cls, new_retry_instance).__init__(
             key=packaged_event.key,
             event_type=new_retry_instance.__class__.__name__,
