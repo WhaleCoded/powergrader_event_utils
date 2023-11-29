@@ -160,10 +160,15 @@ def convert_member_name_to_event_type(member_name: str) -> EventType:
 class RetryEvent(PowerGraderEvent):
     retry_number: int
     retry_reason: str
+    instance_name: str
     event: PowerGraderEvent
 
     def __init__(
-        self, retry_number: int, retry_reason: str, event: PowerGraderEvent
+        self,
+        retry_number: int,
+        retry_reason: str,
+        instance_name: str,
+        event: PowerGraderEvent,
     ) -> None:
         if not isinstance(event, PowerGraderEvent):
             raise ValueError("The event you are trying to put into a retry is invalid.")
@@ -178,11 +183,15 @@ class RetryEvent(PowerGraderEvent):
             self.proto.retry_reason = retry_reason
             self.retry_reason = retry_reason
 
+        if instance_name is not None:
+            self.proto.instance_name = instance_name
+            self.instance_name = instance_name
+
         if event is not None:
             self._put_event_into_proto(event)
             self.event = event
 
-        super().__init__(key=str(event.key), event_type=self.__class__.__name__)
+        super().__init__(key=str(event.key), event_type=self.event.event_type.value)
 
     def _put_event_into_proto(self, event: PowerGraderEvent) -> None:
         """
@@ -235,13 +244,20 @@ class RetryEvent(PowerGraderEvent):
 
 class DeadLetterEvent(PowerGraderEvent):
     dead_letter_reason: str
+    instance_name: str
     event: PowerGraderEvent
 
-    def __init__(self, dead_letter_reason: str, event: PowerGraderEvent) -> None:
+    def __init__(
+        self, dead_letter_reason: str, instance_name: str, event: PowerGraderEvent
+    ) -> None:
         if not isinstance(event, PowerGraderEvent):
             raise ValueError("The event you are trying to put into a retry is invalid.")
 
         self.proto = DeadLetter()
+
+        if instance_name is not None:
+            self.proto.instance_name = instance_name
+            self.instance_name = instance_name
 
         if dead_letter_reason is not None:
             self.proto.dead_letter_reason = dead_letter_reason

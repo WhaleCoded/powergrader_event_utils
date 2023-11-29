@@ -45,10 +45,12 @@ message Retry {
         user.Student student = 32;
         user.Instructor instructor = 33;
     }
+    string instance_name = 34;
 }
 
 message DeadLetter {
     string dead_letter_reason = 1;
+    string instance_name = 2;
     oneof event {
         assignment.Assignment assignment = 3;
         assignment.Rubric rubric = 4;

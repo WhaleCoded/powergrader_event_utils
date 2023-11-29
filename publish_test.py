@@ -354,13 +354,11 @@ conf = {
 
 producer = Producer(conf)
 print("Created producer")
-producer.init_transactions()
 
 for event in tqdm(events_to_send):
-    producer.begin_transaction()
     event.publish(producer)
-    producer.flush()
-    producer.commit_transaction()
+    # producer.flush()
+    # producer.commit_transaction()
 
 
 # def publish_event(event):
