@@ -148,6 +148,22 @@ class PowerGraderEvent:
 
         return False
 
+    async def publish_async(self, producer: Producer) -> bool:
+        serialized_event = self.serialize()
+        topic_name = get_kafka_topic_name_for_event_type(self.event_type)
+        if isinstance(serialized_event, bytes):
+            # producer.begin_transaction()
+            producer.produce(
+                topic_name,
+                key=self.key,
+                value=serialized_event,
+                headers={"event_type": self.event_type.value},
+            )
+            # producer.commit_transaction()
+            return True
+
+        return False
+
     def publish_to_custom_topic(self, producer: Producer, topic_name: str) -> bool:
         serialized_event = self.serialize()
         if isinstance(serialized_event, bytes):
@@ -158,7 +174,7 @@ class PowerGraderEvent:
                 value=serialized_event,
                 headers={"event_type": self.event_type},
             )
-            producer.flush()
+            # producer.flush()
             # producer.commit_transaction()
             return True
 

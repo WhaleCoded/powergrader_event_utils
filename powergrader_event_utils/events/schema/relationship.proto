@@ -1,16 +1,11 @@
 syntax = "proto3";
 package relationship;
 
-message PrivateIDAddedToPublicID {
+message PublicIDReferenceChanged {
     string id = 1;
     string private_uuid = 2;
     string public_uuid = 3;
-}
-
-message PrivateIDRemovedFromPublicID {
-    string id = 1;
-    string private_uuid = 2;
-    string public_uuid = 3;
+    uint64 when = 4;
 }
 
 message AssignmentAddedToCourse {

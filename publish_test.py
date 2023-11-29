@@ -1,5 +1,7 @@
 from powergrader_event_utils.events.assignment import AssignmentEvent, RubricEvent
 from powergrader_event_utils.events import (
+    CourseEvent,
+    SectionEvent,
     RegisterCoursePublicIDEvent,
     InstructorEvent,
     RubricCriterion,
@@ -15,6 +17,12 @@ from powergrader_event_utils.events import (
     FileContent,
     GradeType,
     GradeIdentifier,
+    AssignmentAddedToCourseEvent,
+    AssignmentRemovedFromCourseEvent,
+    StudentAddedToSectionEvent,
+    StudentRemovedFromSectionEvent,
+    InstructorAddedToCourseEvent,
+    InstructorRemovedFromCourseEvent,
 )
 from powergrader_event_utils.events.base import MAIN_TOPIC
 from confluent_kafka.admin import AdminClient
@@ -23,14 +31,31 @@ from uuid import uuid4
 from random import randint
 import datetime
 import time
+from tqdm import tqdm
+from concurrent.futures import ThreadPoolExecutor
+
+events_to_send = []
 
 print("Starting the script")
 org_event = OrganizationEvent(name="test", code=None)
+events_to_send.append(org_event)
 
 print("Creating instructor")
 instructor = InstructorEvent(
     org_id=org_event.id, name="Mr.Bean", email="bean@email.com"
 )
+events_to_send.append(instructor)
+
+course = CourseEvent(
+    organization_id=org_event.id,
+    instructor_id=instructor.id,
+    name="CS 101",
+    description=None,
+)
+events_to_send.append(course)
+
+section = SectionEvent(course_id=course.id, name="Section 1")
+events_to_send.append(section)
 
 
 criteria = {
@@ -140,24 +165,15 @@ for key, value in criteria.items():
 rub_event = RubricEvent(
     instructor_id=instructor.id, name="Test Rubric #1", rubric_criteria=criterion
 )
-rub_criteria = rub_event.rubric_criteria
-for crit in rub_criteria.values():
-    print(crit.name)
-    for level in crit.levels:
-        print("\t", level.description)
-        print("\t", level.score)
-# print(rub_event.serialize())
-print(type(rub_event.serialize()))
-serialized = rub_event.serialize()
+events_to_send.append(rub_event)
 
-new_rub_event = RubricEvent.deserialize(serialized)
-new_rub_criteria = new_rub_event.rubric_criteria
-print("\n\nNEW DESERIALIZED EVENT\n\n")
-for crit in new_rub_criteria.values():
-    print(crit.name)
-    for level in crit.levels:
-        print("\t", level.description)
-        print("\t", level.score)
+rub_criteria = rub_event.rubric_criteria
+# for crit in rub_criteria.values():
+#     print(crit.name)
+#     for level in crit.levels:
+#         print("\t", level.description)
+#         print("\t", level.score)
+# print(rub_event.serialize())
 
 print("Creating assignment event")
 instructions = """Assignment 4: Recursion
@@ -174,6 +190,7 @@ The final program should take user input from the terminal specifying the desire
 ass_event = AssignmentEvent(
     rubric_id=rub_event.id, name="Fibonacci", instructions=instructions
 )
+events_to_send.append(ass_event)
 # print(ass_event.validate())
 print(ass_event.serialize())
 print(type(ass_event.serialize()))
@@ -184,11 +201,13 @@ print("Creating RegisterCoursePublicIdEvent")
 # )
 reg_course = RegisterCoursePublicIDEvent(public_id=str(uuid4()), lms_id="1")
 print(reg_course.serialize())
+events_to_send.append(reg_course)
 
 print("Creating Student event")
 student = StudentEvent(
     org_id=org_event.id, name="Jimmy Newtron", email="jimmy@email.com"
 )
+events_to_send.append(student)
 
 print("Creating Submission Files Event")
 file_content = """def fibonacci(n):
@@ -232,6 +251,7 @@ if __name__ == "__main__":
     main()"""
 file_obj = FileContent(file_name="submission", file_type="py", content=file_content)
 sub_files = SubmissionFilesEvent(student_id=student.id, file_content=[file_obj])
+events_to_send.append(sub_files)
 
 print("Creating Submission Event")
 sub_event = SubmissionEvent(
@@ -240,6 +260,7 @@ sub_event = SubmissionEvent(
     submission_date=None,
     submission_files_id=sub_files.id,
 )
+events_to_send.append(sub_event)
 
 
 print("Create AI Grading Started Event")
@@ -247,11 +268,13 @@ crit_ids = [crit.id for crit in rub_event.rubric_criteria.values()]
 ai_grade_event = GradingStartedEvent(
     sub_event.id, ass_event.id, "GPT-3.5 Turbo", crit_ids
 )
+events_to_send.append(ai_grade_event)
 
 print("Create ai graded crit event")
 crit_graded = CriteriaGradeEvent(
     ai_grade_event.id, crit_ids[0], GradeType.AI_GRADED, 1, "Their code did not run."
 )
+events_to_send.append(crit_graded)
 
 print("Create Faculty graded crit event")
 grade_identifier = GradeIdentifier(sub_event.id, ass_event.id, instructor.id)
@@ -262,14 +285,17 @@ faculty_crit_graded = CriteriaGradeEvent(
     3,
     "The student's code was nearly flawless",
 )
+events_to_send.append(faculty_crit_graded)
 
 print("Create criteria grade embeddigns")
 ai_grade_embedding = CriteriaGradeEmbeddingEvent(
     crit_graded.id, "Roberta-3", [0.0 for i in range(20)]
 )
+events_to_send.append(ai_grade_embedding)
 faculty_grade_embedding = CriteriaGradeEmbeddingEvent(
     faculty_crit_graded.id, "Roberta-3", [1.0 for i in range(20)]
 )
+events_to_send.append(faculty_grade_embedding)
 
 print("Create instructor review event")
 instructor_review_event = InstructorReviewEvent(
@@ -279,6 +305,39 @@ instructor_review_event = InstructorReviewEvent(
     time_reviewed=int(time.time()),
     criteria_grade_ids=[crit_graded.id, faculty_crit_graded.id],
 )
+events_to_send.append(instructor_review_event)
+
+# PUBLISH EVENTS
+
+# RELATIONSHIP
+add_assignment_to_course = AssignmentAddedToCourseEvent(ass_event.id, course.id)
+events_to_send.append(add_assignment_to_course)
+
+remove_assignment_to_course = AssignmentRemovedFromCourseEvent(ass_event.id, course.id)
+events_to_send.append(remove_assignment_to_course)
+
+second_add_to_course = AssignmentAddedToCourseEvent(ass_event.id, course.id)
+events_to_send.append(second_add_to_course)
+
+instructor_added_to_course = InstructorAddedToCourseEvent(instructor.id, course.id)
+events_to_send.append(instructor_added_to_course)
+
+instructor_removed_from_course = InstructorRemovedFromCourseEvent(
+    instructor.id, course.id
+)
+events_to_send.append(instructor_added_to_course)
+
+send_instructor_add = InstructorAddedToCourseEvent(instructor.id, course.id)
+events_to_send.append(send_instructor_add)
+
+student_added_section = StudentAddedToSectionEvent(student.id, section.id)
+events_to_send.append(student_added_section)
+
+student_removed_section = StudentRemovedFromSectionEvent(student.id, section.id)
+events_to_send.append(student_removed_section)
+
+student_added_section = StudentAddedToSectionEvent(student.id, section.id)
+events_to_send.append(student_added_section)
 
 import socket
 
@@ -288,6 +347,7 @@ conf = {
     # 'sasl.mechanism': 'PLAIN',
     # 'sasl.username': '<CLUSTER_API_KEY>',
     # 'sasl.password': '<CLUSTER_API_SECRET>',
+    "linger.ms": 30,
     "transactional.id": "test",
     "client.id": socket.gethostname(),
 }
@@ -295,50 +355,33 @@ conf = {
 producer = Producer(conf)
 print("Created producer")
 producer.init_transactions()
-producer.begin_transaction()
 
-print("Sending org event")
-org_event.publish(producer)
+for event in tqdm(events_to_send):
+    producer.begin_transaction()
+    event.publish(producer)
+    producer.flush()
+    producer.commit_transaction()
 
-print("Sending INstructor event")
-instructor.publish(producer)
+
+# def publish_event(event):
+#     producer = Producer(conf)
+#     # print("Created producer")
+#     producer.init_transactions()
+
+#     producer.begin_transaction()
+#     event.publish(producer)
+#     producer.flush()
+#     producer.commit_transaction()
 
 
-print("Sending Rubric event")
-rub_event.publish(producer)
+# # Publish all the events simultaneously
+# with ThreadPoolExecutor() as executor:
+#     futures = []
+#     for event in events_to_send:
+#         futures.append(executor.submit(publish_event, event))
 
-print("Sending Assignment event")
-ass_event.publish(producer)
+#     for future in tqdm(futures):
+#         future.result()
 
-print("Sending student event")
-student.publish(producer)
 
-print("Sending submission files event")
-sub_files.publish(producer)
-
-print("Sending submission event")
-sub_event.publish(producer)
-
-print("Grading started event")
-ai_grade_event.publish(producer)
-
-print("Sending ai grade event")
-crit_graded.publish(producer)
-
-print("Sending faculty grade event")
-faculty_crit_graded.publish(producer)
-
-print("Send ai embedding event")
-ai_grade_embedding.publish(producer)
-
-print("Senidng faculty grade embedding")
-faculty_grade_embedding.publish(producer)
-
-print("Sending an instructor review")
-instructor_review_event.publish(producer)
-
-# reg_course.publish(producer)
-# reg_course.publish(producer)
-print("Published the reg_course event")
-
-producer.commit_transaction()
+# producer.commit_transaction()

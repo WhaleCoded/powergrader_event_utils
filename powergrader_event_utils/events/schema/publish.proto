@@ -4,42 +4,50 @@ package publish;
 message RegisterCoursePublicID {
     string public_id = 1;
     string lms_id = 2;
+    string organization_id = 3;
 }
 
 message RegisterSectionPublicID {
     string public_id = 1;
     string lms_id = 2;
+    string organization_id = 3;
 }
 
 message RegisterInstructorPublicID {
     string public_id = 1;
     string lms_id = 2;
     string user_type = 3;
+    string organization_id = 4;
 }
 
 message RegisterStudentPublicID {
     string public_id = 1;
     string lms_id = 2;
+    string organization_id = 3;
 }
 
 message RegisterAssignmentPublicID {
     string public_id = 1;
     string lms_id = 2;
+    string organization_id = 3;
 }
 
 message RegisterRubricPublicID {
     string public_id = 1;
     string lms_id = 2;
+    string organization_id = 3;
 }
 
 message RegisterSubmissionPublicID {
     string public_id = 1;
     string lms_assignment_id = 2;
     string lms_student_id = 3;
+    string organization_id = 4;
 }
 
 message PublishedToLMS {
     string public_id_of_published_entity = 1;
     string private_id_of_published_entity = 2;
+    uint64 when = 3;
 }
 

@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10submission.proto\x12\nsubmission\"y\n\nSubmission\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\nstudent_id\x18\x02 \x01(\t\x12\x15\n\rassignment_id\x18\x03 \x01(\t\x12\x17\n\x0fsubmission_date\x18\x04 \x01(\x03\x12\x1b\n\x13submission_files_id\x18\x05 \x01(\t\"`\n\x0fSubmissionFiles\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\nstudent_id\x18\x02 \x01(\t\x12-\n\x0c\x66ile_content\x18\x03 \x03(\x0b\x32\x17.submission.FileContent\"D\n\x0b\x46ileContent\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x11\n\tfile_type\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10submission.proto\x12\nsubmission\"n\n\nSubmission\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\nstudent_id\x18\x02 \x01(\t\x12\x15\n\rassignment_id\x18\x03 \x01(\t\x12\x0c\n\x04when\x18\x04 \x01(\x04\x12\x1b\n\x13submission_files_id\x18\x05 \x01(\t\"`\n\x0fSubmissionFiles\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\nstudent_id\x18\x02 \x01(\t\x12-\n\x0c\x66ile_content\x18\x03 \x03(\x0b\x32\x17.submission.FileContent\"D\n\x0b\x46ileContent\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x11\n\tfile_type\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\tb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -22,9 +22,9 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'submission_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
   _globals['_SUBMISSION']._serialized_start=32
-  _globals['_SUBMISSION']._serialized_end=153
-  _globals['_SUBMISSIONFILES']._serialized_start=155
-  _globals['_SUBMISSIONFILES']._serialized_end=251
-  _globals['_FILECONTENT']._serialized_start=253
-  _globals['_FILECONTENT']._serialized_end=321
+  _globals['_SUBMISSION']._serialized_end=142
+  _globals['_SUBMISSIONFILES']._serialized_start=144
+  _globals['_SUBMISSIONFILES']._serialized_end=240
+  _globals['_FILECONTENT']._serialized_start=242
+  _globals['_FILECONTENT']._serialized_end=310
 # @@protoc_insertion_point(module_scope)

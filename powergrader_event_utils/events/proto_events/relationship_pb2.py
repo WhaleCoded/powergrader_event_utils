@@ -14,27 +14,25 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12relationship.proto\x12\x0crelationship\"Q\n\x18PrivateIDAddedToPublicID\x12\n\n\x02id\x18\x01 \x01(\t\x12\x14\n\x0cprivate_uuid\x18\x02 \x01(\t\x12\x13\n\x0bpublic_uuid\x18\x03 \x01(\t\"U\n\x1cPrivateIDRemovedFromPublicID\x12\n\n\x02id\x18\x01 \x01(\t\x12\x14\n\x0cprivate_uuid\x18\x02 \x01(\t\x12\x13\n\x0bpublic_uuid\x18\x03 \x01(\t\"O\n\x17\x41ssignmentAddedToCourse\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rassignment_id\x18\x02 \x01(\t\x12\x11\n\tcourse_id\x18\x03 \x01(\t\"S\n\x1b\x41ssignmentRemovedFromCourse\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rassignment_id\x18\x02 \x01(\t\x12\x11\n\tcourse_id\x18\x03 \x01(\t\"K\n\x15StudentAddedToSection\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\nstudent_id\x18\x02 \x01(\t\x12\x12\n\nsection_id\x18\x03 \x01(\t\"O\n\x19StudentRemovedFromSection\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\nstudent_id\x18\x02 \x01(\t\x12\x12\n\nsection_id\x18\x03 \x01(\t\"O\n\x17InstructorAddedToCourse\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rinstructor_id\x18\x02 \x01(\t\x12\x11\n\tcourse_id\x18\x03 \x01(\t\"S\n\x1bInstructorRemovedFromCourse\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rinstructor_id\x18\x02 \x01(\t\x12\x11\n\tcourse_id\x18\x03 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12relationship.proto\x12\x0crelationship\"_\n\x18PublicIDReferenceChanged\x12\n\n\x02id\x18\x01 \x01(\t\x12\x14\n\x0cprivate_uuid\x18\x02 \x01(\t\x12\x13\n\x0bpublic_uuid\x18\x03 \x01(\t\x12\x0c\n\x04when\x18\x04 \x01(\x04\"O\n\x17\x41ssignmentAddedToCourse\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rassignment_id\x18\x02 \x01(\t\x12\x11\n\tcourse_id\x18\x03 \x01(\t\"S\n\x1b\x41ssignmentRemovedFromCourse\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rassignment_id\x18\x02 \x01(\t\x12\x11\n\tcourse_id\x18\x03 \x01(\t\"K\n\x15StudentAddedToSection\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\nstudent_id\x18\x02 \x01(\t\x12\x12\n\nsection_id\x18\x03 \x01(\t\"O\n\x19StudentRemovedFromSection\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\nstudent_id\x18\x02 \x01(\t\x12\x12\n\nsection_id\x18\x03 \x01(\t\"O\n\x17InstructorAddedToCourse\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rinstructor_id\x18\x02 \x01(\t\x12\x11\n\tcourse_id\x18\x03 \x01(\t\"S\n\x1bInstructorRemovedFromCourse\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rinstructor_id\x18\x02 \x01(\t\x12\x11\n\tcourse_id\x18\x03 \x01(\tb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'relationship_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
-  _globals['_PRIVATEIDADDEDTOPUBLICID']._serialized_start=36
-  _globals['_PRIVATEIDADDEDTOPUBLICID']._serialized_end=117
-  _globals['_PRIVATEIDREMOVEDFROMPUBLICID']._serialized_start=119
-  _globals['_PRIVATEIDREMOVEDFROMPUBLICID']._serialized_end=204
-  _globals['_ASSIGNMENTADDEDTOCOURSE']._serialized_start=206
-  _globals['_ASSIGNMENTADDEDTOCOURSE']._serialized_end=285
-  _globals['_ASSIGNMENTREMOVEDFROMCOURSE']._serialized_start=287
-  _globals['_ASSIGNMENTREMOVEDFROMCOURSE']._serialized_end=370
-  _globals['_STUDENTADDEDTOSECTION']._serialized_start=372
-  _globals['_STUDENTADDEDTOSECTION']._serialized_end=447
-  _globals['_STUDENTREMOVEDFROMSECTION']._serialized_start=449
-  _globals['_STUDENTREMOVEDFROMSECTION']._serialized_end=528
-  _globals['_INSTRUCTORADDEDTOCOURSE']._serialized_start=530
-  _globals['_INSTRUCTORADDEDTOCOURSE']._serialized_end=609
-  _globals['_INSTRUCTORREMOVEDFROMCOURSE']._serialized_start=611
-  _globals['_INSTRUCTORREMOVEDFROMCOURSE']._serialized_end=694
+  _globals['_PUBLICIDREFERENCECHANGED']._serialized_start=36
+  _globals['_PUBLICIDREFERENCECHANGED']._serialized_end=131
+  _globals['_ASSIGNMENTADDEDTOCOURSE']._serialized_start=133
+  _globals['_ASSIGNMENTADDEDTOCOURSE']._serialized_end=212
+  _globals['_ASSIGNMENTREMOVEDFROMCOURSE']._serialized_start=214
+  _globals['_ASSIGNMENTREMOVEDFROMCOURSE']._serialized_end=297
+  _globals['_STUDENTADDEDTOSECTION']._serialized_start=299
+  _globals['_STUDENTADDEDTOSECTION']._serialized_end=374
+  _globals['_STUDENTREMOVEDFROMSECTION']._serialized_start=376
+  _globals['_STUDENTREMOVEDFROMSECTION']._serialized_end=455
+  _globals['_INSTRUCTORADDEDTOCOURSE']._serialized_start=457
+  _globals['_INSTRUCTORADDEDTOCOURSE']._serialized_end=536
+  _globals['_INSTRUCTORREMOVEDFROMCOURSE']._serialized_start=538
+  _globals['_INSTRUCTORREMOVEDFROMCOURSE']._serialized_end=621
 # @@protoc_insertion_point(module_scope)

@@ -11,16 +11,14 @@ enum GradeType {
 
 message GradeIdentifier {
     string submission_id = 1;
-    string assignment_id = 2;
-    string grade_method_id = 3;
+    string grade_method_id = 2;
 }
 
 message GradingStarted {
     string id = 1;
     string submission_id = 2;
-    string assignment_id = 3;
-    string grade_method_id = 4;
-    repeated string criteria_to_be_graded = 5;
+    string grade_method_id = 3;
+    repeated string criteria_to_be_graded = 4;
 }
 
 message CriteriaGrade {
@@ -49,7 +47,6 @@ message AssessmentSimilarity {
 
 message StudentRequestedRegrade {
     string id = 1;
-    string student_id = 2;
     string submission_id = 3;
     string reasoning = 4;
     repeated string criteria_grades_to_reevaluate = 5;
@@ -58,9 +55,8 @@ message StudentRequestedRegrade {
 message InstructorReview {
     string id = 1;
     string submission_id = 2;
-    string assignment_id = 3;
-    string instructor_id = 4;
-    uint32 time_reviewed = 5;
-    repeated string criteria_grade_ids = 6;
+    string instructor_id = 3;
+    uint32 time_reviewed = 4;
+    repeated string criteria_grade_ids = 5;
 }
 
