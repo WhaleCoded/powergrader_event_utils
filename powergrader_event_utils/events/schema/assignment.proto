@@ -3,9 +3,10 @@ package assignment;
 
 message Assignment {
     string id = 1;
-    string rubric_id = 2;
-    string name = 3;
-    string instructions = 4;
+    string organization_id = 2;
+    string rubric_id = 3;
+    string name = 4;
+    string instructions = 5;
 }
 
 message Rubric {

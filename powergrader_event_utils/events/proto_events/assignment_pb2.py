@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10\x61ssignment.proto\x12\nassignment\"O\n\nAssignment\x12\n\n\x02id\x18\x01 \x01(\t\x12\x11\n\trubric_id\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x14\n\x0cinstructions\x18\x04 \x01(\t\"\xce\x01\n\x06Rubric\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rinstructor_id\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12?\n\x0frubric_criteria\x18\x04 \x03(\x0b\x32&.assignment.Rubric.RubricCriteriaEntry\x1aR\n\x13RubricCriteriaEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.assignment.RubricCriterion:\x02\x38\x01\"V\n\x0fRubricCriterion\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12)\n\x06levels\x18\x03 \x03(\x0b\x32\x19.assignment.CriteriaLevel\"B\n\rCriteriaLevel\x12\x12\n\x05score\x18\x01 \x01(\rH\x00\x88\x01\x01\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\tB\x08\n\x06_scoreb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10\x61ssignment.proto\x12\nassignment\"h\n\nAssignment\x12\n\n\x02id\x18\x01 \x01(\t\x12\x17\n\x0forganization_id\x18\x02 \x01(\t\x12\x11\n\trubric_id\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x14\n\x0cinstructions\x18\x05 \x01(\t\"\xce\x01\n\x06Rubric\x12\n\n\x02id\x18\x01 \x01(\t\x12\x15\n\rinstructor_id\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12?\n\x0frubric_criteria\x18\x04 \x03(\x0b\x32&.assignment.Rubric.RubricCriteriaEntry\x1aR\n\x13RubricCriteriaEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12*\n\x05value\x18\x02 \x01(\x0b\x32\x1b.assignment.RubricCriterion:\x02\x38\x01\"V\n\x0fRubricCriterion\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12)\n\x06levels\x18\x03 \x03(\x0b\x32\x19.assignment.CriteriaLevel\"B\n\rCriteriaLevel\x12\x12\n\x05score\x18\x01 \x01(\rH\x00\x88\x01\x01\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\tB\x08\n\x06_scoreb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -24,13 +24,13 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_RUBRIC_RUBRICCRITERIAENTRY']._options = None
   _globals['_RUBRIC_RUBRICCRITERIAENTRY']._serialized_options = b'8\001'
   _globals['_ASSIGNMENT']._serialized_start=32
-  _globals['_ASSIGNMENT']._serialized_end=111
-  _globals['_RUBRIC']._serialized_start=114
-  _globals['_RUBRIC']._serialized_end=320
-  _globals['_RUBRIC_RUBRICCRITERIAENTRY']._serialized_start=238
-  _globals['_RUBRIC_RUBRICCRITERIAENTRY']._serialized_end=320
-  _globals['_RUBRICCRITERION']._serialized_start=322
-  _globals['_RUBRICCRITERION']._serialized_end=408
-  _globals['_CRITERIALEVEL']._serialized_start=410
-  _globals['_CRITERIALEVEL']._serialized_end=476
+  _globals['_ASSIGNMENT']._serialized_end=136
+  _globals['_RUBRIC']._serialized_start=139
+  _globals['_RUBRIC']._serialized_end=345
+  _globals['_RUBRIC_RUBRICCRITERIAENTRY']._serialized_start=263
+  _globals['_RUBRIC_RUBRICCRITERIAENTRY']._serialized_end=345
+  _globals['_RUBRICCRITERION']._serialized_start=347
+  _globals['_RUBRICCRITERION']._serialized_end=433
+  _globals['_CRITERIALEVEL']._serialized_start=435
+  _globals['_CRITERIALEVEL']._serialized_end=501
 # @@protoc_insertion_point(module_scope)

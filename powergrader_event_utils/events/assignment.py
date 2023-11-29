@@ -21,11 +21,17 @@ from google.protobuf.json_format import MessageToJson
 class AssignmentEvent(PowerGraderEvent, ProtoWrapper[Assignment]):
     id: str
     rubric_id: str
+    organization_id: str
     name: str
     instructions: str
 
-    def __init__(self, rubric_id: str, name: str, instructions: str) -> None:
+    def __init__(
+        self, rubric_id: str, organization_id, name: str, instructions: str
+    ) -> None:
         proto = Assignment()
+
+        if organization_id is not None:
+            proto.organization_id = organization_id
 
         if rubric_id is not None:
             proto.rubric_id = rubric_id
