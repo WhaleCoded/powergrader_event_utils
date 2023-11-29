@@ -16,7 +16,7 @@ message Section {
     string id = 2;
     string course_id = 3;
     string name = 4;
-    bool is_active = 5;
+    optional bool is_active = 5;
     uint64 when = 7;
 }
 
