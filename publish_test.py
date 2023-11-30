@@ -25,6 +25,15 @@ from powergrader_event_utils.events import (
     InstructorRemovedFromCourseEvent,
     convert_proto_when_to_date_time,
     RetryEvent,
+    LMSInstructorType,
+    RegisterInstructorPublicIDEvent,
+    RegisterStudentPublicIDEvent,
+    RegisterSectionPublicIDEvent,
+    RegisterAssignmentPublicIDEvent,
+    RegisterRubricPublicIDEvent,
+    RegisterSubmissionPublicIDEvent,
+    PublishedToLMSEvent,
+    PublishedGradeToLMSEvent,
 )
 from powergrader_event_utils.events.base import MAIN_TOPIC
 from confluent_kafka.admin import AdminClient
@@ -384,6 +393,45 @@ instructor_review_event = InstructorReviewEvent(
 events_to_send.append(instructor_review_event)
 
 # # PUBLISH EVENTS
+lms_course = RegisterCoursePublicIDEvent(
+    public_id=course.public_id, lms_id=str(randint(0, 100000000))
+)
+events_to_send.append(lms_course)
+
+lms_section = RegisterSectionPublicIDEvent(
+    public_id=section.public_id, lms_id=str(randint(0, 100000000))
+)
+events_to_send.append(lms_section)
+
+lms_student = RegisterStudentPublicIDEvent(
+    public_id=student.public_id, lms_id=str(randint(0, 100000000))
+)
+events_to_send.append(lms_student)
+
+lms_instructor = RegisterInstructorPublicIDEvent(
+    public_id=instructor.public_id,
+    lms_id=str(randint(0, 100000000)),
+    user_type=LMSInstructorType.FACULTY,
+)
+events_to_send.append(lms_instructor)
+
+lms_assignment = RegisterAssignmentPublicIDEvent(
+    public_id=uuid4(), lms_id=str(randint(0, 100000000)), organization_id=org_event.id
+)
+events_to_send.append(lms_assignment)
+
+lms_rubric = RegisterRubricPublicIDEvent(
+    public_id=uuid4(), lms_id=str(randint(0, 100000000)), organization_id=org_event.id
+)
+events_to_send.append(lms_rubric)
+
+lms_submission = RegisterSubmissionPublicIDEvent(
+    public_id=uuid4(),
+    lms_assignment_id=lms_assignment.lms_id,
+    lms_student_id=lms_student.lms_id,
+    organization_id=org_event.id,
+)
+events_to_send.append(lms_submission)
 
 # # RELATIONSHIP
 # add_assignment_to_course = AssignmentAddedToCourseEvent(ass_event.id, course.id)

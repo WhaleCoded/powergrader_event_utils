@@ -19,8 +19,8 @@ message RegisterSectionPublicID {
 
 message RegisterInstructorPublicID {
     string public_id = 1;
-    LMSInstructorType lms_id = 2;
-    string user_type = 3;
+    string lms_id = 2;
+    LMSInstructorType user_type = 3;
 }
 
 message RegisterStudentPublicID {
