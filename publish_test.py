@@ -437,6 +437,63 @@ lms_submission = RegisterSubmissionPublicIDEvent(
 )
 events_to_send.append(lms_submission)
 
+# Test the actual publish event
+when = get_miliseconds_since_epoch()
+publish_course = PublishedToLMSEvent(
+    public_id_of_published_entity=lms_course.public_id,
+    private_id_of_published_entity=course.id,
+    when=when,
+)
+events_to_send.append(publish_course)
+
+publish_section = PublishedToLMSEvent(
+    public_id_of_published_entity=lms_section.public_id,
+    private_id_of_published_entity=section.id,
+    when=when,
+)
+events_to_send.append(publish_section)
+
+publish_student = PublishedToLMSEvent(
+    public_id_of_published_entity=lms_student.public_id,
+    private_id_of_published_entity=student.id,
+    when=when,
+)
+events_to_send.append(publish_student)
+
+publish_instructor = PublishedToLMSEvent(
+    public_id_of_published_entity=lms_instructor.public_id,
+    private_id_of_published_entity=instructor.id,
+    when=when,
+)
+events_to_send.append(publish_instructor)
+
+publish_assignment = PublishedToLMSEvent(
+    public_id_of_published_entity=lms_assignment.public_id,
+    private_id_of_published_entity=ass_event.id,
+    when=when,
+)
+events_to_send.append(publish_assignment)
+
+publish_rubric = PublishedToLMSEvent(
+    public_id_of_published_entity=lms_rubric.lms_id,
+    private_id_of_published_entity=rub_event.id,
+    when=when,
+)
+events_to_send(publish_rubric)
+
+publish_submission = PublishedToLMSEvent(
+    public_id_of_published_entity=lms_submission.public_id,
+    private_id_of_published_entity=sub_event.id,
+    when=when,
+)
+events_to_send.append(publish_assignment)
+
+publish_grade = PublishedGradeToLMSEvent(
+    public_submission_id=lms_submission.public_id,
+    instructor_review_id=instructor_review_event.id,
+    when=when,
+)
+events_to_send.append(publish_grade)
 # # RELATIONSHIP
 # add_assignment_to_course = AssignmentAddedToCourseEvent(ass_event.id, course.id)
 # events_to_send.append(add_assignment_to_course)

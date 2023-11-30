@@ -305,7 +305,9 @@ class PublishedToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedToLMS]):
 
         ProtoWrapper.__init__(self, PublishedToLMS, proto)
         PowerGraderEvent.__init__(
-            self, key=proto.public_id, event_type=self.__class__.__name__
+            self,
+            key=proto.public_id_of_published_entity,
+            event_type=self.__class__.__name__,
         )
 
     def _package_into_proto(self) -> PublishedToLMS:
@@ -317,7 +319,9 @@ class PublishedToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedToLMS]):
 
     @classmethod
     def deserialize(cls, event: bytes) -> "PublishedToLMSEvent":
-        return general_deserialization(PublishedToLMS, cls, event, "public_id")
+        return general_deserialization(
+            PublishedToLMS, cls, event, "public_id_of_published_entity"
+        )
 
 
 class PublishedGradeToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedGradeToLMS]):
