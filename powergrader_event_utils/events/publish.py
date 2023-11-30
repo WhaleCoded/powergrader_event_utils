@@ -332,7 +332,7 @@ class PublishedGradeToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedGradeToLM
     def __init__(
         self, public_submission_id: str, instructor_review_id: str, when: int
     ) -> None:
-        proto = PublishedToLMS()
+        proto = PublishedGradeToLMS()
 
         if when is not None:
             proto.when = when
@@ -356,7 +356,7 @@ class PublishedGradeToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedGradeToLM
         return EventType.PUBLISHED_GRADE_TO_LMS
 
     @classmethod
-    def deserialize(cls, event: bytes) -> "PublishedToLMSEvent":
+    def deserialize(cls, event: bytes) -> "PublishedGradeToLMSEvent":
         return general_deserialization(
             PublishedGradeToLMS, cls, event, "public_submission_id"
         )

@@ -479,7 +479,7 @@ publish_rubric = PublishedToLMSEvent(
     private_id_of_published_entity=rub_event.id,
     when=when,
 )
-events_to_send(publish_rubric)
+events_to_send.append(publish_rubric)
 
 publish_submission = PublishedToLMSEvent(
     public_id_of_published_entity=lms_submission.public_id,
