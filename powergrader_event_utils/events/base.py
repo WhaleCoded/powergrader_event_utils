@@ -117,10 +117,12 @@ def get_event_type_from_uuid(uuid: str) -> EventType:
     class_name = uuid.split("--")[0]
     class_name = class_name + "Event"
 
-    if class_name not in EventType.__members__:
+    try:
+        event_type = EventType(class_name)
+    except Exception as e:
         return EventType.NOT_SPECIFIED
 
-    return EventType(class_name)
+    return event_type
 
 
 # Setup a common interface for the event system
