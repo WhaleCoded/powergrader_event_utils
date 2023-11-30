@@ -416,17 +416,21 @@ lms_instructor = RegisterInstructorPublicIDEvent(
 events_to_send.append(lms_instructor)
 
 lms_assignment = RegisterAssignmentPublicIDEvent(
-    public_id=uuid4(), lms_id=str(randint(0, 100000000)), organization_id=org_event.id
+    public_id=str(uuid4()),
+    lms_id=str(randint(0, 100000000)),
+    organization_id=org_event.id,
 )
 events_to_send.append(lms_assignment)
 
 lms_rubric = RegisterRubricPublicIDEvent(
-    public_id=uuid4(), lms_id=str(randint(0, 100000000)), organization_id=org_event.id
+    public_id=str(uuid4()),
+    lms_id=str(randint(0, 100000000)),
+    organization_id=org_event.id,
 )
 events_to_send.append(lms_rubric)
 
 lms_submission = RegisterSubmissionPublicIDEvent(
-    public_id=uuid4(),
+    public_id=str(uuid4()),
     lms_assignment_id=lms_assignment.lms_id,
     lms_student_id=lms_student.lms_id,
     organization_id=org_event.id,

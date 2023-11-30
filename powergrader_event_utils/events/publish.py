@@ -276,7 +276,9 @@ class RegisterSubmissionPublicIDEvent(
 
     @classmethod
     def deserialize(cls, event: bytes) -> "RegisterSubmissionPublicIDEvent":
-        return general_deserialization(RegisterSubmissionPublicID, cls, event, "id")
+        return general_deserialization(
+            RegisterSubmissionPublicID, cls, event, "public_id"
+        )
 
 
 class PublishedToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedToLMS]):
