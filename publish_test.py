@@ -84,17 +84,18 @@ student = StudentEvent(
     when=get_miliseconds_since_epoch(),
 )
 events_to_send.append(student)
+
 time.sleep(0.1)
-for i in range(10):
-    update_course = CourseEvent(
-        organization_id=org_event.id,
-        instructor_id=instructor.public_id,
-        name="CS 42",
-        description=None,
-        when=get_miliseconds_since_epoch(),
-        public_id=course.public_id,
-    )
-    events_to_send.append(update_course)
+# for i in range(10):
+#     update_course = CourseEvent(
+#         organization_id=org_event.id,
+#         instructor_id=instructor.public_id,
+#         name="CS 42",
+#         description=None,
+#         when=get_miliseconds_since_epoch(),
+#         public_id=course.public_id,
+#     )
+#     events_to_send.append(update_course)
 time.sleep(0.1)
 update_course = CourseEvent(
     organization_id=org_event.id,
@@ -328,12 +329,12 @@ def main():
 if __name__ == "__main__":
     main()"""
 file_obj = FileContent(file_name="submission", file_type="py", content=file_content)
-sub_files = SubmissionFilesEvent(student_id=student.id, file_content=[file_obj])
+sub_files = SubmissionFilesEvent(student_id=student.public_id, file_content=[file_obj])
 events_to_send.append(sub_files)
 
-print("Creating Submission Event")
+# print("Creating Submission Event")
 sub_event = SubmissionEvent(
-    student_id=student.id,
+    student_id=student.public_id,
     assignment_id=ass_event.id,
     submission_files_id=sub_files.id,
     when=get_miliseconds_since_epoch(),
@@ -343,47 +344,44 @@ events_to_send.append(sub_event)
 
 print("Create AI Grading Started Event")
 crit_ids = [crit.id for crit in rub_event.rubric_criteria.values()]
-ai_grade_event = GradingStartedEvent(
-    sub_event.id, ass_event.id, "GPT-3.5 Turbo", crit_ids
-)
+ai_grade_event = GradingStartedEvent(sub_event.id, "GPT-3.5 Turbo", crit_ids)
 events_to_send.append(ai_grade_event)
 
 # print("Create ai graded crit event")
-# crit_graded = CriteriaGradeEvent(
-#     ai_grade_event.id, crit_ids[0], GradeType.AI_GRADED, 1, "Their code did not run."
-# )
-# events_to_send.append(crit_graded)
+crit_graded = CriteriaGradeEvent(
+    ai_grade_event.id, crit_ids[0], GradeType.AI_GRADED, 1, "Their code did not run."
+)
+events_to_send.append(crit_graded)
 
 # print("Create Faculty graded crit event")
-# grade_identifier = GradeIdentifier(sub_event.id, ass_event.id, instructor.id)
-# faculty_crit_graded = CriteriaGradeEvent(
-#     grade_identifier,
-#     crit_ids[1],
-#     GradeType.FACULTY_ADJUSTED,
-#     3,
-#     "The student's code was nearly flawless",
-# )
-# events_to_send.append(faculty_crit_graded)
+grade_identifier = GradeIdentifier(sub_event.id, instructor.public_id, None)
+faculty_crit_graded = CriteriaGradeEvent(
+    grade_identifier,
+    crit_ids[1],
+    GradeType.FACULTY_ADJUSTED,
+    3,
+    "The student's code was nearly flawless",
+)
+events_to_send.append(faculty_crit_graded)
 
-# print("Create criteria grade embeddigns")
-# ai_grade_embedding = CriteriaGradeEmbeddingEvent(
-#     crit_graded.id, "Roberta-3", [0.0 for i in range(20)]
-# )
-# events_to_send.append(ai_grade_embedding)
-# faculty_grade_embedding = CriteriaGradeEmbeddingEvent(
-#     faculty_crit_graded.id, "Roberta-3", [1.0 for i in range(20)]
-# )
-# events_to_send.append(faculty_grade_embedding)
+print("Create criteria grade embeddigns")
+ai_grade_embedding = CriteriaGradeEmbeddingEvent(
+    crit_graded.id, "Roberta-3", [0.0 for i in range(20)]
+)
+events_to_send.append(ai_grade_embedding)
+faculty_grade_embedding = CriteriaGradeEmbeddingEvent(
+    faculty_crit_graded.id, "Roberta-3", [1.0 for i in range(20)]
+)
+events_to_send.append(faculty_grade_embedding)
 
 # print("Create instructor review event")
-# instructor_review_event = InstructorReviewEvent(
-#     sub_event.id,
-#     ass_event.id,
-#     instructor.id,
-#     time_reviewed=int(time.time()),
-#     criteria_grade_ids=[crit_graded.id, faculty_crit_graded.id],
-# )
-# events_to_send.append(instructor_review_event)
+instructor_review_event = InstructorReviewEvent(
+    sub_event.id,
+    instructor.public_id,
+    time_reviewed=get_miliseconds_since_epoch(),
+    criteria_grade_ids=[crit_graded.id, faculty_crit_graded.id],
+)
+events_to_send.append(instructor_review_event)
 
 # # PUBLISH EVENTS
 

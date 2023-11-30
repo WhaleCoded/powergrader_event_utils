@@ -258,7 +258,6 @@ class StudentRequestedRegradeEvent(
 class InstructorReviewEvent(PowerGraderEvent, ProtoWrapper[InstructorReview]):
     id: str
     submission_id: str
-    assignment_id: str
     instructor_id: str
     time_reviewed: int
     criteria_grade_ids: List[str]
