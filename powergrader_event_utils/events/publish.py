@@ -106,7 +106,7 @@ class RegisterInstructorPublicIDEvent(
             proto.lms_id = lms_id
 
         if user_type is not None:
-            proto.user_type = user_type
+            proto.user_type = user_type.value
 
         ProtoWrapper.__init__(self, RegisterInstructorPublicID, proto)
         PowerGraderEvent.__init__(
