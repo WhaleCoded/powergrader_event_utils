@@ -28,14 +28,14 @@ class GradingStartedEvent(PowerGraderEvent, ProtoWrapper[GradingStarted]):
 
     def __init__(
         self,
-        assignment_id: str,
+        submission_id: str,
         grade_method_id: str,
         criteria_to_be_graded: List[str],
     ) -> None:
         proto = GradingStarted()
 
-        if assignment_id is not None:
-            proto.assignment_id = assignment_id
+        if submission_id is not None:
+            proto.submission_id = submission_id
 
         if grade_method_id is not None:
             proto.grade_method_id = grade_method_id

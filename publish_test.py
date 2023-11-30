@@ -335,7 +335,6 @@ print("Creating Submission Event")
 sub_event = SubmissionEvent(
     student_id=student.id,
     assignment_id=ass_event.id,
-    submission_date=None,
     submission_files_id=sub_files.id,
     when=get_miliseconds_since_epoch(),
 )
