@@ -1,3 +1,4 @@
+from enum import Enum
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
     EventType,
@@ -80,14 +81,22 @@ class RegisterSectionPublicIDEvent(
         return general_deserialization(RegisterSectionPublicID, cls, event, "public_id")
 
 
+class LMSInstructorType(Enum):
+    UNSPECIFIED = 0
+    TA = 1
+    FACULTY = 2
+
+
 class RegisterInstructorPublicIDEvent(
     PowerGraderEvent, ProtoWrapper[RegisterInstructorPublicID]
 ):
     public_id: str
     lms_id: str
-    user_type: str
+    user_type: LMSInstructorType
 
-    def __init__(self, public_id: str, lms_id: str, user_type: str) -> None:
+    def __init__(
+        self, public_id: str, lms_id: str, user_type: LMSInstructorType
+    ) -> None:
         proto = RegisterInstructorPublicID()
 
         if public_id is not None:

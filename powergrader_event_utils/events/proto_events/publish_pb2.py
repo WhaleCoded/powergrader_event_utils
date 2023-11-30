@@ -14,29 +14,31 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rpublish.proto\x12\x07publish\";\n\x16RegisterCoursePublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12\x0e\n\x06lms_id\x18\x02 \x01(\t\"<\n\x17RegisterSectionPublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12\x0e\n\x06lms_id\x18\x02 \x01(\t\"R\n\x1aRegisterInstructorPublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12\x0e\n\x06lms_id\x18\x02 \x01(\t\x12\x11\n\tuser_type\x18\x03 \x01(\t\"<\n\x17RegisterStudentPublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12\x0e\n\x06lms_id\x18\x02 \x01(\t\"X\n\x1aRegisterAssignmentPublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12\x0e\n\x06lms_id\x18\x02 \x01(\t\x12\x17\n\x0forganization_id\x18\x03 \x01(\t\"T\n\x16RegisterRubricPublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12\x0e\n\x06lms_id\x18\x02 \x01(\t\x12\x17\n\x0forganization_id\x18\x03 \x01(\t\"{\n\x1aRegisterSubmissionPublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12\x19\n\x11lms_assignment_id\x18\x02 \x01(\t\x12\x16\n\x0elms_student_id\x18\x03 \x01(\t\x12\x17\n\x0forganization_id\x18\x04 \x01(\t\"m\n\x0ePublishedToLMS\x12%\n\x1dpublic_id_of_published_entity\x18\x01 \x01(\t\x12&\n\x1eprivate_id_of_published_entity\x18\x02 \x01(\t\x12\x0c\n\x04when\x18\x03 \x01(\x04\"_\n\x13PublishedGradeToLMS\x12\x1c\n\x14public_submission_id\x18\x01 \x01(\t\x12\x1c\n\x14instructor_review_id\x18\x02 \x01(\t\x12\x0c\n\x04when\x18\x03 \x01(\x04\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\rpublish.proto\x12\x07publish\";\n\x16RegisterCoursePublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12\x0e\n\x06lms_id\x18\x02 \x01(\t\"<\n\x17RegisterSectionPublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12\x0e\n\x06lms_id\x18\x02 \x01(\t\"n\n\x1aRegisterInstructorPublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12*\n\x06lms_id\x18\x02 \x01(\x0e\x32\x1a.publish.LMSInstructorType\x12\x11\n\tuser_type\x18\x03 \x01(\t\"<\n\x17RegisterStudentPublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12\x0e\n\x06lms_id\x18\x02 \x01(\t\"X\n\x1aRegisterAssignmentPublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12\x0e\n\x06lms_id\x18\x02 \x01(\t\x12\x17\n\x0forganization_id\x18\x03 \x01(\t\"T\n\x16RegisterRubricPublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12\x0e\n\x06lms_id\x18\x02 \x01(\t\x12\x17\n\x0forganization_id\x18\x03 \x01(\t\"{\n\x1aRegisterSubmissionPublicID\x12\x11\n\tpublic_id\x18\x01 \x01(\t\x12\x19\n\x11lms_assignment_id\x18\x02 \x01(\t\x12\x16\n\x0elms_student_id\x18\x03 \x01(\t\x12\x17\n\x0forganization_id\x18\x04 \x01(\t\"m\n\x0ePublishedToLMS\x12%\n\x1dpublic_id_of_published_entity\x18\x01 \x01(\t\x12&\n\x1eprivate_id_of_published_entity\x18\x02 \x01(\t\x12\x0c\n\x04when\x18\x03 \x01(\x04\"_\n\x13PublishedGradeToLMS\x12\x1c\n\x14public_submission_id\x18\x01 \x01(\t\x12\x1c\n\x14instructor_review_id\x18\x02 \x01(\t\x12\x0c\n\x04when\x18\x03 \x01(\x04*8\n\x11LMSInstructorType\x12\x0e\n\nUNSECIFIED\x10\x00\x12\x06\n\x02TA\x10\x01\x12\x0b\n\x07\x46\x41\x43ULTY\x10\x02\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'publish_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
+  _globals['_LMSINSTRUCTORTYPE']._serialized_start=832
+  _globals['_LMSINSTRUCTORTYPE']._serialized_end=888
   _globals['_REGISTERCOURSEPUBLICID']._serialized_start=26
   _globals['_REGISTERCOURSEPUBLICID']._serialized_end=85
   _globals['_REGISTERSECTIONPUBLICID']._serialized_start=87
   _globals['_REGISTERSECTIONPUBLICID']._serialized_end=147
   _globals['_REGISTERINSTRUCTORPUBLICID']._serialized_start=149
-  _globals['_REGISTERINSTRUCTORPUBLICID']._serialized_end=231
-  _globals['_REGISTERSTUDENTPUBLICID']._serialized_start=233
-  _globals['_REGISTERSTUDENTPUBLICID']._serialized_end=293
-  _globals['_REGISTERASSIGNMENTPUBLICID']._serialized_start=295
-  _globals['_REGISTERASSIGNMENTPUBLICID']._serialized_end=383
-  _globals['_REGISTERRUBRICPUBLICID']._serialized_start=385
-  _globals['_REGISTERRUBRICPUBLICID']._serialized_end=469
-  _globals['_REGISTERSUBMISSIONPUBLICID']._serialized_start=471
-  _globals['_REGISTERSUBMISSIONPUBLICID']._serialized_end=594
-  _globals['_PUBLISHEDTOLMS']._serialized_start=596
-  _globals['_PUBLISHEDTOLMS']._serialized_end=705
-  _globals['_PUBLISHEDGRADETOLMS']._serialized_start=707
-  _globals['_PUBLISHEDGRADETOLMS']._serialized_end=802
+  _globals['_REGISTERINSTRUCTORPUBLICID']._serialized_end=259
+  _globals['_REGISTERSTUDENTPUBLICID']._serialized_start=261
+  _globals['_REGISTERSTUDENTPUBLICID']._serialized_end=321
+  _globals['_REGISTERASSIGNMENTPUBLICID']._serialized_start=323
+  _globals['_REGISTERASSIGNMENTPUBLICID']._serialized_end=411
+  _globals['_REGISTERRUBRICPUBLICID']._serialized_start=413
+  _globals['_REGISTERRUBRICPUBLICID']._serialized_end=497
+  _globals['_REGISTERSUBMISSIONPUBLICID']._serialized_start=499
+  _globals['_REGISTERSUBMISSIONPUBLICID']._serialized_end=622
+  _globals['_PUBLISHEDTOLMS']._serialized_start=624
+  _globals['_PUBLISHEDTOLMS']._serialized_end=733
+  _globals['_PUBLISHEDGRADETOLMS']._serialized_start=735
+  _globals['_PUBLISHEDGRADETOLMS']._serialized_end=830
 # @@protoc_insertion_point(module_scope)

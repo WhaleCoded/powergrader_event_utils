@@ -1,6 +1,12 @@
 syntax = "proto3";
 package publish;
 
+enum LMSInstructorType {
+    UNSECIFIED = 0;
+    TA = 1;
+    FACULTY = 2;
+}
+
 message RegisterCoursePublicID {
     string public_id = 1;
     string lms_id = 2;
@@ -13,7 +19,7 @@ message RegisterSectionPublicID {
 
 message RegisterInstructorPublicID {
     string public_id = 1;
-    string lms_id = 2;
+    LMSInstructorType lms_id = 2;
     string user_type = 3;
 }
 
