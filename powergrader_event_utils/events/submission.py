@@ -77,7 +77,6 @@ class SubmissionEvent(PowerGraderEvent, ProtoWrapper[Submission]):
     id: str
     student_id: str
     assignment_id: str
-    submission_date: int
     submission_files_id: str
     when: int
 
@@ -85,7 +84,6 @@ class SubmissionEvent(PowerGraderEvent, ProtoWrapper[Submission]):
         self,
         student_id: str,
         assignment_id: str,
-        submission_date: int,
         submission_files_id: str,
         when: int,
     ) -> None:
@@ -96,9 +94,6 @@ class SubmissionEvent(PowerGraderEvent, ProtoWrapper[Submission]):
 
         if assignment_id is not None:
             proto.assignment_id = assignment_id
-
-        if submission_date is not None:
-            proto.submission_date = submission_date
 
         if submission_files_id is not None:
             proto.submission_files_id = submission_files_id
