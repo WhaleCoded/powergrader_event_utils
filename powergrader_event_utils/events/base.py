@@ -29,13 +29,13 @@ class EventType(StrEnum):
     DEAD_LETTER = "DeadLetterEvent"
 
     # Grade events
-    AI_CRITERIA_GRADING_STARTED = "AICriteriaGradingStartedEvent"
+    AI_CRITERION_GRADING_STARTED = "AICriterionGradingStartedEvent"
     GRADING_METHOD = "GradingMethodEvent"
-    AI_CRITERIA_GRADE = "AICriteriaGradeEvent"
-    AI_INFERRED_CRITERIA_GRADE = "AIInferredCriteriaGradeEvent"
-    INSTRUCTOR_CRITERIA_GRADE = "InstructorCriteriaGradeEvent"
-    INSTRUCTOR_OVERRIDE_CRITERIA_GRADE = "InstructorOverrideCriteriaGradeEvent"
-    CRITERIA_GRADE_EMBEDDING = "CriteriaGradeEmbeddingEvent"
+    AI_CRITERION_GRADE = "AICriterionGradeEvent"
+    AI_INFERRED_CRITERION_GRADE = "AIInferredCriterionGradeEvent"
+    INSTRUCTOR_CRITERION_GRADE = "InstructorCriterionGradeEvent"
+    INSTRUCTOR_OVERRIDE_CRITERION_GRADE = "InstructorOverrideCriterionGradeEvent"
+    CRITERION_GRADE_EMBEDDING = "CriterionGradeEmbeddingEvent"
     INSTRUCTOR_SUBMISSION_GRADE_APPROVAL = "InstructorSubmissionGradeApprovalEvent"
 
     # Publish events
