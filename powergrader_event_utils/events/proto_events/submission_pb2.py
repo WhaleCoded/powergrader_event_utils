@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10submission.proto\x12\nsubmission\"\xb4\x01\n\nSubmission\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x1b\n\x13student_public_uuid\x18\x03 \x01(\t\x12\x1f\n\x17\x61ssignment_version_uuid\x18\x04 \x01(\t\x12\"\n\x1asubmission_file_group_uuid\x18\x05 \x01(\t\x12\x19\n\x11version_timestamp\x18\x06 \x01(\x04\"o\n\x13SubmissionFileGroup\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x1b\n\x13student_public_uuid\x18\x02 \x01(\t\x12-\n\x0c\x66ile_content\x18\x03 \x03(\x0b\x32\x17.submission.FileContent\"D\n\x0b\x46ileContent\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x11\n\tfile_type\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\x0c\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10submission.proto\x12\nsubmission\"\xb4\x01\n\nSubmission\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x1b\n\x13student_public_uuid\x18\x03 \x01(\t\x12\x1f\n\x17\x61ssignment_version_uuid\x18\x04 \x01(\t\x12\"\n\x1asubmission_file_group_uuid\x18\x05 \x01(\t\x12\x19\n\x11version_timestamp\x18\x06 \x01(\x04\"p\n\x13SubmissionFileGroup\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x1b\n\x13student_public_uuid\x18\x02 \x01(\t\x12.\n\rfile_contents\x18\x03 \x03(\x0b\x32\x17.submission.FileContent\"D\n\x0b\x46ileContent\x12\x11\n\tfile_name\x18\x01 \x01(\t\x12\x11\n\tfile_type\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\x0c\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'submission_pb2', globals())
@@ -23,7 +23,7 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _SUBMISSION._serialized_start=33
   _SUBMISSION._serialized_end=213
   _SUBMISSIONFILEGROUP._serialized_start=215
-  _SUBMISSIONFILEGROUP._serialized_end=326
-  _FILECONTENT._serialized_start=328
-  _FILECONTENT._serialized_end=396
+  _SUBMISSIONFILEGROUP._serialized_end=327
+  _FILECONTENT._serialized_start=329
+  _FILECONTENT._serialized_end=397
 # @@protoc_insertion_point(module_scope)

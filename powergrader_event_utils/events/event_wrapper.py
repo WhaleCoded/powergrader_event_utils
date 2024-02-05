@@ -15,145 +15,15 @@ from powergrader_event_utils.events.utils import ProtoWrapper, general_deseriali
 def convert_event_type_to_member_name(event_type: EventType) -> str:
     if event_type == EventType.RETRY or event_type == EventType.DEAD_LETTER:
         raise ValueError("You can put a retry or dead letter event into a retry event.")
-    elif event_type == EventType.ASSIGNMENT:
-        member_name = "assignment"
-    elif event_type == EventType.RUBRIC:
-        member_name = "rubric"
-    elif event_type == EventType.COURSE:
-        member_name = "course"
-    elif event_type == EventType.SECTION:
-        member_name = "section"
-    elif event_type == EventType.ORGANIZATION:
-        member_name = "organization"
-    elif event_type == EventType.CRITERIA_GRADE:
-        member_name = "criteria_grade"
-    elif event_type == EventType.CRITERIA_GRADE_EMBEDDING:
-        member_name = "criteria_grade_embedding"
-    elif event_type == EventType.ASSESSMENT_SIMILARITY:
-        member_name = "assessment_similarity"
-    elif event_type == EventType.STUDENT_REQUESTED_REGRADE:
-        member_name = "student_requested_regrade"
-    elif event_type == EventType.GRADING_STARTED:
-        member_name = "grading_started"
-    elif event_type == EventType.INSTRUCTOR_REVIEW:
-        member_name = "instructor_review"
-    elif event_type == EventType.COURSE_PUBLIC_ID:
-        member_name = "register_course_public_id"
-    elif event_type == EventType.SECTION_PUBLIC_ID:
-        member_name = "register_section_public_id"
-    elif event_type == EventType.INSTRUCTOR_PUBLIC_ID:
-        member_name = "register_instructor_public_id"
-    elif event_type == EventType.STUDENT_PUBLIC_ID:
-        member_name = "register_student_public_id"
-    elif event_type == EventType.ASSIGNMENT_PUBLIC_ID:
-        member_name = "register_assignment_public_id"
-    elif event_type == EventType.RUBRIC_PUBLIC_ID:
-        member_name = "register_rubric_public_id"
-    elif event_type == EventType.SUBMISSION_PUBLIC_ID:
-        member_name = "register_submission_public_id"
-    elif event_type == EventType.PUBLISHED_TO_LMS:
-        member_name = "published_to_lms"
-    elif event_type == EventType.PUBLISHED_GRADE_TO_LMS:
-        member_name = "published_grade_to_lms"
-    elif event_type == EventType.PUBLIC_ID_REFERENCE_CHANGED:
-        member_name = "public_id_reference_change"
-    elif event_type == EventType.ASSIGNMENT_ADDED_TO_COURSE:
-        member_name = "assignment_added_to_course"
-    elif event_type == EventType.ASSIGNMENT_REMOVED_FROM_COURSE:
-        member_name = "assignment_removed_from_course"
-    elif event_type == EventType.STUDENT_ADDED_TO_SECTION:
-        member_name = "student_added_to_section"
-    elif event_type == EventType.STUDENT_REMOVED_FROM_SECTION:
-        member_name = "student_removed_from_section"
-    elif event_type == EventType.INSTRUCTOR_ADDED_TO_COURSE:
-        member_name = "instructor_added_to_course"
-    elif event_type == EventType.INSTRUCTOR_REMOVED_FROM_COURSE:
-        member_name = "instructor_removed_from_course"
-    elif event_type == EventType.SUBMISSION:
-        member_name = "submission"
-    elif event_type == EventType.SUBMISSION_FILES:
-        member_name = "submission_files"
-    elif event_type == EventType.STUDENT:
-        member_name = "student"
-    elif event_type == EventType.INSTRUCTOR:
-        member_name = "instructor"
-    else:
-        raise ValueError(
-            "The event type provided can not be packaged into a retry event."
-        )
 
-    return member_name
+    # CONVERT TO SNAKE CASE
+    return event_type.name.lower()
 
 
 def convert_member_name_to_event_type(member_name: str) -> EventType:
-    if member_name == "assignment":
-        event_type = EventType.ASSIGNMENT
-    elif member_name == "rubric":
-        event_type = EventType.RUBRIC
-    elif member_name == "course":
-        event_type = EventType.COURSE
-    elif member_name == "section":
-        event_type = EventType.SECTION
-    elif member_name == "organization":
-        event_type = EventType.ORGANIZATION
-    elif member_name == "criteria_grade":
-        event_type = EventType.CRITERIA_GRADE
-    elif member_name == "criteria_grade_embedding":
-        event_type = EventType.CRITERIA_GRADE_EMBEDDING
-    elif member_name == "assessment_grade_similarity":
-        event_type = EventType.ASSESSMENT_SIMILARITY
-    elif member_name == "student_requested_regrade":
-        event_type = EventType.STUDENT_REQUESTED_REGRADE
-    elif member_name == "grading_started":
-        event_type = EventType.GRADING_STARTED
-    elif member_name == "instructor_review":
-        event_type = EventType.INSTRUCTOR_REVIEW
-    elif member_name == "register_course_public_id":
-        event_type = EventType.COURSE_PUBLIC_ID
-    elif member_name == "register_section_public_id":
-        event_type = EventType.SECTION_PUBLIC_ID
-    elif member_name == "register_instructor_public_id":
-        event_type = EventType.INSTRUCTOR_PUBLIC_ID
-    elif member_name == "register_student_public_id":
-        event_type = EventType.STUDENT_PUBLIC_ID
-    elif member_name == "register_assignment_public_id":
-        event_type = EventType.ASSIGNMENT_PUBLIC_ID
-    elif member_name == "register_rubric_public_id":
-        event_type = EventType.RUBRIC_PUBLIC_ID
-    elif member_name == "register_submission_public_id":
-        event_type = EventType.SUBMISSION_PUBLIC_ID
-    elif member_name == "published_to_lms":
-        event_type = EventType.PUBLISHED_TO_LMS
-    elif member_name == "published_grade_to_lms":
-        event_type = EventType.PUBLISHED_GRADE_TO_LMS
-    elif member_name == "public_id_reference_change":
-        event_type = EventType.PUBLIC_ID_REFERENCE_CHANGED
-    elif member_name == "assignment_added_to_course":
-        event_type = EventType.ASSIGNMENT_ADDED_TO_COURSE
-    elif member_name == "assignment_removed_from_course":
-        event_type = EventType.ASSIGNMENT_REMOVED_FROM_COURSE
-    elif member_name == "student_added_to_section":
-        event_type = EventType.STUDENT_ADDED_TO_SECTION
-    elif member_name == "student_removed_from_section":
-        event_type = EventType.STUDENT_REMOVED_FROM_SECTION
-    elif member_name == "instructor_added_to_course":
-        event_type = EventType.INSTRUCTOR_ADDED_TO_COURSE
-    elif member_name == "instructor_removed_from_course":
-        event_type = EventType.INSTRUCTOR_REMOVED_FROM_COURSE
-    elif member_name == "submission":
-        event_type = EventType.SUBMISSION
-    elif member_name == "submission_files":
-        event_type = EventType.SUBMISSION_FILES
-    elif member_name == "student":
-        event_type = EventType.STUDENT
-    elif member_name == "instructor":
-        event_type = EventType.INSTRUCTOR
-    else:
-        raise ValueError(
-            "The member name provided does not correspond to a valid event type."
-        )
-
-    return event_type
+    # convert the member to screaming snake case
+    screaming_snake_case = member_name.upper()
+    return EventType.__getattribute__(screaming_snake_case)
 
 
 class RetryEvent(PowerGraderEvent):

@@ -29,21 +29,23 @@ class EventType(StrEnum):
     DEAD_LETTER = "DeadLetterEvent"
 
     # Grade events
-    CRITERIA_GRADE = "CriteriaGradeEvent"
-    CRITERIA_GRADE_EMBEDDING = "CriteriaGradeEmbeddingEvent"
-    ASSESSMENT_SIMILARITY = "AssessmentSimilarityEvent"
-    STUDENT_REQUESTED_REGRADE = "StudentRequestedRegradeEvent"
-    GRADING_STARTED = "GradingStartedEvent"
-    INSTRUCTOR_REVIEW = "InstructorReviewEvent"
+    AI_CRITERION_GRADING_STARTED = "AICriterionGradingStartedEvent"
+    GRADING_METHOD = "GradingMethodEvent"
+    AI_CRITERION_GRADE = "AICriterionGradeEvent"
+    AI_INFERRED_CRITERION_GRADE = "AIInferredCriterionGradeEvent"
+    INSTRUCTOR_CRITERION_GRADE = "InstructorCriterionGradeEvent"
+    INSTRUCTOR_OVERRIDE_CRITERION_GRADE = "InstructorOverrideCriterionGradeEvent"
+    CRITERION_GRADE_EMBEDDING = "CriterionGradeEmbeddingEvent"
+    INSTRUCTOR_SUBMISSION_GRADE_APPROVAL = "InstructorSubmissionGradeApprovalEvent"
 
     # Publish events
-    COURSE_PUBLIC_ID = "RegisterCoursePublicIDEvent"
-    SECTION_PUBLIC_ID = "RegisterSectionPublicIDEvent"
-    INSTRUCTOR_PUBLIC_ID = "RegisterInstructorPublicIDEvent"
-    STUDENT_PUBLIC_ID = "RegisterStudentPublicIDEvent"
-    ASSIGNMENT_PUBLIC_ID = "RegisterAssignmentPublicIDEvent"
-    RUBRIC_PUBLIC_ID = "RegisterRubricPublicIDEvent"
-    SUBMISSION_PUBLIC_ID = "RegisterSubmissionPublicIDEvent"
+    REGISTER_COURSE_PUBLIC_UUID = "RegisterCoursePublicUUIDEvent"
+    REGISTER_SECTION_PUBLIC_UUID = "RegisterSectionPublicUUIDEvent"
+    REGISTER_INSTRUCTOR_PUBLIC_UUID = "RegisterInstructorPublicUUIDEvent"
+    REGISTER_STUDENT_PUBLIC_UUID = "RegisterStudentPublicUUIDEvent"
+    REGISTER_ASSIGNMENT_PUBLIC_UUID = "RegisterAssignmentPublicUUIDEvent"
+    REGISTER_RUBRIC_PUBLIC_UUID = "RegisterRubricPublicUUIDEvent"
+    REGISTER_SUBMISSION_PUBLIC_UUID = "RegisterSubmissionPublicUUIDEvent"
     PUBLISHED_TO_LMS = "PublishedToLMSEvent"
     PUBLISHED_GRADE_TO_LMS = "PublishedGradeToLMSEvent"
 
@@ -54,11 +56,10 @@ class EventType(StrEnum):
     STUDENT_REMOVED_FROM_SECTION = "StudentRemovedFromSectionEvent"
     INSTRUCTOR_ADDED_TO_COURSE = "InstructorAddedToCourseEvent"
     INSTRUCTOR_REMOVED_FROM_COURSE = "InstructorRemovedFromCourseEvent"
-    PUBLIC_ID_REFERENCE_CHANGED = "PublicIDReferenceChanged"
 
     # Submission events
     SUBMISSION = "SubmissionEvent"
-    SUBMISSION_FILES = "SubmissionFilesEvent"
+    SUBMISSION_GROUP_FILE = "SubmissionGroupFileEvent"
 
     # User events
     STUDENT = "StudentEvent"
