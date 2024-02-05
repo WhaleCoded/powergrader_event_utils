@@ -2,7 +2,6 @@ from typing import Type
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
-    generate_event_id,
     EventType,
     deserialize_powergrader_event,
 )

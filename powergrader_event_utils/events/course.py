@@ -1,9 +1,8 @@
-from typing import Dict, List
+from dataclasses import dataclass
 from uuid import uuid4
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
-    generate_event_id,
     EventType,
 )
 from powergrader_event_utils.events.proto_events.course_pb2 import (
@@ -11,53 +10,39 @@ from powergrader_event_utils.events.proto_events.course_pb2 import (
     Section,
     Organization,
 )
-from powergrader_event_utils.events.utils import ProtoWrapper, general_deserialization
+from powergrader_event_utils.events.utils import (
+    ProtoWrapper,
+    general_deserialization,
+    general_proto_type_init,
+)
 
 
+@dataclass
 class CourseEvent(PowerGraderEvent, ProtoWrapper[Course]):
-    public_id: str
-    id: str
-    organization_id: str
-    instructor_id: str
+    public_uuid: str
+    version_uuid: str
+    instructor_public_uuid: str
     name: str
     description: str
-    when: int
+    version_timestamp: int
 
     def __init__(
         self,
-        organization_id: str,
-        instructor_id: str,
+        public_uuid: str,
+        instructor_public_uuid: str,
         name: str,
         description: str,
-        when: int,
-        public_id: str = None,
+        version_timestamp: int,
     ) -> None:
-        proto = Course()
-
-        if organization_id is not None:
-            proto.organization_id = organization_id
-
-        if instructor_id is not None:
-            proto.instructor_id = instructor_id
-
-        if name is not None:
-            proto.name = name
-
-        if description is not None:
-            proto.description = description
-
-        if when is not None:
-            proto.when = when
-
-        if public_id is None:
-            public_id = str(uuid4())
-        proto.public_id = public_id
-
-        proto.id = generate_event_id(self.__class__.__name__)
-
-        ProtoWrapper.__init__(self, Course, proto)
-        PowerGraderEvent.__init__(
-            self, key=proto.public_id, event_type=self.__class__.__name__
+        general_proto_type_init(
+            self,
+            Course,
+            "version_uuid",
+            public_uuid=public_uuid,
+            instructor_public_uuid=instructor_public_uuid,
+            name=name,
+            description=description,
+            version_timestamp=version_timestamp,
         )
 
     def _package_into_proto(self) -> Course:
@@ -69,48 +54,34 @@ class CourseEvent(PowerGraderEvent, ProtoWrapper[Course]):
 
     @classmethod
     def deserialize(cls, event: bytes) -> "CourseEvent":
-        return general_deserialization(Course, cls, event, "public_id")
+        return general_deserialization(Course, cls, event, "version_uuid")
 
 
 class SectionEvent(PowerGraderEvent, ProtoWrapper[Section]):
-    public_id: str
-    id: str
-    course_id: str
+    public_uuid: str
+    version_uuid: str
+    course_public_uuid: str
     name: str
-    is_active: bool
-    when: int
+    closed: bool
+    version_timestamp: int
 
     def __init__(
         self,
-        course_id: str,
+        public_uuid: str,
+        course_public_uuid: str,
         name: str,
-        is_active: bool,
-        when: int,
-        public_id: str = None,
+        closed: bool,
+        version_timestamp: int,
     ) -> None:
-        proto = Section()
-
-        if course_id is not None:
-            proto.course_id = course_id
-
-        if name is not None:
-            proto.name = name
-
-        if is_active is not None:
-            proto.is_active = is_active
-
-        if when is not None:
-            proto.when = when
-
-        if public_id is None:
-            public_id = str(uuid4())
-        proto.public_id = public_id
-
-        proto.id = generate_event_id(self.__class__.__name__)
-
-        ProtoWrapper.__init__(self, Section, proto)
-        PowerGraderEvent.__init__(
-            self, key=proto.public_id, event_type=self.__class__.__name__
+        general_proto_type_init(
+            self,
+            Section,
+            "version_uuid",
+            public_uuid=public_uuid,
+            course_public_uuid=course_public_uuid,
+            name=name,
+            closed=closed,
+            version_timestamp=version_timestamp,
         )
 
     def _package_into_proto(self) -> Section:
@@ -122,28 +93,23 @@ class SectionEvent(PowerGraderEvent, ProtoWrapper[Section]):
 
     @classmethod
     def deserialize(cls, event: bytes) -> "SectionEvent":
-        return general_deserialization(Section, cls, event, "public_id")
+        return general_deserialization(Section, cls, event, "version_uuid")
 
 
 class OrganizationEvent(PowerGraderEvent, ProtoWrapper[Organization]):
-    id: str
+    public_uuid: str
+    version_uuid: str
     name: str
-    code: str
+    version_timestamp: int
 
-    def __init__(self, name: str, code: str) -> None:
-        proto = Organization()
-
-        if name is not None:
-            proto.name = name
-
-        if code is not None:
-            proto.code = code
-
-        proto.id = generate_event_id(self.__class__.__name__)
-
-        ProtoWrapper.__init__(self, Organization, proto)
-        PowerGraderEvent.__init__(
-            self, key=proto.id, event_type=self.__class__.__name__
+    def __init__(self, public_uuid: str, name: str, version_timestamp: int) -> None:
+        general_proto_type_init(
+            self,
+            Organization,
+            "version_uuid",
+            public_uuid=public_uuid,
+            name=name,
+            version_timestamp=version_timestamp,
         )
 
     def _package_into_proto(self) -> Organization:
@@ -155,4 +121,4 @@ class OrganizationEvent(PowerGraderEvent, ProtoWrapper[Organization]):
 
     @classmethod
     def deserialize(cls, event: bytes) -> "OrganizationEvent":
-        return general_deserialization(Organization, cls, event, "id")
+        return general_deserialization(Organization, cls, event, "version_uuid")

@@ -3,7 +3,6 @@ from uuid import uuid4
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
-    generate_event_id,
     EventType,
 )
 from powergrader_event_utils.events.proto_events.user_pb2 import (
