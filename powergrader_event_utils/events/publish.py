@@ -97,14 +97,18 @@ class RegisterInstructorPublicUUIDEvent(
     public_uuid: str
     lms_id: str
     user_type: LMSInstructorType
+    organization_public_uuid: str
 
-    def __init__(self, lms_id: str, user_type: LMSInstructorType) -> None:
+    def __init__(
+        self, lms_id: str, user_type: LMSInstructorType, organization_public_uuid: str
+    ) -> None:
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=RegisterInstructorPublicUUID,
             key_field_name="public_uuid",
             lms_id=lms_id,
             user_type=user_type,
+            organization_public_uuid=organization_public_uuid,
         )
 
     def _package_into_proto(self) -> RegisterInstructorPublicUUID:
