@@ -9,7 +9,7 @@ from powergrader_event_utils.events.proto_events.assignment_pb2 import (
     Assignment,
     Rubric,
     RubricCriterion as RubricCriterionProto,
-    CriteriaLevel as CriteriaLevelProto,
+    CriterionLevel as CriterionLevelProto,
 )
 
 from powergrader_event_utils.events.utils import (
@@ -37,9 +37,9 @@ class AssignmentEvent(PowerGraderEvent, ProtoWrapper[Assignment]):
         version_timestamp: int,
     ) -> None:
         general_proto_type_init(
-            self,
-            Assignment,
-            "version_uuid",
+            object_to_initialize=self,
+            proto_type=Assignment,
+            key_field_name="version_uuid",
             public_uuid=public_uuid,
             rubric_version_uuid=rubric_version_uuid,
             name=name,
@@ -60,13 +60,18 @@ class AssignmentEvent(PowerGraderEvent, ProtoWrapper[Assignment]):
 
 
 @dataclass
-class CriteriaLevel(ProtoWrapper[CriteriaLevelProto]):
+class CriterionLevel(ProtoWrapper[CriterionLevelProto]):
     score: int
     description: str
 
     def __init__(self, score: int, description: str) -> None:
         general_proto_type_init(
-            self, CriteriaLevelProto, None, score=score, description=description
+            object_to_initialize=self,
+            proto_type=CriterionLevelProto,
+            key_field_name=None,
+            is_powergrader_event=False,
+            score=score,
+            description=description,
         )
 
 
@@ -74,11 +79,17 @@ class CriteriaLevel(ProtoWrapper[CriteriaLevelProto]):
 class RubricCriterion(ProtoWrapper[RubricCriterionProto]):
     uuid: str
     name: str
-    levels: List[CriteriaLevel]
+    levels: List[CriterionLevel]
 
-    def __init__(self, uuid: str, name: str, levels: List[CriteriaLevel]) -> None:
+    def __init__(self, uuid: str, name: str, levels: List[CriterionLevel]) -> None:
         general_proto_type_init(
-            self, RubricCriterionProto, None, uuid=uuid, name=name, levels=levels
+            object_to_initialize=self,
+            proto_type=RubricCriterionProto,
+            key_field_name="uuid",
+            is_powergrader_event=False,
+            uuid=uuid,
+            name=name,
+            levels=levels,
         )
 
 
@@ -100,9 +111,9 @@ class RubricEvent(PowerGraderEvent, ProtoWrapper[Rubric]):
         version_timestamp: int,
     ) -> None:
         general_proto_type_init(
-            self,
-            Rubric,
-            "version_uuid",
+            object_to_initialize=self,
+            proto_type=Rubric,
+            key_field_name="version_uuid",
             public_uuid=public_uuid,
             instructor_public_uuid=instructor_public_uuid,
             name=name,
@@ -128,7 +139,7 @@ if __name__ == "__main__":
         instructor_public_uuid="123",
         name="test",
         rubric_criteria={
-            "123": RubricCriterion("123", "test", [CriteriaLevel(1, "test")])
+            "123": RubricCriterion("123", "test", [CriterionLevel(1, "test")])
         },
         version_timestamp=123,
     )

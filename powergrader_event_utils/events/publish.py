@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from enum import Enum
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
@@ -21,6 +22,7 @@ from powergrader_event_utils.events.utils import (
 )
 
 
+@dataclass
 class RegisterCoursePublicUUIDEvent(
     PowerGraderEvent, ProtoWrapper[RegisterCoursePublicUUID]
 ):
@@ -28,14 +30,11 @@ class RegisterCoursePublicUUIDEvent(
     lms_id: str
     organization_public_uuid: str
 
-    def __init__(
-        self, public_uuid: str, lms_id: str, organization_public_uuid: str
-    ) -> None:
+    def __init__(self, lms_id: str, organization_public_uuid: str) -> None:
         general_proto_type_init(
-            self,
-            RegisterCoursePublicUUID,
-            "public_uuid",
-            public_uuid=public_uuid,
+            object_to_initialize=self,
+            proto_type=RegisterCoursePublicUUID,
+            key_field_name="public_uuid",
             lms_id=lms_id,
             organization_public_uuid=organization_public_uuid,
         )
@@ -54,6 +53,7 @@ class RegisterCoursePublicUUIDEvent(
         )
 
 
+@dataclass
 class RegisterSectionPublicUUIDEvent(
     PowerGraderEvent, ProtoWrapper[RegisterSectionPublicUUID]
 ):
@@ -61,14 +61,11 @@ class RegisterSectionPublicUUIDEvent(
     lms_id: str
     organization_public_uuid: str
 
-    def __init__(
-        self, public_uuid: str, lms_id: str, organization_public_uuid: str
-    ) -> None:
+    def __init__(self, lms_id: str, organization_public_uuid: str) -> None:
         general_proto_type_init(
-            self,
-            RegisterSectionPublicUUID,
-            "public_uuid",
-            public_uuid=public_uuid,
+            object_to_initialize=self,
+            proto_type=RegisterSectionPublicUUID,
+            key_field_name="public_uuid",
             lms_id=lms_id,
             organization_public_uuid=organization_public_uuid,
         )
@@ -93,6 +90,7 @@ class LMSInstructorType(Enum):
     FACULTY = 2
 
 
+@dataclass
 class RegisterInstructorPublicUUIDEvent(
     PowerGraderEvent, ProtoWrapper[RegisterInstructorPublicUUID]
 ):
@@ -100,14 +98,11 @@ class RegisterInstructorPublicUUIDEvent(
     lms_id: str
     user_type: LMSInstructorType
 
-    def __init__(
-        self, public_uuid: str, lms_id: str, user_type: LMSInstructorType
-    ) -> None:
+    def __init__(self, lms_id: str, user_type: LMSInstructorType) -> None:
         general_proto_type_init(
-            self,
-            RegisterInstructorPublicUUID,
-            "public_uuid",
-            public_uuid=public_uuid,
+            object_to_initialize=self,
+            proto_type=RegisterInstructorPublicUUID,
+            key_field_name="public_uuid",
             lms_id=lms_id,
             user_type=user_type,
         )
@@ -126,6 +121,7 @@ class RegisterInstructorPublicUUIDEvent(
         )
 
 
+@dataclass
 class RegisterStudentPublicUUIDEvent(
     PowerGraderEvent, ProtoWrapper[RegisterStudentPublicUUID]
 ):
@@ -133,14 +129,11 @@ class RegisterStudentPublicUUIDEvent(
     lms_id: str
     organization_public_uuid: str
 
-    def __init__(
-        self, public_uuid: str, lms_id: str, organization_public_uuid: str
-    ) -> None:
+    def __init__(self, lms_id: str, organization_public_uuid: str) -> None:
         general_proto_type_init(
-            self,
-            RegisterStudentPublicUUID,
-            "public_uuid",
-            public_uuid=public_uuid,
+            object_to_initialize=self,
+            proto_type=RegisterStudentPublicUUID,
+            key_field_name="public_uuid",
             lms_id=lms_id,
             organization_public_uuid=organization_public_uuid,
         )
@@ -159,6 +152,7 @@ class RegisterStudentPublicUUIDEvent(
         )
 
 
+@dataclass
 class RegisterAssignmentPublicUUIDEvent(
     PowerGraderEvent, ProtoWrapper[RegisterAssignmentPublicUUID]
 ):
@@ -166,14 +160,11 @@ class RegisterAssignmentPublicUUIDEvent(
     lms_id: str
     organization_public_uuid: str
 
-    def __init__(
-        self, public_uuid: str, lms_id: str, organization_public_uuid: str
-    ) -> None:
+    def __init__(self, lms_id: str, organization_public_uuid: str) -> None:
         general_proto_type_init(
-            self,
-            RegisterAssignmentPublicUUID,
-            "public_uuid",
-            public_uuid=public_uuid,
+            object_to_initialize=self,
+            proto_type=RegisterAssignmentPublicUUID,
+            key_field_name="public_uuid",
             lms_id=lms_id,
             organization_public_uuid=organization_public_uuid,
         )
@@ -188,25 +179,25 @@ class RegisterAssignmentPublicUUIDEvent(
     @classmethod
     def deserialize(cls, event: bytes) -> "RegisterAssignmentPublicUUIDEvent":
         return general_deserialization(
-            RegisterAssignmentPublicUUID, cls, event, "public_id"
+            RegisterAssignmentPublicUUID, cls, event, "public_uuid"
         )
 
 
+@dataclass
 class RegisterRubricPublicUUIDEvent(
     PowerGraderEvent, ProtoWrapper[RegisterRubricPublicUUID]
 ):
     public_uuid: str
     lms_id: str
-    organization_uuid: str
+    organization_public_uuid: str
 
-    def __init__(self, public_uuid: str, lms_id: str, organization_uuid: str) -> None:
+    def __init__(self, lms_id: str, organization_public_uuid: str) -> None:
         general_proto_type_init(
-            self,
-            RegisterRubricPublicUUID,
-            "public_uuid",
-            public_uuid=public_uuid,
+            object_to_initialize=self,
+            proto_type=RegisterRubricPublicUUID,
+            key_field_name="public_uuid",
             lms_id=lms_id,
-            organization_uuid=organization_uuid,
+            organization_public_uuid=organization_public_uuid,
         )
 
     def _package_into_proto(self) -> RegisterRubricPublicUUID:
@@ -219,10 +210,11 @@ class RegisterRubricPublicUUIDEvent(
     @classmethod
     def deserialize(cls, event: bytes) -> "RegisterRubricPublicUUIDEvent":
         return general_deserialization(
-            RegisterRubricPublicUUID, cls, event, "public_id"
+            RegisterRubricPublicUUID, cls, event, "public_uuid"
         )
 
 
+@dataclass
 class RegisterSubmissionPublicUUIDEvent(
     PowerGraderEvent, ProtoWrapper[RegisterSubmissionPublicUUID]
 ):
@@ -233,16 +225,14 @@ class RegisterSubmissionPublicUUIDEvent(
 
     def __init__(
         self,
-        public_uuid: str,
         lms_assignment_id: str,
         lms_student_id: str,
         organization_public_uuid: str,
     ) -> None:
         general_proto_type_init(
-            self,
-            RegisterSubmissionPublicUUID,
-            "public_uuid",
-            public_uuid=public_uuid,
+            object_to_initialize=self,
+            proto_type=RegisterSubmissionPublicUUID,
+            key_field_name="public_uuid",
             lms_assignment_id=lms_assignment_id,
             lms_student_id=lms_student_id,
             organization_public_uuid=organization_public_uuid,
@@ -262,6 +252,7 @@ class RegisterSubmissionPublicUUIDEvent(
         )
 
 
+@dataclass
 class PublishedToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedToLMS]):
     version_uuid_of_published_entity: str
     publish_timestamp: int
@@ -272,9 +263,9 @@ class PublishedToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedToLMS]):
         publish_timestamp: int,
     ) -> None:
         general_proto_type_init(
-            self,
-            PublishedToLMS,
-            "public_id_of_published_entity",
+            object_to_initialize=self,
+            proto_type=PublishedToLMS,
+            key_field_name="version_uuid_of_published_entity",
             version_uuid_of_published_entity=version_uuid_of_published_entity,
             publish_timestamp=publish_timestamp,
         )
@@ -289,22 +280,23 @@ class PublishedToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedToLMS]):
     @classmethod
     def deserialize(cls, event: bytes) -> "PublishedToLMSEvent":
         return general_deserialization(
-            PublishedToLMS, cls, event, "public_id_of_published_entity"
+            PublishedToLMS, cls, event, "version_uuid_of_published_entity"
         )
 
 
+@dataclass
 class PublishedGradeToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedGradeToLMS]):
-    instructor_review_version_uuid: str
+    instructor_grade_approval_version_uuid: str
     publish_timestamp: int
 
     def __init__(
-        self, instructor_review_version_uuid: str, publish_timestamp: int
+        self, instructor_grade_approval_version_uuid: str, publish_timestamp: int
     ) -> None:
         general_proto_type_init(
-            self,
-            PublishedGradeToLMS,
-            "public_submission_id",
-            instructor_review_version_uuid=instructor_review_version_uuid,
+            object_to_initialize=self,
+            proto_type=PublishedGradeToLMS,
+            key_field_name="instructor_grade_approval_version_uuid",
+            instructor_grade_approval_version_uuid=instructor_grade_approval_version_uuid,
             publish_timestamp=publish_timestamp,
         )
 
@@ -318,101 +310,92 @@ class PublishedGradeToLMSEvent(PowerGraderEvent, ProtoWrapper[PublishedGradeToLM
     @classmethod
     def deserialize(cls, event: bytes) -> "PublishedGradeToLMSEvent":
         return general_deserialization(
-            PublishedGradeToLMS, cls, event, "public_submission_id"
+            PublishedGradeToLMS, cls, event, "instructor_grade_approval_version_uuid"
         )
 
 
 if __name__ == "__main__":
-    register_course_public_id = RegisterCoursePublicUUIDEvent(
-        public_uuid="123",
-        lms_id="123",
-        organization_public_uuid="123",
+    register_course_public_uuid = RegisterCoursePublicUUIDEvent(
+        lms_id="lms_id", organization_public_uuid="organization_public_uuid"
     )
-    print(register_course_public_id.serialize())
+    print(register_course_public_uuid.serialize())
     print(
-        RegisterCoursePublicUUIDEvent.deserialize(register_course_public_id.serialize())
+        RegisterCoursePublicUUIDEvent.deserialize(
+            register_course_public_uuid.serialize()
+        )
     )
 
-    register_section_public_id = RegisterSectionPublicUUIDEvent(
-        public_uuid="123",
-        lms_id="123",
-        organization_public_uuid="123",
+    register_section_public_uuid = RegisterSectionPublicUUIDEvent(
+        lms_id="lms_id", organization_public_uuid="organization_public_uuid"
     )
-    print(register_section_public_id.serialize())
+    print(register_section_public_uuid.serialize())
     print(
         RegisterSectionPublicUUIDEvent.deserialize(
-            register_section_public_id.serialize()
+            register_section_public_uuid.serialize()
         )
     )
 
-    register_instructor_public_id = RegisterInstructorPublicUUIDEvent(
-        public_uuid="123",
-        lms_id="123",
-        user_type=LMSInstructorType.FACULTY,
+    register_instructor_public_uuid = RegisterInstructorPublicUUIDEvent(
+        lms_id="lms_id", user_type=LMSInstructorType.TA
     )
-    print(register_instructor_public_id.serialize())
+    print(register_instructor_public_uuid.serialize())
     print(
         RegisterInstructorPublicUUIDEvent.deserialize(
-            register_instructor_public_id.serialize()
+            register_instructor_public_uuid.serialize()
         )
     )
 
-    register_student_public_id = RegisterStudentPublicUUIDEvent(
-        public_uuid="123",
-        lms_id="123",
-        organization_public_uuid="123",
+    register_student_public_uuid = RegisterStudentPublicUUIDEvent(
+        lms_id="lms_id", organization_public_uuid="organization_public_uuid"
     )
-    print(register_student_public_id.serialize())
+    print(register_student_public_uuid.serialize())
     print(
         RegisterStudentPublicUUIDEvent.deserialize(
-            register_student_public_id.serialize()
+            register_student_public_uuid.serialize()
         )
     )
 
-    register_assignment_public_id = RegisterAssignmentPublicUUIDEvent(
-        public_uuid="123",
-        lms_id="123",
-        organization_public_uuid="123",
+    register_assignment_public_uuid = RegisterAssignmentPublicUUIDEvent(
+        lms_id="lms_id", organization_public_uuid="organization_public_uuid"
     )
-    print(register_assignment_public_id.serialize())
+    print(register_assignment_public_uuid.serialize())
     print(
         RegisterAssignmentPublicUUIDEvent.deserialize(
-            register_assignment_public_id.serialize()
+            register_assignment_public_uuid.serialize()
         )
     )
 
-    register_rubric_public_id = RegisterRubricPublicUUIDEvent(
-        public_uuid="123",
-        lms_id="123",
-        organization_uuid="123",
+    register_rubric_public_uuid = RegisterRubricPublicUUIDEvent(
+        lms_id="lms_id", organization_public_uuid="organization_public_uuid"
     )
-    print(register_rubric_public_id.serialize())
+    print(register_rubric_public_uuid.serialize())
     print(
-        RegisterRubricPublicUUIDEvent.deserialize(register_rubric_public_id.serialize())
+        RegisterRubricPublicUUIDEvent.deserialize(
+            register_rubric_public_uuid.serialize()
+        )
     )
 
-    register_submission_public_id = RegisterSubmissionPublicUUIDEvent(
-        public_uuid="123",
-        lms_assignment_id="123",
-        lms_student_id="123",
-        organization_public_uuid="123",
+    register_submission_public_uuid = RegisterSubmissionPublicUUIDEvent(
+        lms_assignment_id="lms_assignment_id",
+        lms_student_id="lms_student_id",
+        organization_public_uuid="organization_public_uuid",
     )
-    print(register_submission_public_id.serialize())
+    print(register_submission_public_uuid.serialize())
     print(
         RegisterSubmissionPublicUUIDEvent.deserialize(
-            register_submission_public_id.serialize()
+            register_submission_public_uuid.serialize()
         )
     )
 
     published_to_lms = PublishedToLMSEvent(
-        version_uuid_of_published_entity="123",
+        version_uuid_of_published_entity="version_uuid_of_published_entity",
         publish_timestamp=123,
     )
     print(published_to_lms.serialize())
     print(PublishedToLMSEvent.deserialize(published_to_lms.serialize()))
 
     published_grade_to_lms = PublishedGradeToLMSEvent(
-        instructor_review_version_uuid="123",
+        instructor_grade_approval_version_uuid="instructor_grade_approval_version_uuid",
         publish_timestamp=123,
     )
     print(published_grade_to_lms.serialize())

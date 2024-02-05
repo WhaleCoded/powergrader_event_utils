@@ -59,7 +59,7 @@ class EventType(StrEnum):
 
     # Submission events
     SUBMISSION = "SubmissionEvent"
-    SUBMISSION_GROUP_FILE = "SubmissionGroupFileEvent"
+    SUBMISSION_GROUP_FILE = "SubmissionFileGroupEvent"
 
     # User events
     STUDENT = "StudentEvent"

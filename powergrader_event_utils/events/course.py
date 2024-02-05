@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from uuid import uuid4
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
@@ -57,6 +56,7 @@ class CourseEvent(PowerGraderEvent, ProtoWrapper[Course]):
         return general_deserialization(Course, cls, event, "version_uuid")
 
 
+@dataclass
 class SectionEvent(PowerGraderEvent, ProtoWrapper[Section]):
     public_uuid: str
     version_uuid: str
@@ -96,6 +96,7 @@ class SectionEvent(PowerGraderEvent, ProtoWrapper[Section]):
         return general_deserialization(Section, cls, event, "version_uuid")
 
 
+@dataclass
 class OrganizationEvent(PowerGraderEvent, ProtoWrapper[Organization]):
     public_uuid: str
     version_uuid: str
@@ -122,3 +123,33 @@ class OrganizationEvent(PowerGraderEvent, ProtoWrapper[Organization]):
     @classmethod
     def deserialize(cls, event: bytes) -> "OrganizationEvent":
         return general_deserialization(Organization, cls, event, "version_uuid")
+
+
+if __name__ == "__main__":
+    course = CourseEvent(
+        public_uuid="public_uuid",
+        instructor_public_uuid="instructor_public_uuid",
+        name="name",
+        description="description",
+        version_timestamp=123,
+    )
+    print(course.serialize())
+    print(CourseEvent.deserialize(course.serialize()))
+
+    section = SectionEvent(
+        public_uuid="public_uuid",
+        course_public_uuid="course_public_uuid",
+        name="name",
+        closed=False,
+        version_timestamp=123,
+    )
+    print(section.serialize())
+    print(SectionEvent.deserialize(section.serialize()))
+
+    organization = OrganizationEvent(
+        public_uuid="public_uuid",
+        name="name",
+        version_timestamp=123,
+    )
+    print(organization.serialize())
+    print(OrganizationEvent.deserialize(organization.serialize()))

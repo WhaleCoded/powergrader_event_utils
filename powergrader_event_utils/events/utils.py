@@ -1,4 +1,4 @@
-from typing import Any, List, Mapping, Sequence, Dict, TypeVar, Generic, Type
+from typing import Any, Mapping, Sequence, Dict, TypeVar, Generic, Type
 from enum import Enum
 import sys
 
@@ -211,14 +211,23 @@ def general_proto_type_packing(proto_type: T, **kwargs: Dict[str, Any]) -> T:
                     )[
                         sub_key
                     ].CopyFrom(sub_value.proto)
+            elif isinstance(value, bytes):
+                setattr(proto, key, value)
             elif isinstance(value, Sequence) and not isinstance(value, str):
                 for sub_value in value:
+                    if hasattr(sub_value, "proto"):
+                        sub_value = sub_value.proto
                     getattr(
                         proto,
                         key,
-                    ).append(sub_value.proto)
+                    ).append(sub_value)
+            elif isinstance(value, Enum):
+                setattr(proto, key, value.value)
             else:
-                setattr(proto, key, value)
+                if hasattr(value, "proto"):
+                    getattr(proto, key).CopyFrom(value.proto)
+                else:
+                    setattr(proto, key, value)
 
     return proto
 
@@ -226,16 +235,16 @@ def general_proto_type_packing(proto_type: T, **kwargs: Dict[str, Any]) -> T:
 def general_proto_type_init(
     object_to_initialize,
     proto_type,
-    id_field_to_initialize: str,
+    key_field_name: str,
     is_powergrader_event: bool = True,
     **kwargs: Dict[str, Any],
 ):
     proto = general_proto_type_packing(proto_type, **kwargs)
 
-    if id_field_to_initialize is not None:
+    if not key_field_name in kwargs and key_field_name is not None:
         setattr(
             proto,
-            id_field_to_initialize,
+            key_field_name,
             generate_event_uuid(object_to_initialize.__class__.__name__),
         )
 
@@ -243,7 +252,7 @@ def general_proto_type_init(
     if is_powergrader_event:
         PowerGraderEvent.__init__(
             object_to_initialize,
-            key=getattr(proto, id_field_to_initialize),
+            key=getattr(proto, key_field_name),
             event_type=object_to_initialize.__class__.__name__,
         )
 

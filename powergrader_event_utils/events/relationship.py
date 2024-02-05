@@ -1,4 +1,4 @@
-from typing import Dict, List
+from dataclasses import dataclass
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
@@ -20,6 +20,7 @@ from powergrader_event_utils.events.utils import (
 )
 
 
+@dataclass
 class AssignmentAddedToCourseEvent(
     PowerGraderEvent, ProtoWrapper[AssignmentAddedToCourse]
 ):
@@ -31,9 +32,9 @@ class AssignmentAddedToCourseEvent(
         self, assignment_public_uuid: str, course_public_uuid: str, timestamp: int
     ) -> None:
         general_proto_type_init(
-            self,
-            AssignmentAddedToCourse,
-            None,
+            object_to_initialize=self,
+            proto_type=AssignmentAddedToCourse,
+            key_field_name="assignment_public_uuid",
             assignment_public_uuid=assignment_public_uuid,
             course_public_uuid=course_public_uuid,
             timestamp=timestamp,
@@ -53,6 +54,7 @@ class AssignmentAddedToCourseEvent(
         )
 
 
+@dataclass
 class AssignmentRemovedFromCourseEvent(
     PowerGraderEvent, ProtoWrapper[AssignmentRemovedFromCourse]
 ):
@@ -64,9 +66,9 @@ class AssignmentRemovedFromCourseEvent(
         self, assignment_public_uuid: str, course_public_uuid: str, timestamp: int
     ):
         general_proto_type_init(
-            self,
-            AssignmentRemovedFromCourse,
-            None,
+            object_to_initialize=self,
+            proto_type=AssignmentRemovedFromCourse,
+            key_field_name="assignment_public_uuid",
             assignment_public_uuid=assignment_public_uuid,
             course_public_uuid=course_public_uuid,
             timestamp=timestamp,
@@ -86,6 +88,7 @@ class AssignmentRemovedFromCourseEvent(
         )
 
 
+@dataclass
 class StudentAddedToSectionEvent(PowerGraderEvent, ProtoWrapper[StudentAddedToSection]):
     student_public_uuid: str
     section_public_uuid: str
@@ -95,9 +98,9 @@ class StudentAddedToSectionEvent(PowerGraderEvent, ProtoWrapper[StudentAddedToSe
         self, student_public_uuid: str, section_public_uuid: str, timestamp: int
     ):
         general_proto_type_init(
-            self,
-            StudentAddedToSection,
-            None,
+            object_to_initialize=self,
+            proto_type=StudentAddedToSection,
+            key_field_name="student_public_uuid",
             student_public_uuid=student_public_uuid,
             section_public_uuid=section_public_uuid,
             timestamp=timestamp,
@@ -117,6 +120,7 @@ class StudentAddedToSectionEvent(PowerGraderEvent, ProtoWrapper[StudentAddedToSe
         )
 
 
+@dataclass
 class StudentRemovedFromSectionEvent(
     PowerGraderEvent, ProtoWrapper[StudentRemovedFromSection]
 ):
@@ -128,9 +132,9 @@ class StudentRemovedFromSectionEvent(
         self, student_public_uuid: str, section_public_uuid: str, timestamp: int
     ):
         general_proto_type_init(
-            self,
-            StudentRemovedFromSection,
-            None,
+            object_to_initialize=self,
+            proto_type=StudentRemovedFromSection,
+            key_field_name="student_public_uuid",
             student_public_uuid=student_public_uuid,
             section_public_uuid=section_public_uuid,
             timestamp=timestamp,
@@ -150,6 +154,7 @@ class StudentRemovedFromSectionEvent(
         )
 
 
+@dataclass
 class InstructorAddedToCourseEvent(
     PowerGraderEvent, ProtoWrapper[InstructorAddedToCourse]
 ):
@@ -161,9 +166,9 @@ class InstructorAddedToCourseEvent(
         self, instructor_public_uuid: str, course_public_uuid: str, timestamp: int
     ):
         general_proto_type_init(
-            self,
-            InstructorAddedToCourse,
-            None,
+            object_to_initialize=self,
+            proto_type=InstructorAddedToCourse,
+            key_field_name="instructor_public_uuid",
             instructor_public_uuid=instructor_public_uuid,
             course_public_uuid=course_public_uuid,
             timestamp=timestamp,
@@ -183,6 +188,7 @@ class InstructorAddedToCourseEvent(
         )
 
 
+@dataclass
 class InstructorRemovedFromCourseEvent(
     PowerGraderEvent, ProtoWrapper[InstructorRemovedFromCourse]
 ):
@@ -194,9 +200,9 @@ class InstructorRemovedFromCourseEvent(
         self, instructor_public_uuid: str, course_public_uuid: str, timestamp: int
     ):
         general_proto_type_init(
-            self,
-            InstructorRemovedFromCourse,
-            None,
+            object_to_initialize=self,
+            proto_type=InstructorRemovedFromCourse,
+            key_field_name="instructor_public_uuid",
             instructor_public_uuid=instructor_public_uuid,
             course_public_uuid=course_public_uuid,
             timestamp=timestamp,

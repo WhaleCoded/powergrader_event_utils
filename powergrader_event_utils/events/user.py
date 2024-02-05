@@ -1,5 +1,4 @@
-from typing import Dict, List
-from uuid import uuid4
+from dataclasses import dataclass
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
@@ -16,6 +15,7 @@ from powergrader_event_utils.events.utils import (
 )
 
 
+@dataclass
 class StudentEvent(PowerGraderEvent, ProtoWrapper[Student]):
     public_uuid: str
     version_uuid: str
@@ -31,9 +31,9 @@ class StudentEvent(PowerGraderEvent, ProtoWrapper[Student]):
         version_timestamp: int,
     ) -> None:
         general_proto_type_init(
-            self,
-            Student,
-            "version_uuid",
+            object_to_initialize=self,
+            proto_type=Student,
+            key_field_name="version_uuid",
             public_uuid=public_uuid,
             name=name,
             email=email,
@@ -52,6 +52,7 @@ class StudentEvent(PowerGraderEvent, ProtoWrapper[Student]):
         return general_deserialization(Student, cls, event, "version_uuid")
 
 
+@dataclass
 class InstructorEvent(PowerGraderEvent, ProtoWrapper[Instructor]):
     public_uuid: str
     version_uuid: str
@@ -67,9 +68,9 @@ class InstructorEvent(PowerGraderEvent, ProtoWrapper[Instructor]):
         version_timestamp: int,
     ) -> None:
         general_proto_type_init(
-            self,
-            Instructor,
-            "version_uuid",
+            object_to_initialize=self,
+            proto_type=Instructor,
+            key_field_name="version_uuid",
             public_uuid=public_uuid,
             name=name,
             email=email,
@@ -90,13 +91,19 @@ class InstructorEvent(PowerGraderEvent, ProtoWrapper[Instructor]):
 
 if __name__ == "__main__":
     student_event = StudentEvent(
-        public_uuid=str(uuid4()), name="John Doe", email="johndoe@gmail.com"
+        public_uuid="123456",
+        name="John Doe",
+        email="johndoe@gmail.com",
+        version_timestamp=123456,
     )
     print(student_event.serialize())
     print(StudentEvent.deserialize(student_event.serialize()))
 
     instructor_event = InstructorEvent(
-        public_uuid=str(uuid4()), name="John Doe", email="johndoe@gmail.com"
+        public_uuid="123456",
+        name="Jane Doe",
+        email="johndoe@gmail.com",
+        version_timestamp=123456,
     )
     print(instructor_event.serialize())
     print(InstructorEvent.deserialize(instructor_event.serialize()))

@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import List, Union
 from dataclasses import dataclass
 
 from powergrader_event_utils.events.base import (
@@ -24,17 +24,22 @@ class FileContent(ProtoWrapper[FileContentProto]):
     file_type: str
     content: bytes
 
-    def __init__(self, file_name: str, file_type: str, content: bytes) -> None:
+    def __init__(
+        self, file_name: str, file_type: str, content: Union[bytes, List[int]]
+    ) -> None:
+        content = bytes(content) if isinstance(content, list) else content
         general_proto_type_init(
-            self,
-            FileContentProto,
-            None,
+            object_to_initialize=self,
+            proto_type=FileContentProto,
+            key_field_name=None,
+            is_powergrader_event=False,
             file_name=file_name,
             file_type=file_type,
             content=content,
         )
 
 
+@dataclass
 class SubmissionFileGroupEvent(PowerGraderEvent, ProtoWrapper[SubmissionFileGroup]):
     uuid: str
     student_public_uuid: str
@@ -44,9 +49,9 @@ class SubmissionFileGroupEvent(PowerGraderEvent, ProtoWrapper[SubmissionFileGrou
         self, student_public_uuid: str, file_contents: List[FileContent]
     ) -> None:
         general_proto_type_init(
-            self,
-            SubmissionFileGroup,
-            "uuid",
+            object_to_initialize=self,
+            proto_type=SubmissionFileGroup,
+            key_field_name="uuid",
             student_public_uuid=student_public_uuid,
             file_contents=file_contents,
         )
@@ -63,11 +68,12 @@ class SubmissionFileGroupEvent(PowerGraderEvent, ProtoWrapper[SubmissionFileGrou
         return general_deserialization(SubmissionFileGroup, cls, event, "uuid")
 
 
+@dataclass
 class SubmissionEvent(PowerGraderEvent, ProtoWrapper[Submission]):
     public_uuid: str
     version_uuid: str
     student_public_uuid: str
-    assignment_public_uuid: str
+    assignment_version_uuid: str
     submission_file_group_uuid: str
     version_timestamp: int
 
@@ -75,17 +81,17 @@ class SubmissionEvent(PowerGraderEvent, ProtoWrapper[Submission]):
         self,
         public_uuid: str,
         student_public_uuid: str,
-        assignment_public_uuid: str,
+        assignment_version_uuid: str,
         submission_file_group_uuid: str,
         version_timestamp: int,
     ) -> None:
         general_proto_type_init(
-            self,
-            Submission,
-            "version_uuid",
+            object_to_initialize=self,
+            proto_type=Submission,
+            key_field_name="version_uuid",
             public_uuid=public_uuid,
             student_public_uuid=student_public_uuid,
-            assignment_public_uuid=assignment_public_uuid,
+            assignment_version_uuid=assignment_version_uuid,
             submission_file_group_uuid=submission_file_group_uuid,
             version_timestamp=version_timestamp,
         )
@@ -114,7 +120,7 @@ if __name__ == "__main__":
     submission = SubmissionEvent(
         "public_uuid",
         "student_public_uuid",
-        "assignment_public_uuid",
+        "assignment_version_uuid",
         "submission_file_group_uuid",
         123,
     )

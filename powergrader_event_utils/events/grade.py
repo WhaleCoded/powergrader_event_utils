@@ -1,17 +1,11 @@
-from typing import Dict, List
-from enum import Enum
+from typing import List
 from dataclasses import dataclass
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
     EventType,
 )
-from powergrader_event_utils.events.utils import (
-    ProtoWrapper,
-    general_deserialization,
-    general_proto_type_init,
-)
-from powergrader_event_utils.events.proto_events.assignment_pb2 import (
+from powergrader_event_utils.events.proto_events.grade_pb2 import (
     AICriterionGradingStarted,
     GradingMethod as GradingMethodProto,
     Grade as GradeProto,
@@ -21,6 +15,11 @@ from powergrader_event_utils.events.proto_events.assignment_pb2 import (
     InstructorOverrideCriterionGrade,
     CriterionGradeEmbedding,
     InstructorSubmissionGradeApproval,
+)
+from powergrader_event_utils.events.utils import (
+    ProtoWrapper,
+    general_deserialization,
+    general_proto_type_init,
 )
 
 
@@ -42,7 +41,7 @@ class AICriterionGradingStartedEvent(
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=AICriterionGradingStarted,
-            id_field_to_initialize="version_uuid",
+            key_field_name="version_uuid",
             criterion_uuid=criterion_uuid,
             submission_version_uuid=submission_version_uuid,
             time_started=time_started,
@@ -63,7 +62,7 @@ class AICriterionGradingStartedEvent(
 
 
 @dataclass
-class GradingMethod(PowerGraderEvent, ProtoWrapper[GradingMethodProto]):
+class GradingMethodEvent(PowerGraderEvent, ProtoWrapper[GradingMethodProto]):
     uuid: str
     model_name: str
     method_name: str
@@ -78,7 +77,7 @@ class GradingMethod(PowerGraderEvent, ProtoWrapper[GradingMethodProto]):
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=GradingMethodProto,
-            id_field_to_initialize="uuid",
+            key_field_name="uuid",
             model_name=model_name,
             method_name=method_name,
             git_hash=git_hash,
@@ -92,7 +91,7 @@ class GradingMethod(PowerGraderEvent, ProtoWrapper[GradingMethodProto]):
         raise NotImplementedError
 
     @classmethod
-    def deserialize(cls, event: bytes) -> "GradingMethod":
+    def deserialize(cls, event: bytes) -> "GradingMethodEvent":
         return general_deserialization(GradingMethodProto, cls, event, "uuid")
 
 
@@ -109,7 +108,7 @@ class Grade(ProtoWrapper[GradeProto]):
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=GradeProto,
-            id_field_to_initialize=None,
+            key_field_name=None,
             is_powergrader_event=False,
             score=score,
             assessment=assessment,
@@ -137,7 +136,7 @@ class AICriterionGradeEvent(PowerGraderEvent, ProtoWrapper[AICriterionGrade]):
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=AICriterionGrade,
-            id_field_to_initialize=None,
+            key_field_name="grading_started_version_uuid",
             grading_started_version_uuid=grading_started_version_uuid,
             criterion_uuid=criterion_uuid,
             submission_version_uuid=submission_version_uuid,
@@ -187,7 +186,7 @@ class AIInferredCriterionGradeEvent(
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=AIInferredCriterionGrade,
-            id_field_to_initialize=None,
+            key_field_name="grading_started_version_uuid",
             grading_started_version_uuid=grading_started_version_uuid,
             criterion_uuid=criterion_uuid,
             submission_version_uuid=submission_version_uuid,
@@ -232,7 +231,7 @@ class InstructorCriterionGradeEvent(
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=InstructorCriterionGrade,
-            id_field_to_initialize="version_uuid",
+            key_field_name="version_uuid",
             criterion_uuid=criterion_uuid,
             submission_version_uuid=submission_version_uuid,
             instructor_public_uuid=instructor_public_uuid,
@@ -275,7 +274,7 @@ class InstructorOverrideCriterionGradeEvent(
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=InstructorOverrideCriterionGrade,
-            id_field_to_initialize="version_uuid",
+            key_field_name="version_uuid",
             criterion_uuid=criterion_uuid,
             submission_version_uuid=submission_version_uuid,
             previous_criterion_grade_version_uuid=previous_criterion_grade_version_uuid,
@@ -315,7 +314,7 @@ class CriterionGradeEmbeddingEvent(
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=CriterionGradeEmbedding,
-            id_field_to_initialize="version_uuid",
+            key_field_name="version_uuid",
             criterion_grade_version_uuid=criterion_grade_version_uuid,
             embedder_uuid=embedder_uuid,
             embedding=embedding,
@@ -355,7 +354,7 @@ class InstructorSubmissionGradeApprovalEvent(
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=InstructorSubmissionGradeApproval,
-            id_field_to_initialize="version_uuid",
+            key_field_name="version_uuid",
             submission_version_uuid=submission_version_uuid,
             instructor_public_uuid=instructor_public_uuid,
             criterion_grade_version_uuids=criterion_grade_version_uuids,
@@ -389,13 +388,13 @@ if __name__ == "__main__":
         )
     )
 
-    grading_method = GradingMethod(
+    grading_method = GradingMethodEvent(
         model_name="test",
         method_name="test",
         git_hash="test",
     )
     print(grading_method.serialize())
-    print(GradingMethod.deserialize(grading_method.serialize()))
+    print(GradingMethodEvent.deserialize(grading_method.serialize()))
 
     grade = Grade(
         score=1,
