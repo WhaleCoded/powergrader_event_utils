@@ -1,9 +1,9 @@
 syntax = "proto3";
 package grade;
 
-message AICriteriaGradingStarted {
+message AICriterionGradingStarted {
     string version_uuid = 1;
-    string criteria_uuid = 2;
+    string criterion_uuid = 2;
     string submission_version_uuid = 3;
     uint64 time_started = 4;
 }
@@ -20,46 +20,46 @@ message Grade {
     string assessment = 2;
 }
 
-message AICriteriaGrade {
+message AICriterionGrade {
     string grading_started_version_uuid = 1;
-    string criteria_uuid = 2;
+    string criterion_uuid = 2;
     string submission_version_uuid = 3;
-    string grade_method_uuid = 4;
+    string grading_method_uuid = 4;
     Grade grade = 5;
     uint64 time_finished = 6;
 }
 
-message AIInferredCriteriaGrade {
+message AIInferredCriterionGrade {
     string grading_started_version_uuid = 1;
-    string criteria_uuid = 2;
+    string criterion_uuid = 2;
     string submission_version_uuid = 3;
     string grading_method_uuid = 4;
-    string previous_criteria_grade_version_uuid = 5;
-    string faculty_override_criteria_grade_version_uuid = 6;
+    string previous_criterion_grade_version_uuid = 5;
+    string faculty_override_criterion_grade_version_uuid = 6;
     Grade grade = 7;
     uint64 time_finished = 8;
 }
 
-message InstructorCriteriaGrade {
+message InstructorCriterionGrade {
     string version_uuid = 1;
-    string criteria_uuid = 2;
+    string criterion_uuid = 2;
     string submission_version_uuid = 3;
     string instructor_public_uuid = 4;
     Grade grade = 5;
 }
 
-message InstructorOverrideCriteriaGrade {
+message InstructorOverrideCriterionGrade {
     string version_uuid = 1;
-    string criteria_uuid = 2;
+    string criterion_uuid = 2;
     string submission_version_uuid = 3;
-    string previous_criteria_grade_version_uuid = 4;
+    string previous_criterion_grade_version_uuid = 4;
     string instructor_public_uuid = 5;
     Grade grade = 6;
 }
 
-message CriteriaGradeEmbedding {
+message CriterionGradeEmbedding {
     string version_uuid = 1;
-    string criteria_grade_version_uuid = 2;
+    string criterion_grade_version_uuid = 2;
     string embedder_uuid = 3;
     repeated float embedding = 4;
 }
@@ -68,7 +68,7 @@ message InstructorSubmissionGradeApproval {
     string version_uuid = 1;
     string submission_version_uuid = 2;
     string instructor_public_uuid = 3;
-    repeated string criteria_grade_version_uuids = 4;
+    repeated string criterion_grade_version_uuids = 4;
     uint64 version_timestamp = 5;
 }
 

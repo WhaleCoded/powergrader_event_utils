@@ -2,7 +2,7 @@ syntax = "proto3";
 package publish;
 
 enum LMSInstructorType {
-    UNSECIFIED = 0;
+    UNSPECIFIED = 0;
     TA = 1;
     FACULTY = 2;
 }
@@ -57,7 +57,7 @@ message PublishedToLMS {
 }
 
 message PublishedGradeToLMS {
-    string instructor_review_version_uuid = 1;
+    string instructor_grade_approval_version_uuid = 1;
     uint64 publish_timestamp = 2;
 }
 

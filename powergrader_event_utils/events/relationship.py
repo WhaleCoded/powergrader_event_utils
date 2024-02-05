@@ -1,264 +1,270 @@
-# from typing import Dict, List
-
-# from powergrader_event_utils.events.base import (
-#     PowerGraderEvent,
-#     EventType,
-# )
-# from powergrader_event_utils.events.proto_events.relationship_pb2 import (
-#     AssignmentAddedToCourse,
-#     AssignmentRemovedFromCourse,
-#     StudentAddedToSection,
-#     StudentRemovedFromSection,
-#     InstructorAddedToCourse,
-#     InstructorRemovedFromCourse,
-#     PublicIDReferenceChanged,
-# )
-
-# from powergrader_event_utils.events.utils import ProtoWrapper, general_deserialization
-
-
-# class PublicIDReferenceChangedEvent(
-#     PowerGraderEvent, ProtoWrapper[PublicIDReferenceChanged]
-# ):
-#     id: str
-#     private_uuid: str
-#     public_uuid: str
-#     when: int
-
-#     def __init__(self, private_uuid: str, public_uuid: str, when: int) -> None:
-#         proto = PublicIDReferenceChanged()
-
-#         if private_uuid is not None:
-#             proto.private_uuid = private_uuid
-
-#         if public_uuid is not None:
-#             proto.public_uuid = public_uuid
-
-#         if when is not None:
-#             proto.when = when
-
-#         proto.id = generate_event_id(self.__class__.__name__)
-
-#         ProtoWrapper.__init__(self, PublicIDReferenceChanged, proto)
-#         PowerGraderEvent.__init__(
-#             self, key=proto.id, event_type=self.__class__.__name__
-#         )
-
-#     def _package_into_proto(self) -> PublicIDReferenceChanged:
-#         return self.proto
-
-#     @staticmethod
-#     def get_event_type() -> EventType:
-#         return EventType.PUBLIC_ID_REFERENCE_CHANGED
-
-#     @classmethod
-#     def deserialize(cls, event: bytes) -> "PublicIDReferenceChanged":
-#         return general_deserialization(PublicIDReferenceChanged, cls, event, "id")
-
-
-# class AssignmentAddedToCourseEvent(
-#     PowerGraderEvent, ProtoWrapper[AssignmentAddedToCourse]
-# ):
-#     id: str
-#     assignment_id: str
-#     course_id: str
-
-#     def __init__(self, assignment_id: str, course_id: str) -> None:
-#         proto = AssignmentAddedToCourse()
-
-#         if assignment_id is not None:
-#             proto.assignment_id = assignment_id
-
-#         if course_id is not None:
-#             proto.course_id = course_id
-
-#         proto.id = generate_event_id(self.__class__.__name__)
-
-#         ProtoWrapper.__init__(self, AssignmentAddedToCourse, proto)
-#         PowerGraderEvent.__init__(
-#             self, key=proto.id, event_type=self.__class__.__name__
-#         )
-
-#     def _package_into_proto(self) -> AssignmentAddedToCourse:
-#         return self.proto
-
-#     @staticmethod
-#     def get_event_type() -> EventType:
-#         return EventType.ASSIGNMENT_ADDED_TO_COURSE
-
-#     @classmethod
-#     def deserialize(cls, event: bytes) -> "AssignmentAddedToCourseEvent":
-#         return general_deserialization(AssignmentAddedToCourse, cls, event, "id")
-
-
-# class AssignmentRemovedFromCourseEvent(
-#     PowerGraderEvent, ProtoWrapper[AssignmentRemovedFromCourse]
-# ):
-#     id: str
-#     assignment_id: str
-#     course_id: str
-
-#     def __init__(self, assignment_id: str, course_id: str) -> None:
-#         proto = AssignmentRemovedFromCourse()
-
-#         if assignment_id is not None:
-#             proto.assignment_id = assignment_id
-
-#         if course_id is not None:
-#             proto.course_id = course_id
-
-#         proto.id = generate_event_id(self.__class__.__name__)
-
-#         ProtoWrapper.__init__(self, AssignmentRemovedFromCourse, proto)
-#         PowerGraderEvent.__init__(
-#             self, key=proto.id, event_type=self.__class__.__name__
-#         )
-
-#     def _package_into_proto(self) -> AssignmentRemovedFromCourse:
-#         return self.proto
-
-#     @staticmethod
-#     def get_event_type() -> EventType:
-#         return EventType.ASSIGNMENT_REMOVED_FROM_COURSE
-
-#     @classmethod
-#     def deserialize(cls, event: bytes) -> "AssignmentRemovedFromCourseEvent":
-#         return general_deserialization(AssignmentRemovedFromCourse, cls, event, "id")
-
-
-# class StudentAddedToSectionEvent(PowerGraderEvent, ProtoWrapper[StudentAddedToSection]):
-#     id: str
-#     student_id: str
-#     section_id: str
-
-#     def __init__(self, student_id: str, section_id: str) -> None:
-#         proto = StudentAddedToSection()
-
-#         if student_id is not None:
-#             proto.student_id = student_id
-
-#         if section_id is not None:
-#             proto.section_id = section_id
-
-#         proto.id = generate_event_id(self.__class__.__name__)
-
-#         ProtoWrapper.__init__(self, StudentAddedToSection, proto)
-#         PowerGraderEvent.__init__(
-#             self, key=proto.id, event_type=self.__class__.__name__
-#         )
-
-#     def _package_into_proto(self) -> StudentAddedToSection:
-#         return self.proto
-
-#     @staticmethod
-#     def get_event_type() -> EventType:
-#         return EventType.STUDENT_ADDED_TO_SECTION
-
-#     @classmethod
-#     def deserialize(cls, event: bytes) -> "StudentAddedToSectionEvent":
-#         return general_deserialization(StudentAddedToSection, cls, event, "id")
-
-
-# class StudentRemovedFromSectionEvent(
-#     PowerGraderEvent, ProtoWrapper[StudentRemovedFromSection]
-# ):
-#     id: str
-#     student_id: str
-#     section_id: str
-
-#     def __init__(self, student_id: str, section_id: str) -> None:
-#         proto = StudentRemovedFromSection()
-
-#         if student_id is not None:
-#             proto.student_id = student_id
-
-#         if section_id is not None:
-#             proto.section_id = section_id
-
-#         proto.id = generate_event_id(self.__class__.__name__)
-
-#         ProtoWrapper.__init__(self, StudentRemovedFromSection, proto)
-#         PowerGraderEvent.__init__(
-#             self, key=proto.id, event_type=self.__class__.__name__
-#         )
-
-#     def _package_into_proto(self) -> StudentRemovedFromSection:
-#         return self.proto
-
-#     @staticmethod
-#     def get_event_type() -> EventType:
-#         return EventType.STUDENT_REMOVED_FROM_SECTION
-
-#     @classmethod
-#     def deserialize(cls, event: bytes) -> "StudentRemovedFromSectionEvent":
-#         return general_deserialization(StudentRemovedFromSection, cls, event, "id")
-
-
-# class InstructorAddedToCourseEvent(
-#     PowerGraderEvent, ProtoWrapper[InstructorAddedToCourse]
-# ):
-#     id: str
-#     instructor_id: str
-#     course_id: str
-
-#     def __init__(self, instructor_id: str, course_id: str) -> None:
-#         proto = InstructorAddedToCourse()
-
-#         if instructor_id is not None:
-#             proto.instructor_id = instructor_id
-
-#         if course_id is not None:
-#             proto.course_id = course_id
-
-#         proto.id = generate_event_id(self.__class__.__name__)
-
-#         ProtoWrapper.__init__(self, InstructorAddedToCourse, proto)
-#         PowerGraderEvent.__init__(
-#             self, key=proto.id, event_type=self.__class__.__name__
-#         )
-
-#     def _package_into_proto(self) -> InstructorAddedToCourse:
-#         return self.proto
-
-#     @staticmethod
-#     def get_event_type() -> EventType:
-#         return EventType.INSTRUCTOR_ADDED_TO_COURSE
-
-#     @classmethod
-#     def deserialize(cls, event: bytes) -> "InstructorAddedToCourseEvent":
-#         return general_deserialization(InstructorAddedToCourse, cls, event, "id")
-
-
-# class InstructorRemovedFromCourseEvent(
-#     PowerGraderEvent, ProtoWrapper[InstructorRemovedFromCourse]
-# ):
-#     id: str
-#     instructor_id: str
-#     course_id: str
-
-#     def __init__(self, instructor_id: str, course_id: str) -> None:
-#         proto = InstructorRemovedFromCourse()
-
-#         if instructor_id is not None:
-#             proto.instructor_id = instructor_id
-
-#         if course_id is not None:
-#             proto.course_id = course_id
-
-#         proto.id = generate_event_id(self.__class__.__name__)
-
-#         ProtoWrapper.__init__(self, InstructorRemovedFromCourse, proto)
-#         PowerGraderEvent.__init__(
-#             self, key=proto.id, event_type=self.__class__.__name__
-#         )
-
-#     def _package_into_proto(self) -> InstructorRemovedFromCourse:
-#         return self.proto
-
-#     @staticmethod
-#     def get_event_type() -> EventType:
-#         return EventType.INSTRUCTOR_REMOVED_FROM_COURSE
-
-#     @classmethod
-#     def deserialize(cls, event: bytes) -> "InstructorRemovedFromCourseEvent":
-#         return general_deserialization(InstructorRemovedFromCourse, cls, event, "id")
+from typing import Dict, List
+
+from powergrader_event_utils.events.base import (
+    PowerGraderEvent,
+    EventType,
+)
+from powergrader_event_utils.events.proto_events.relationship_pb2 import (
+    AssignmentAddedToCourse,
+    AssignmentRemovedFromCourse,
+    StudentAddedToSection,
+    StudentRemovedFromSection,
+    InstructorAddedToCourse,
+    InstructorRemovedFromCourse,
+)
+
+from powergrader_event_utils.events.utils import (
+    ProtoWrapper,
+    general_deserialization,
+    general_proto_type_init,
+)
+
+
+class AssignmentAddedToCourseEvent(
+    PowerGraderEvent, ProtoWrapper[AssignmentAddedToCourse]
+):
+    assignment_public_uuid: str
+    course_public_uuid: str
+    timestamp: int
+
+    def __init__(
+        self, assignment_public_uuid: str, course_public_uuid: str, timestamp: int
+    ) -> None:
+        general_proto_type_init(
+            self,
+            AssignmentAddedToCourse,
+            None,
+            assignment_public_uuid=assignment_public_uuid,
+            course_public_uuid=course_public_uuid,
+            timestamp=timestamp,
+        )
+
+    def _package_into_proto(self) -> AssignmentAddedToCourse:
+        return self.proto
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.ASSIGNMENT_ADDED_TO_COURSE
+
+    @classmethod
+    def deserialize(cls, event: bytes) -> "AssignmentAddedToCourseEvent":
+        return general_deserialization(
+            AssignmentAddedToCourse, cls, event, "assignment_public_uuid"
+        )
+
+
+class AssignmentRemovedFromCourseEvent(
+    PowerGraderEvent, ProtoWrapper[AssignmentRemovedFromCourse]
+):
+    assignment_public_uuid: str
+    course_public_uuid: str
+    timestamp: int
+
+    def __init__(
+        self, assignment_public_uuid: str, course_public_uuid: str, timestamp: int
+    ):
+        general_proto_type_init(
+            self,
+            AssignmentRemovedFromCourse,
+            None,
+            assignment_public_uuid=assignment_public_uuid,
+            course_public_uuid=course_public_uuid,
+            timestamp=timestamp,
+        )
+
+    def _package_into_proto(self) -> AssignmentRemovedFromCourse:
+        return self.proto
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.ASSIGNMENT_REMOVED_FROM_COURSE
+
+    @classmethod
+    def deserialize(cls, event: bytes) -> "AssignmentRemovedFromCourseEvent":
+        return general_deserialization(
+            AssignmentRemovedFromCourse, cls, event, "assignment_public_uuid"
+        )
+
+
+class StudentAddedToSectionEvent(PowerGraderEvent, ProtoWrapper[StudentAddedToSection]):
+    student_public_uuid: str
+    section_public_uuid: str
+    timestamp: int
+
+    def __init__(
+        self, student_public_uuid: str, section_public_uuid: str, timestamp: int
+    ):
+        general_proto_type_init(
+            self,
+            StudentAddedToSection,
+            None,
+            student_public_uuid=student_public_uuid,
+            section_public_uuid=section_public_uuid,
+            timestamp=timestamp,
+        )
+
+    def _package_into_proto(self) -> StudentAddedToSection:
+        return self.proto
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.STUDENT_ADDED_TO_SECTION
+
+    @classmethod
+    def deserialize(cls, event: bytes) -> "StudentAddedToSectionEvent":
+        return general_deserialization(
+            StudentAddedToSection, cls, event, "student_public_uuid"
+        )
+
+
+class StudentRemovedFromSectionEvent(
+    PowerGraderEvent, ProtoWrapper[StudentRemovedFromSection]
+):
+    student_public_uuid: str
+    section_public_uuid: str
+    timestamp: int
+
+    def __init__(
+        self, student_public_uuid: str, section_public_uuid: str, timestamp: int
+    ):
+        general_proto_type_init(
+            self,
+            StudentRemovedFromSection,
+            None,
+            student_public_uuid=student_public_uuid,
+            section_public_uuid=section_public_uuid,
+            timestamp=timestamp,
+        )
+
+    def _package_into_proto(self) -> StudentRemovedFromSection:
+        return self.proto
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.STUDENT_REMOVED_FROM_SECTION
+
+    @classmethod
+    def deserialize(cls, event: bytes) -> "StudentRemovedFromSectionEvent":
+        return general_deserialization(
+            StudentRemovedFromSection, cls, event, "student_public_uuid"
+        )
+
+
+class InstructorAddedToCourseEvent(
+    PowerGraderEvent, ProtoWrapper[InstructorAddedToCourse]
+):
+    instructor_public_uuid: str
+    course_public_uuid: str
+    timestamp: int
+
+    def __init__(
+        self, instructor_public_uuid: str, course_public_uuid: str, timestamp: int
+    ):
+        general_proto_type_init(
+            self,
+            InstructorAddedToCourse,
+            None,
+            instructor_public_uuid=instructor_public_uuid,
+            course_public_uuid=course_public_uuid,
+            timestamp=timestamp,
+        )
+
+    def _package_into_proto(self) -> InstructorAddedToCourse:
+        return self.proto
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.INSTRUCTOR_ADDED_TO_COURSE
+
+    @classmethod
+    def deserialize(cls, event: bytes) -> "InstructorAddedToCourseEvent":
+        return general_deserialization(
+            InstructorAddedToCourse, cls, event, "instructor_public_uuid"
+        )
+
+
+class InstructorRemovedFromCourseEvent(
+    PowerGraderEvent, ProtoWrapper[InstructorRemovedFromCourse]
+):
+    instructor_public_uuid: str
+    course_public_uuid: str
+    timestamp: int
+
+    def __init__(
+        self, instructor_public_uuid: str, course_public_uuid: str, timestamp: int
+    ):
+        general_proto_type_init(
+            self,
+            InstructorRemovedFromCourse,
+            None,
+            instructor_public_uuid=instructor_public_uuid,
+            course_public_uuid=course_public_uuid,
+            timestamp=timestamp,
+        )
+
+    def _package_into_proto(self) -> InstructorRemovedFromCourse:
+        return self.proto
+
+    @staticmethod
+    def get_event_type() -> EventType:
+        return EventType.INSTRUCTOR_REMOVED_FROM_COURSE
+
+    @classmethod
+    def deserialize(cls, event: bytes) -> "InstructorRemovedFromCourseEvent":
+        return general_deserialization(
+            InstructorRemovedFromCourse, cls, event, "instructor_public_uuid"
+        )
+
+
+if __name__ == "__main__":
+    assignment_added_to_course = AssignmentAddedToCourseEvent(
+        assignment_public_uuid="123", course_public_uuid="123", timestamp=123
+    )
+    print(assignment_added_to_course.serialize())
+    print(
+        AssignmentAddedToCourseEvent.deserialize(assignment_added_to_course.serialize())
+    )
+
+    assignment_removed_from_course = AssignmentRemovedFromCourseEvent(
+        assignment_public_uuid="123", course_public_uuid="123", timestamp=123
+    )
+    print(assignment_removed_from_course.serialize())
+    print(
+        AssignmentRemovedFromCourseEvent.deserialize(
+            assignment_removed_from_course.serialize()
+        )
+    )
+
+    student_added_to_section = StudentAddedToSectionEvent(
+        student_public_uuid="123", section_public_uuid="123", timestamp=123
+    )
+    print(student_added_to_section.serialize())
+    print(StudentAddedToSectionEvent.deserialize(student_added_to_section.serialize()))
+
+    student_removed_from_section = StudentRemovedFromSectionEvent(
+        student_public_uuid="123", section_public_uuid="123", timestamp=123
+    )
+    print(student_removed_from_section.serialize())
+    print(
+        StudentRemovedFromSectionEvent.deserialize(
+            student_removed_from_section.serialize()
+        )
+    )
+
+    instructor_added_to_course = InstructorAddedToCourseEvent(
+        instructor_public_uuid="123", course_public_uuid="123", timestamp=123
+    )
+    print(instructor_added_to_course.serialize())
+    print(
+        InstructorAddedToCourseEvent.deserialize(instructor_added_to_course.serialize())
+    )
+
+    instructor_removed_from_course = InstructorRemovedFromCourseEvent(
+        instructor_public_uuid="123", course_public_uuid="123", timestamp=123
+    )
+    print(instructor_removed_from_course.serialize())
+    print(
+        InstructorRemovedFromCourseEvent.deserialize(
+            instructor_removed_from_course.serialize()
+        )
+    )

@@ -1,5 +1,4 @@
 from typing import Dict, List
-import json
 from dataclasses import dataclass
 
 from powergrader_event_utils.events.base import (
