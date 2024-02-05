@@ -9,47 +9,35 @@ from powergrader_event_utils.events.proto_events.user_pb2 import (
     Student,
     Instructor,
 )
-from powergrader_event_utils.events.utils import ProtoWrapper, general_deserialization
+from powergrader_event_utils.events.utils import (
+    ProtoWrapper,
+    general_deserialization,
+    general_proto_type_init,
+)
 
 
 class StudentEvent(PowerGraderEvent, ProtoWrapper[Student]):
-    public_id: str
-    id: str
-    organization_id: str
+    public_uuid: str
+    version_uuid: str
     name: str
     email: str
-    when: int
+    version_timestamp: int
 
     def __init__(
         self,
-        organization_id: str,
+        public_uuid: str,
         name: str,
         email: str,
-        when: int,
-        public_id: str = None,
+        version_timestamp: int,
     ) -> None:
-        proto = Student()
-        if organization_id is not None:
-            proto.organization_id = organization_id
-
-        if when is not None:
-            proto.when = when
-
-        if public_id is None:
-            public_id = str(uuid4())
-        proto.public_id = public_id
-
-        if name is not None:
-            proto.name = name
-
-        if email is not None:
-            proto.email = email
-
-        proto.id = generate_event_id(self.__class__.__name__)
-
-        ProtoWrapper.__init__(self, Student, proto)
-        PowerGraderEvent.__init__(
-            self, key=proto.public_id, event_type=self.__class__.__name__
+        general_proto_type_init(
+            self,
+            Student,
+            "version_uuid",
+            public_uuid=public_uuid,
+            name=name,
+            email=email,
+            version_timestamp=version_timestamp,
         )
 
     def _package_into_proto(self) -> Student:
@@ -61,48 +49,31 @@ class StudentEvent(PowerGraderEvent, ProtoWrapper[Student]):
 
     @classmethod
     def deserialize(cls, event: bytes) -> "StudentEvent":
-        return general_deserialization(Student, cls, event, "public_id")
+        return general_deserialization(Student, cls, event, "version_uuid")
 
 
 class InstructorEvent(PowerGraderEvent, ProtoWrapper[Instructor]):
-    public_id: str
-    id: str
-    organization_id: str
+    public_uuid: str
+    version_uuid: str
     name: str
     email: str
-    when: int
+    version_timestamp: int
 
     def __init__(
         self,
-        organization_id: str,
+        public_uuid: str,
         name: str,
         email: str,
-        when: int,
-        public_id: str = None,
+        version_timestamp: int,
     ) -> None:
-        proto = Instructor()
-
-        if organization_id is not None:
-            proto.organization_id = organization_id
-
-        if when is not None:
-            proto.when = when
-
-        if public_id is None:
-            public_id = str(uuid4())
-        proto.public_id = public_id
-
-        if name is not None:
-            proto.name = name
-
-        if email is not None:
-            proto.email = email
-
-        proto.id = generate_event_id(self.__class__.__name__)
-
-        ProtoWrapper.__init__(self, Instructor, proto)
-        PowerGraderEvent.__init__(
-            self, key=proto.id, event_type=self.__class__.__name__
+        general_proto_type_init(
+            self,
+            Instructor,
+            "version_uuid",
+            public_uuid=public_uuid,
+            name=name,
+            email=email,
+            version_timestamp=version_timestamp,
         )
 
     @staticmethod
@@ -114,4 +85,18 @@ class InstructorEvent(PowerGraderEvent, ProtoWrapper[Instructor]):
 
     @classmethod
     def deserialize(cls, event: bytes) -> "InstructorEvent":
-        return general_deserialization(Instructor, cls, event, "id")
+        return general_deserialization(Instructor, cls, event, "version_uuid")
+
+
+if __name__ == "__main__":
+    student_event = StudentEvent(
+        public_uuid=str(uuid4()), name="John Doe", email="johndoe@gmail.com"
+    )
+    print(student_event.serialize())
+    print(StudentEvent.deserialize(student_event.serialize()))
+
+    instructor_event = InstructorEvent(
+        public_uuid=str(uuid4()), name="John Doe", email="johndoe@gmail.com"
+    )
+    print(instructor_event.serialize())
+    print(InstructorEvent.deserialize(instructor_event.serialize()))

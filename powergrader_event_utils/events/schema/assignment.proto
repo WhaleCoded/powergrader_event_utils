@@ -22,10 +22,10 @@ message Rubric {
 message RubricCriterion {
     string uuid = 1;
     string name = 2;
-    repeated CriteriaLevel levels = 3;
+    repeated CriterionLevel levels = 3;
 }
 
-message CriteriaLevel {
+message CriterionLevel {
     optional uint32 score = 1;
     string description = 2;
 }

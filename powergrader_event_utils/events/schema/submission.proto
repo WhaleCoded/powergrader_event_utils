@@ -13,7 +13,7 @@ message Submission {
 message SubmissionFileGroup {
     string uuid = 1;
     string student_public_uuid = 2;
-    repeated FileContent file_content = 3;
+    repeated FileContent file_contents = 3;
 }
 
 message FileContent {
