@@ -10,45 +10,45 @@ enum LMSInstructorType {
 message RegisterCoursePublicUUID {
     string public_uuid = 1;
     string lms_id = 2;
-    string organization_uuid = 3;
+    string organization_public_uuid = 3;
 }
 
 message RegisterSectionPublicUUID {
     string public_uuid = 1;
     string lms_id = 2;
-    string organization_uuid = 3;
+    string organization_public_uuid = 3;
 }
 
 message RegisterInstructorPublicUUID {
     string public_uuid = 1;
     string lms_id = 2;
     LMSInstructorType user_type = 3;
-    string organization_uuid = 4;
+    string organization_public_uuid = 4;
 }
 
 message RegisterStudentPublicUUID {
     string public_uuid = 1;
     string lms_id = 2;
-    string organization_uuid = 3;
+    string organization_public_uuid = 3;
 }
 
 message RegisterAssignmentPublicUUID {
     string public_uuid = 1;
     string lms_id = 2;
-    string organization_uuid = 3;
+    string organization_public_uuid = 3;
 }
 
 message RegisterRubricPublicUUID {
     string public_uuid = 1;
     string lms_id = 2;
-    string organization_uuid = 3;
+    string organization_public_uuid = 3;
 }
 
 message RegisterSubmissionPublicUUID {
     string public_uuid = 1;
     string lms_assignment_id = 2;
     string lms_student_id = 3;
-    string organization_uuid = 4;
+    string organization_public_uuid = 4;
 }
 
 message PublishedToLMS {
