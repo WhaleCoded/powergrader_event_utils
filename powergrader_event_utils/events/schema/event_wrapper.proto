@@ -22,8 +22,8 @@ message Retry {
         grade.GradingMethod grading_method = 9;
         grade.AICriteriaGrade ai_criteria_grade = 10;
         grade.AIInferredCriteriaGrade ai_inferred_criteria_grade = 11;
-        grade.FacultyCriteriaGrade faculty_criteria_grade = 12;
-        grade.FacultyOverrideCriteriaGrade faculty_override_criteria_grade = 13;
+        grade.InstructorCriteriaGrade instructor_criteria_grade = 12;
+        grade.InstructorOverrideCriteriaGrade instructor_override_criteria_grade = 13;
         grade.CriteriaGradeEmbedding criteria_grade_embedding = 14;
         grade.InstructorSubmissionGradeApproval instructor_submission_grade_approval = 15;
         publish.RegisterCoursePublicUUID register_course_public_uuid = 16;
@@ -62,8 +62,8 @@ message DeadLetter {
         grade.GradingMethod grading_method = 9;
         grade.AICriteriaGrade ai_criteria_grade = 10;
         grade.AIInferredCriteriaGrade ai_inferred_criteria_grade = 11;
-        grade.FacultyCriteriaGrade faculty_criteria_grade = 12;
-        grade.FacultyOverrideCriteriaGrade faculty_override_criteria_grade = 13;
+        grade.InstructorCriteriaGrade instructor_criteria_grade = 12;
+        grade.InstructorOverrideCriteriaGrade instructor_override_criteria_grade = 13;
         grade.CriteriaGradeEmbedding criteria_grade_embedding = 14;
         grade.InstructorSubmissionGradeApproval instructor_submission_grade_approval = 15;
         publish.RegisterCoursePublicUUID register_course_public_uuid = 16;
