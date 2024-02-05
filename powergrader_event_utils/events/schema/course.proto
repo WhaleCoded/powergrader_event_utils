@@ -4,7 +4,7 @@ package course;
 message Course {
     string public_uuid = 1;
     string version_uuid = 2;
-    string instructor_uuid = 3;
+    string instructor_public_uuid = 3;
     string name = 4;
     string description = 5;
     uint64 version_timestamp = 6;
@@ -13,7 +13,7 @@ message Course {
 message Section {
     string public_uuid = 1;
     string version_uuid = 2;
-    string course_uuid = 3;
+    string course_public_uuid = 3;
     string name = 4;
     optional bool closed = 5;
     uint64 version_timestamp = 6;

@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x63ourse.proto\x12\x06\x63ourse\"\x8a\x01\n\x06\x43ourse\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x17\n\x0finstructor_uuid\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x19\n\x11version_timestamp\x18\x06 \x01(\x04\"\x92\x01\n\x07Section\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63ourse_uuid\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x13\n\x06\x63losed\x18\x05 \x01(\x08H\x00\x88\x01\x01\x12\x19\n\x11version_timestamp\x18\x06 \x01(\x04\x42\t\n\x07_closed\"b\n\x0cOrganization\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x19\n\x11version_timestamp\x18\x04 \x01(\x04\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0c\x63ourse.proto\x12\x06\x63ourse\"\x91\x01\n\x06\x43ourse\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x1e\n\x16instructor_public_uuid\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x05 \x01(\t\x12\x19\n\x11version_timestamp\x18\x06 \x01(\x04\"\x99\x01\n\x07Section\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x1a\n\x12\x63ourse_public_uuid\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x13\n\x06\x63losed\x18\x05 \x01(\x08H\x00\x88\x01\x01\x12\x19\n\x11version_timestamp\x18\x06 \x01(\x04\x42\t\n\x07_closed\"b\n\x0cOrganization\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x19\n\x11version_timestamp\x18\x04 \x01(\x04\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'course_pb2', globals())
@@ -21,9 +21,9 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _COURSE._serialized_start=25
-  _COURSE._serialized_end=163
-  _SECTION._serialized_start=166
-  _SECTION._serialized_end=312
-  _ORGANIZATION._serialized_start=314
-  _ORGANIZATION._serialized_end=412
+  _COURSE._serialized_end=170
+  _SECTION._serialized_start=173
+  _SECTION._serialized_end=326
+  _ORGANIZATION._serialized_start=328
+  _ORGANIZATION._serialized_end=426
 # @@protoc_insertion_point(module_scope)
