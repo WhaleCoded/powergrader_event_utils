@@ -4,7 +4,6 @@ from dataclasses import dataclass
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
-    generate_event_id,
     EventType,
 )
 from powergrader_event_utils.events.proto_events.assignment_pb2 import (
@@ -14,39 +13,39 @@ from powergrader_event_utils.events.proto_events.assignment_pb2 import (
     CriteriaLevel as CriteriaLevelProto,
 )
 
-from powergrader_event_utils.events.utils import ProtoWrapper, general_deserialization
-from google.protobuf.json_format import MessageToJson
+from powergrader_event_utils.events.utils import (
+    ProtoWrapper,
+    general_deserialization,
+    general_proto_type_init,
+)
 
 
+@dataclass
 class AssignmentEvent(PowerGraderEvent, ProtoWrapper[Assignment]):
-    id: str
-    rubric_id: str
-    organization_id: str
+    public_uuid: str
+    version_uuid: str
+    rubric_version_uuid: str
     name: str
-    instructions: str
+    description: str
+    version_timestamp: int
 
     def __init__(
-        self, rubric_id: str, organization_id, name: str, instructions: str
+        self,
+        public_uuid: str,
+        rubric_version_uuid: str,
+        name: str,
+        description: str,
+        version_timestamp: int,
     ) -> None:
-        proto = Assignment()
-
-        if organization_id is not None:
-            proto.organization_id = organization_id
-
-        if rubric_id is not None:
-            proto.rubric_id = rubric_id
-
-        if name is not None:
-            proto.name = name
-
-        if instructions is not None:
-            proto.instructions = instructions
-
-        proto.id = generate_event_id(self.__class__.__name__)
-
-        ProtoWrapper.__init__(self, Assignment, proto)
-        PowerGraderEvent.__init__(
-            self, key=proto.id, event_type=self.__class__.__name__
+        general_proto_type_init(
+            self,
+            Assignment,
+            "version_uuid",
+            public_uuid=public_uuid,
+            rubric_version_uuid=rubric_version_uuid,
+            name=name,
+            description=description,
+            version_timestamp=version_timestamp,
         )
 
     def _package_into_proto(self) -> Assignment:
@@ -58,69 +57,58 @@ class AssignmentEvent(PowerGraderEvent, ProtoWrapper[Assignment]):
 
     @classmethod
     def deserialize(cls, event: bytes) -> "AssignmentEvent":
-        return general_deserialization(Assignment, cls, event, "id")
+        return general_deserialization(Assignment, cls, event, "version_uuid")
 
 
 @dataclass
-class CriteriaLevel:
+class CriteriaLevel(ProtoWrapper[CriteriaLevelProto]):
     score: int
     description: str
 
+    def __init__(self, score: int, description: str) -> None:
+        general_proto_type_init(
+            self, CriteriaLevelProto, None, score=score, description=description
+        )
+
 
 @dataclass
-class RubricCriterion:
+class RubricCriterion(ProtoWrapper[RubricCriterionProto]):
+    uuid: str
     name: str
-    id: str
     levels: List[CriteriaLevel]
 
+    def __init__(self, uuid: str, name: str, levels: List[CriteriaLevel]) -> None:
+        general_proto_type_init(
+            self, RubricCriterionProto, None, uuid=uuid, name=name, levels=levels
+        )
 
+
+@dataclass
 class RubricEvent(PowerGraderEvent, ProtoWrapper[Rubric]):
-    id: str
-    instructor_id: str
+    public_uuid: str
+    version_uuid: str
+    instructor_public_uuid: str
     name: str
-    rubric_criteria: Dict[str, ProtoWrapper[RubricCriterionProto]]
+    rubric_criteria: Dict[str, RubricCriterion]
+    version_timestamp: int
 
     def __init__(
-        self, instructor_id: str, name: str, rubric_criteria: Dict[str, RubricCriterion]
+        self,
+        public_uuid: str,
+        instructor_public_uuid: str,
+        name: str,
+        rubric_criteria: Dict[str, RubricCriterion],
+        version_timestamp: int,
     ) -> None:
-        proto = Rubric()
-
-        if instructor_id is not None:
-            proto.instructor_id = instructor_id
-
-        if name is not None:
-            proto.name = name
-
-        if rubric_criteria is not None:
-            for key, criterion in rubric_criteria.items():
-                if criterion is not None:
-                    crit_proto = RubricCriterionProto()
-
-                    if criterion.name is not None:
-                        crit_proto.name = criterion.name
-
-                    if criterion.id is not None:
-                        crit_proto.id = criterion.id
-
-                    if criterion.levels is not None:
-                        for level in criterion.levels:
-                            if level is not None:
-                                level_proto = CriteriaLevelProto()
-
-                                if level.score is not None:
-                                    level_proto.score = level.score
-
-                                if level.description is not None:
-                                    level_proto.description = level.description
-
-                                crit_proto.levels.append(level_proto)
-                    proto.rubric_criteria[key].CopyFrom(crit_proto)
-
-        proto.id = generate_event_id(self.__class__.__name__)
-
-        ProtoWrapper.__init__(self, Rubric, proto)
-        PowerGraderEvent.__init__(
-            self, key=proto.id, event_type=self.__class__.__name__
+        general_proto_type_init(
+            self,
+            Rubric,
+            "version_uuid",
+            public_uuid=public_uuid,
+            instructor_public_uuid=instructor_public_uuid,
+            name=name,
+            rubric_criteria=rubric_criteria,
+            version_timestamp=version_timestamp,
         )
 
     def _package_into_proto(self) -> Rubric:
@@ -132,4 +120,28 @@ class RubricEvent(PowerGraderEvent, ProtoWrapper[Rubric]):
 
     @classmethod
     def deserialize(cls, event: bytes) -> "RubricEvent":
-        return general_deserialization(Rubric, cls, event, "id")
+        return general_deserialization(Rubric, cls, event, "version_uuid")
+
+
+if __name__ == "__main__":
+    new_rubric = RubricEvent(
+        public_uuid="123",
+        instructor_public_uuid="123",
+        name="test",
+        rubric_criteria={
+            "123": RubricCriterion("123", "test", [CriteriaLevel(1, "test")])
+        },
+        version_timestamp=123,
+    )
+    print(new_rubric.serialize())
+    print(RubricEvent.deserialize(new_rubric.serialize()))
+
+    new_assignment = AssignmentEvent(
+        public_uuid="123",
+        rubric_version_uuid="123",
+        name="test",
+        description="test",
+        version_timestamp=123,
+    )
+    print(new_assignment.serialize())
+    print(AssignmentEvent.deserialize(new_assignment.serialize()))

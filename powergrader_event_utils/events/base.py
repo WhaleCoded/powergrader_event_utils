@@ -99,9 +99,9 @@ def get_kafka_topic_names_for_event_types(event_types: list[EventType]) -> list[
     ]
 
 
-def generate_event_id(class_name: str) -> str:
+def generate_event_uuid(class_name: str) -> str:
     """
-    Generates a unique event id for a given class name.
+    Generates a unique event uuid for a given class name.
     """
 
     return class_name.replace("Event", "") + "--" + str(uuid4())

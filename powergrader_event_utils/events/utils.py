@@ -1,4 +1,4 @@
-from typing import Any, List, Dict, TypeVar, Generic, Type
+from typing import Any, List, Mapping, Sequence, Dict, TypeVar, Generic, Type
 from enum import Enum
 import sys
 
@@ -10,6 +10,8 @@ from powergrader_event_utils.events.proto_events.publish_pb2 import *
 from powergrader_event_utils.events.proto_events.relationship_pb2 import *
 from powergrader_event_utils.events.proto_events.submission_pb2 import *
 from powergrader_event_utils.events.proto_events.user_pb2 import *
+
+from powergrader_event_utils.events.base import generate_event_uuid
 
 
 T = TypeVar("T")
@@ -188,6 +190,62 @@ class ProtoWrapper(Generic[T]):
             return _handle_message_type(proto_field_descriptor, proto_field_value)
         else:
             return _handle_proto_scalar_type(proto_field_descriptor, proto_field_value)
+
+
+def _convert_proto_type_string_to_acutal_type(proto_type_string: str) -> Any:
+    proto_type = getattr(sys.modules[__name__], proto_type_string)
+
+    return proto_type
+
+
+def general_proto_type_packing(proto_type: T, **kwargs: Dict[str, Any]) -> T:
+    proto = proto_type()
+
+    for key, value in kwargs.items():
+        if value is not None:
+            if isinstance(value, Mapping):
+                for sub_key, sub_value in value.items():
+                    getattr(
+                        proto,
+                        key,
+                    )[
+                        sub_key
+                    ].CopyFrom(sub_value.proto)
+            elif isinstance(value, Sequence) and not isinstance(value, str):
+                for sub_value in value:
+                    getattr(
+                        proto,
+                        key,
+                    ).append(sub_value.proto)
+            else:
+                setattr(proto, key, value)
+
+    return proto
+
+
+def general_proto_type_init(
+    object_to_initialize,
+    proto_type,
+    id_field_to_initialize: str,
+    is_powergrader_event: bool = True,
+    **kwargs: Dict[str, Any],
+):
+    proto = general_proto_type_packing(proto_type, **kwargs)
+
+    if id_field_to_initialize is not None:
+        setattr(
+            proto,
+            id_field_to_initialize,
+            generate_event_uuid(object_to_initialize.__class__.__name__),
+        )
+
+    ProtoWrapper.__init__(object_to_initialize, proto_type, proto)
+    if is_powergrader_event:
+        PowerGraderEvent.__init__(
+            object_to_initialize,
+            key=getattr(proto, id_field_to_initialize),
+            event_type=object_to_initialize.__class__.__name__,
+        )
 
 
 def general_deserialization(proto_type, cls, event_bytes, key_field_name) -> T:
