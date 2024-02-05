@@ -2,26 +2,26 @@ syntax = "proto3";
 package course;
 
 message Course {
-    string public_id = 1;
-    string id = 2;
-    string organization_id = 3;
-    string instructor_id = 4;
-    string name = 5;
-    string description = 6;
-    uint64 when = 7;
+    string public_uuid = 1;
+    string version_uuid = 2;
+    string instructor_uuid = 3;
+    string name = 4;
+    string description = 5;
+    uint64 version_timestamp = 6;
 }
 
 message Section {
-    string public_id = 1;
-    string id = 2;
-    string course_id = 3;
+    string public_uuid = 1;
+    string version_uuid = 2;
+    string course_uuid = 3;
     string name = 4;
-    optional bool is_active = 5;
-    uint64 when = 7;
+    optional bool closed = 5;
+    uint64 version_timestamp = 6;
 }
 
 message Organization {
-    string id = 1;
-    string name = 2;
-    string code = 3;
+    string public_uuid = 1;
+    string version_uuid = 2;
+    string name = 3;
+    uint64 version_timestamp = 4;
 }

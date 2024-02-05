@@ -1,5 +1,6 @@
 from typing import Type
 from datetime import datetime
+import time
 
 from powergrader_event_utils.events.base import (
     PowerGraderEvent,
@@ -34,3 +35,7 @@ def convert_event_type_to_event_class_type(
 
 def convert_proto_when_to_date_time(when: int) -> datetime:
     return datetime.fromtimestamp(when / 1000.0)
+
+
+def get_miliseconds_since_epoch():
+    return int(time.time_ns() / 1_000_000)

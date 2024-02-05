@@ -7,55 +7,57 @@ enum LMSInstructorType {
     FACULTY = 2;
 }
 
-message RegisterCoursePublicID {
-    string public_id = 1;
+message RegisterCoursePublicUUID {
+    string public_uuid = 1;
     string lms_id = 2;
+    string organization_uuid = 3;
 }
 
-message RegisterSectionPublicID {
-    string public_id = 1;
+message RegisterSectionPublicUUID {
+    string public_uuid = 1;
     string lms_id = 2;
+    string organization_uuid = 3;
 }
 
-message RegisterInstructorPublicID {
-    string public_id = 1;
+message RegisterInstructorPublicUUID {
+    string public_uuid = 1;
     string lms_id = 2;
     LMSInstructorType user_type = 3;
+    string organization_uuid = 4;
 }
 
-message RegisterStudentPublicID {
-    string public_id = 1;
+message RegisterStudentPublicUUID {
+    string public_uuid = 1;
     string lms_id = 2;
+    string organization_uuid = 3;
 }
 
-message RegisterAssignmentPublicID {
-    string public_id = 1;
+message RegisterAssignmentPublicUUID {
+    string public_uuid = 1;
     string lms_id = 2;
-    string organization_id = 3;
+    string organization_uuid = 3;
 }
 
-message RegisterRubricPublicID {
-    string public_id = 1;
+message RegisterRubricPublicUUID {
+    string public_uuid = 1;
     string lms_id = 2;
-    string organization_id = 3;
+    string organization_uuid = 3;
 }
 
-message RegisterSubmissionPublicID {
-    string public_id = 1;
+message RegisterSubmissionPublicUUID {
+    string public_uuid = 1;
     string lms_assignment_id = 2;
     string lms_student_id = 3;
-    string organization_id = 4;
+    string organization_uuid = 4;
 }
 
 message PublishedToLMS {
-    string public_id_of_published_entity = 1;
-    string private_id_of_published_entity = 2;
-    uint64 when = 3;
+    string version_uuid_of_published_entity = 1;
+    uint64 publish_timestamp = 2;
 }
 
 message PublishedGradeToLMS {
-    string public_submission_id = 1;
-    string instructor_review_id = 2;
-    uint64 when = 3;
+    string instructor_review_version_uuid = 1;
+    uint64 publish_timestamp = 2;
 }
 

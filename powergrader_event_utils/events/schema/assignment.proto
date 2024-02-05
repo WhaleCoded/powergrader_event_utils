@@ -2,22 +2,25 @@ syntax = "proto3";
 package assignment;
 
 message Assignment {
-    string id = 1;
-    string organization_id = 2;
-    string rubric_id = 3;
+    string public_uuid = 1;
+    string version_uuid = 2;
+    string rubric_version_uuid = 3;
     string name = 4;
-    string instructions = 5;
+    string description = 5;
+    uint64 version_timestamp = 6;
 }
 
 message Rubric {
-    string id = 1;
-    string instructor_id = 2;
-    string name = 3;
-    map<string, RubricCriterion> rubric_criteria = 4;
+    string public_uuid = 1;
+    string version_uuid = 2;
+    string instructor_public_uuid = 3;
+    string name = 4;
+    map<string, RubricCriterion> rubric_criteria = 5;
+    uint64 version_timestamp = 6;
 }
 
 message RubricCriterion {
-    string id = 1;
+    string uuid = 1;
     string name = 2;
     repeated CriteriaLevel levels = 3;
 }

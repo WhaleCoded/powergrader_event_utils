@@ -1,63 +1,72 @@
 syntax = "proto3";
 package grade;
 
-
-enum GradeType {
-    UNSECIFIED = 0;
-    AI_GRADED = 1;
-    FACULTY_ADJUSTED = 2;
-    AI_INFERRED = 3;
+message AICriteriaGradingStarted {
+    string version_uuid = 1;
+    string criteria_uuid = 2;
+    string submission_version_uuid = 3;
+    uint64 time_started = 4;
 }
 
-message GradeIdentifier {
-    string submission_id = 1;
-    string grade_method_id = 2;
-    string previous_criteria_grade_id = 3;
+message GradingMethod {
+    string uuid = 1;
+    string model_name = 2;
+    string method_name = 3;
+    string git_hash = 4;
 }
 
-message GradingStarted {
-    string id = 1;
-    string submission_id = 2;
-    string grade_method_id = 3;
-    repeated string criteria_to_be_graded = 4;
+message Grade {
+    optional uint32 score = 1;
+    string assessment = 2;
 }
 
-message CriteriaGrade {
-    string id = 1;
-    oneof grade_id {
-        string grading_started_id = 2;
-        GradeIdentifier grade_identifier = 3;
-    }
-    string rubric_criteria_id = 4;
-    GradeType type = 5;
-    optional uint32 score = 6;
-    string assessment = 7;
+message AICriteriaGrade {
+    string version_uuid = 1;
+    string criteria_uuid = 2;
+    string sumbission_version_uuid = 3;
+    string grade_method_uuid = 4;
+    Grade grade = 5;
+    uint64 time_finished = 6;
+}
+
+message AIInferredCriteriaGrade {
+    string version_uuid = 1;
+    string criteria_uuid = 2;
+    string sumbission_version_uuid = 3;
+    string grade_method_uuid = 4;
+    string previous_criteria_grade_version_uuid = 5;
+    string faculty_override_criteria_grade_version_uuid = 6;
+    Grade grade = 7;
+    uint64 time_finished = 8;
+}
+
+message FacultyCriteriaGrade {
+    string version_uuid = 1;
+    string criteria_uuid = 2;
+    string sumbission_version_uuid = 3;
+    Grade grade = 4;
+}
+
+message FacultyOverrideCriteriaGrade {
+    string version_uuid = 1;
+    string criteria_uuid = 2;
+    string sumbission_version_uuid = 3;
+    string previous_criteria_grade_version_uuid = 4;
+    Grade grade = 5;
 }
 
 message CriteriaGradeEmbedding {
-    string id = 1;
-    string crit_grade_id = 2;
-    string embedder_id = 3;
+    string version_uuid = 1;
+    string criteria_grade_version_uuid = 2;
+    string embedder_uuid = 3;
     repeated float embedding = 4;
 }
 
-message AssessmentSimilarity {
-    string id = 1;
-    repeated string simmilar_criteria_grade_ids = 4;
-}
-
-message StudentRequestedRegrade {
-    string id = 1;
-    string submission_id = 3;
-    string reasoning = 4;
-    repeated string criteria_grades_to_reevaluate = 5;
-}
-
-message InstructorReview {
-    string id = 1;
-    string submission_id = 2;
-    string instructor_id = 3;
-    uint64 time_reviewed = 4;
-    repeated string criteria_grade_ids = 5;
+message InstructorSubmissionGradeApproval {
+    string version_uuid = 1;
+    string submission_version_uuid = 2;
+    string instructor_public_uuid = 3;
+    repeated string criteria_grade_version_uuids = 4;
+    uint64 version_timestamp = 5;
 }
 

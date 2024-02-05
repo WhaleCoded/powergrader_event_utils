@@ -1,45 +1,39 @@
 syntax = "proto3";
 package relationship;
 
-message PublicIDReferenceChanged {
-    string id = 1;
-    string private_uuid = 2;
-    string public_uuid = 3;
-    uint64 when = 4;
-}
 
 message AssignmentAddedToCourse {
-    string id = 1;
-    string assignment_id = 2;
-    string course_id = 3;
+    string assignment_public_uuid = 1;
+    string course_public_uuid = 2;
+    uint64 timestamp = 3;
 }
 
 message AssignmentRemovedFromCourse {
-    string id = 1;
-    string assignment_id = 2;
-    string course_id = 3;
+    string assignment_public_uuid = 1;
+    string course_public_uuid = 2;
+    uint64 timestamp = 3;
 }
 
 message StudentAddedToSection {
-    string id = 1;
-    string student_id = 2;
-    string section_id = 3;
+    string student_public_uuid = 1;
+    string section_public_uuid = 2;
+    uint64 timestamp = 3;
 }
 
 message StudentRemovedFromSection {
-    string id = 1;
-    string student_id = 2;
-    string section_id = 3;
+    string student_public_uuid = 1;
+    string section_public_uuid = 2;
+    uint64 timestamp = 3;
 }
 
 message InstructorAddedToCourse {
-    string id = 1;
-    string instructor_id = 2;
-    string course_id = 3;
+    string instructor_public_uuid = 1;
+    string course_public_uuid = 2;
+    uint64 timestamp = 3;
 }
 
 message InstructorRemovedFromCourse {
-    string id = 1;
-    string instructor_id = 2;
-    string course_id = 3;
+    string instructor_public_uuid = 1;
+    string course_public_uuid = 2;
+    uint64 timestamp = 3;
 }

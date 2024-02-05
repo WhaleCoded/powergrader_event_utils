@@ -2,21 +2,22 @@ syntax = "proto3";
 package submission;
 
 message Submission {
-    string id = 1;
-    string student_id = 2;
-    string assignment_id = 3;
-    uint64 when = 4;
-    string submission_files_id = 5;
+    string public_uuid = 1;
+    string version_uuid = 2;
+    string student_public_uuid = 3;
+    string assignment_version_uuid = 4;
+    string submission_file_group_uuid = 5;
+    uint64 version_timestamp = 6;
 }
 
-message SubmissionFiles {
-    string id = 1;
-    string student_id = 2;
+message SubmissionFileGroup {
+    string uuid = 1;
+    string student_public_uuid = 2;
     repeated FileContent file_content = 3;
 }
 
 message FileContent {
     string file_name = 1;
     string file_type = 2;
-    string content = 3;
+    bytes content = 3;
 }
