@@ -21,7 +21,7 @@ message Grade {
 }
 
 message AICriteriaGrade {
-    string version_uuid = 1;
+    string grading_started_version_uuid = 1;
     string criteria_uuid = 2;
     string sumbission_version_uuid = 3;
     string grade_method_uuid = 4;
@@ -30,7 +30,7 @@ message AICriteriaGrade {
 }
 
 message AIInferredCriteriaGrade {
-    string version_uuid = 1;
+    string grading_started_version_uuid = 1;
     string criteria_uuid = 2;
     string sumbission_version_uuid = 3;
     string grade_method_uuid = 4;
