@@ -23,7 +23,7 @@ message Grade {
 message AICriteriaGrade {
     string grading_started_version_uuid = 1;
     string criteria_uuid = 2;
-    string sumbission_version_uuid = 3;
+    string submission_version_uuid = 3;
     string grade_method_uuid = 4;
     Grade grade = 5;
     uint64 time_finished = 6;
@@ -32,8 +32,8 @@ message AICriteriaGrade {
 message AIInferredCriteriaGrade {
     string grading_started_version_uuid = 1;
     string criteria_uuid = 2;
-    string sumbission_version_uuid = 3;
-    string grade_method_uuid = 4;
+    string submission_version_uuid = 3;
+    string grading_method_uuid = 4;
     string previous_criteria_grade_version_uuid = 5;
     string faculty_override_criteria_grade_version_uuid = 6;
     Grade grade = 7;
@@ -43,7 +43,7 @@ message AIInferredCriteriaGrade {
 message InstructorCriteriaGrade {
     string version_uuid = 1;
     string criteria_uuid = 2;
-    string sumbission_version_uuid = 3;
+    string submission_version_uuid = 3;
     string instructor_public_uuid = 4;
     Grade grade = 5;
 }
@@ -51,7 +51,7 @@ message InstructorCriteriaGrade {
 message InstructorOverrideCriteriaGrade {
     string version_uuid = 1;
     string criteria_uuid = 2;
-    string sumbission_version_uuid = 3;
+    string submission_version_uuid = 3;
     string previous_criteria_grade_version_uuid = 4;
     string instructor_public_uuid = 5;
     Grade grade = 6;

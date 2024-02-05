@@ -224,22 +224,26 @@ def general_proto_type_packing(proto_type: T, **kwargs: Dict[str, Any]) -> T:
 
 
 def general_proto_type_init(
-    object_to_initialize, proto_type, id_field: str, **kwargs: Dict[str, Any]
+    object_to_initialize,
+    proto_type,
+    id_field_to_initialize: str,
+    is_powergrader_event: bool = True,
+    **kwargs: Dict[str, Any],
 ):
     proto = general_proto_type_packing(proto_type, **kwargs)
 
-    if id_field is not None:
+    if id_field_to_initialize is not None:
         setattr(
             proto,
-            id_field,
+            id_field_to_initialize,
             generate_event_uuid(object_to_initialize.__class__.__name__),
         )
 
     ProtoWrapper.__init__(object_to_initialize, proto_type, proto)
-    if id_field is not None:
+    if is_powergrader_event:
         PowerGraderEvent.__init__(
             object_to_initialize,
-            key=getattr(proto, id_field),
+            key=getattr(proto, id_field_to_initialize),
             event_type=object_to_initialize.__class__.__name__,
         )
 
