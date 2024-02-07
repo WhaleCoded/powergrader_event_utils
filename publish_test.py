@@ -232,411 +232,411 @@ def create_org_worth_of_events():
     events_to_send.append(org_event)
 
     apporto_test_event = OrganizationEvent(
-        public_uuid=str(uuid4()), name="Apporto Test", version_timestamp=when
+        public_uuid=str(uuid4()), name="Apporto Test", version_timestamp=when + 1
     )
     events_to_send.append(apporto_test_event)
 
-    print("Creating instructor")
-    register_instructor = RegisterInstructorPublicUUIDEvent(
-        lms_id=str(randint(0, 100000000)),
-        user_type=2,
-        organization_public_uuid=org_event.public_uuid,
-    )
-    events_to_send.append(register_instructor)
-    instructor = InstructorEvent(
-        public_uuid=register_instructor.public_uuid,
-        name="Mr.Bean",
-        email="bean@email.com",
-        version_timestamp=get_miliseconds_since_epoch(),
-    )
-    events_to_send.append(instructor)
+    # print("Creating instructor")
+    # register_instructor = RegisterInstructorPublicUUIDEvent(
+    #     lms_id=str(randint(0, 100000000)),
+    #     user_type=2,
+    #     organization_public_uuid=org_event.public_uuid,
+    # )
+    # events_to_send.append(register_instructor)
+    # instructor = InstructorEvent(
+    #     public_uuid=register_instructor.public_uuid,
+    #     name="Mr.Bean",
+    #     email="bean@email.com",
+    #     version_timestamp=get_miliseconds_since_epoch(),
+    # )
+    # events_to_send.append(instructor)
 
-    time.sleep(0.1)
+    # time.sleep(0.1)
 
-    instructor = InstructorEvent(
-        public_uuid=register_instructor.public_uuid,
-        name="Mr.Bean",
-        email="bean02@email.com",
-        version_timestamp=get_miliseconds_since_epoch(),
-    )
-    events_to_send.append(instructor)
+    # instructor = InstructorEvent(
+    #     public_uuid=register_instructor.public_uuid,
+    #     name="Mr.Bean",
+    #     email="bean02@email.com",
+    #     version_timestamp=get_miliseconds_since_epoch(),
+    # )
+    # events_to_send.append(instructor)
 
-    register_course = RegisterCoursePublicUUIDEvent(
-        lms_id=str(randint(0, 100000000)),
-        organization_public_uuid=org_event.public_uuid,
-    )
-    events_to_send.append(register_course)
-    course = CourseEvent(
-        public_uuid=register_course.public_uuid,
-        instructor_public_uuid=instructor.public_uuid,
-        name=course_names[randint(0, len(course_names) - 1)],
-        description=descriptions[randint(0, len(descriptions) - 1)],
-        version_timestamp=get_miliseconds_since_epoch(),
-    )
-    events_to_send.append(course)
+    # register_course = RegisterCoursePublicUUIDEvent(
+    #     lms_id=str(randint(0, 100000000)),
+    #     organization_public_uuid=org_event.public_uuid,
+    # )
+    # events_to_send.append(register_course)
+    # course = CourseEvent(
+    #     public_uuid=register_course.public_uuid,
+    #     instructor_public_uuid=instructor.public_uuid,
+    #     name=course_names[randint(0, len(course_names) - 1)],
+    #     description=descriptions[randint(0, len(descriptions) - 1)],
+    #     version_timestamp=get_miliseconds_since_epoch(),
+    # )
+    # events_to_send.append(course)
 
-    register_section = RegisterSectionPublicUUIDEvent(
-        lms_id=str(randint(0, 100000000)),
-        organization_public_uuid=org_event.public_uuid,
-    )
-    events_to_send.append(register_section)
-    section = SectionEvent(
-        public_uuid=register_section.public_uuid,
-        course_public_uuid=course.public_uuid,
-        name="Section 1",
-        closed=False,
-        version_timestamp=get_miliseconds_since_epoch(),
-    )
-    events_to_send.append(section)
+    # register_section = RegisterSectionPublicUUIDEvent(
+    #     lms_id=str(randint(0, 100000000)),
+    #     organization_public_uuid=org_event.public_uuid,
+    # )
+    # events_to_send.append(register_section)
+    # section = SectionEvent(
+    #     public_uuid=register_section.public_uuid,
+    #     course_public_uuid=course.public_uuid,
+    #     name="Section 1",
+    #     closed=False,
+    #     version_timestamp=get_miliseconds_since_epoch(),
+    # )
+    # events_to_send.append(section)
 
-    print("Creating Student event")
-    register_student = RegisterStudentPublicUUIDEvent(
-        lms_id=str(randint(0, 100000000)),
-        organization_public_uuid=org_event.public_uuid,
-    )
-    events_to_send.append(register_student)
-    student = StudentEvent(
-        public_uuid=register_student.public_uuid,
-        name="Dallin",
-        email="d@apporto.com",
-        version_timestamp=get_miliseconds_since_epoch(),
-    )
-    events_to_send.append(student)
+    # print("Creating Student event")
+    # register_student = RegisterStudentPublicUUIDEvent(
+    #     lms_id=str(randint(0, 100000000)),
+    #     organization_public_uuid=org_event.public_uuid,
+    # )
+    # events_to_send.append(register_student)
+    # student = StudentEvent(
+    #     public_uuid=register_student.public_uuid,
+    #     name="Dallin",
+    #     email="d@apporto.com",
+    #     version_timestamp=get_miliseconds_since_epoch(),
+    # )
+    # events_to_send.append(student)
 
-    time.sleep(0.1)
-    time.sleep(0.1)
-    update_course = CourseEvent(
-        public_uuid=course.public_uuid,
-        instructor_public_uuid=instructor.public_uuid,
-        name="FINAL EVENT MADE IT CORRECTLY",
-        description=descriptions[randint(0, len(descriptions) - 1)],
-        version_timestamp=get_miliseconds_since_epoch(),
-    )
-    events_to_send.append(update_course)
-    time.sleep(0.1)
-    time.sleep(0.1)
-    update_section = SectionEvent(
-        public_uuid=section.public_uuid,
-        course_public_uuid=course.public_uuid,
-        name="Section 42",
-        closed=True,
-        version_timestamp=get_miliseconds_since_epoch(),
-    )
-    events_to_send.append(update_section)
+    # time.sleep(0.1)
+    # time.sleep(0.1)
+    # update_course = CourseEvent(
+    #     public_uuid=course.public_uuid,
+    #     instructor_public_uuid=instructor.public_uuid,
+    #     name="FINAL EVENT MADE IT CORRECTLY",
+    #     description=descriptions[randint(0, len(descriptions) - 1)],
+    #     version_timestamp=get_miliseconds_since_epoch(),
+    # )
+    # events_to_send.append(update_course)
+    # time.sleep(0.1)
+    # time.sleep(0.1)
+    # update_section = SectionEvent(
+    #     public_uuid=section.public_uuid,
+    #     course_public_uuid=course.public_uuid,
+    #     name="Section 42",
+    #     closed=True,
+    #     version_timestamp=get_miliseconds_since_epoch(),
+    # )
+    # events_to_send.append(update_section)
 
-    print("Creating rubric event")
-    # Package the criteria into a RubricCriterion object
-    criterion = {}
-    for key, value in criteria.items():
-        criterion[key] = RubricCriterion(
-            name=value["name"],
-            id=str(uuid4()),
-            levels=[
-                (
-                    CriterionLevel(
-                        description=level["description"], score=level["score"]
-                    )
-                    if "score" in level
-                    else CriterionLevel(description=level["description"], score=None)
-                )
-                for level in value["levels"]
-            ],
-        )
-    register_rubric = RegisterRubricPublicUUIDEvent(
-        lms_id=str(randint(0, 100000000)),
-        organization_public_uuid=org_event.public_uuid,
-    )
-    rub_event = RubricEvent(
-        public_uuid=register_rubric.public_uuid,
-        instructor_public_uuid=instructor.public_uuid,
-        name=rubric_names[randint(0, len(rubric_names) - 1)],
-        rubric_criteria=criterion,
-        version_timestamp=get_miliseconds_since_epoch(),
-    )
-    events_to_send.append(rub_event)
+    # print("Creating rubric event")
+    # # Package the criteria into a RubricCriterion object
+    # criterion = {}
+    # for key, value in criteria.items():
+    #     criterion[key] = RubricCriterion(
+    #         name=value["name"],
+    #         id=str(uuid4()),
+    #         levels=[
+    #             (
+    #                 CriterionLevel(
+    #                     description=level["description"], score=level["score"]
+    #                 )
+    #                 if "score" in level
+    #                 else CriterionLevel(description=level["description"], score=None)
+    #             )
+    #             for level in value["levels"]
+    #         ],
+    #     )
+    # register_rubric = RegisterRubricPublicUUIDEvent(
+    #     lms_id=str(randint(0, 100000000)),
+    #     organization_public_uuid=org_event.public_uuid,
+    # )
+    # rub_event = RubricEvent(
+    #     public_uuid=register_rubric.public_uuid,
+    #     instructor_public_uuid=instructor.public_uuid,
+    #     name=rubric_names[randint(0, len(rubric_names) - 1)],
+    #     rubric_criteria=criterion,
+    #     version_timestamp=get_miliseconds_since_epoch(),
+    # )
+    # events_to_send.append(rub_event)
 
-    new_crit = {
-        "New Crit": RubricCriterion(name="New Crit", id=str(uuid4()), levels=[])
-    }
-    power_grader_rubric = RubricEvent(
-        public_uuid=register_rubric.public_uuid,
-        instructor_public_uuid=instructor.public_uuid,
-        name="PowerGrader Rubric",
-        rubric_criteria=new_crit,
-        version_timestamp=get_miliseconds_since_epoch(),
-    )
-    events_to_send.append(power_grader_rubric)
+    # new_crit = {
+    #     "New Crit": RubricCriterion(name="New Crit", id=str(uuid4()), levels=[])
+    # }
+    # power_grader_rubric = RubricEvent(
+    #     public_uuid=register_rubric.public_uuid,
+    #     instructor_public_uuid=instructor.public_uuid,
+    #     name="PowerGrader Rubric",
+    #     rubric_criteria=new_crit,
+    #     version_timestamp=get_miliseconds_since_epoch(),
+    # )
+    # events_to_send.append(power_grader_rubric)
 
-    print("Creating assignment event")
-    instructions = """Assignment 4: Recursion
+    # print("Creating assignment event")
+    # instructions = """Assignment 4: Recursion
 
-    Write a Python program to get the Fibonacci number at N.
+    # Write a Python program to get the Fibonacci number at N.
 
-    Note : The Fibonacci Sequence is the series of numbers :
-    0, 1, 1, 2, 3, 5, 8, 13, 21, ....
-    Every next number is found by adding up the two numbers before it.
+    # Note : The Fibonacci Sequence is the series of numbers :
+    # 0, 1, 1, 2, 3, 5, 8, 13, 21, ....
+    # Every next number is found by adding up the two numbers before it.
 
-    Remember to implement your solution using recursion.
-    The final program should take user input from the terminal specifying the desired Fibonacci number and display the calculated result.
-    (Note: The first entry is N=1)"""
-    register_assignment = RegisterAssignmentPublicUUIDEvent(
-        lms_id=str(randint(0, 100000000)),
-        organization_public_uuid=org_event.public_uuid,
-    )
-    ass_event = AssignmentEvent(
-        public_uuid=register_assignment.public_uuid,
-        rubric_version_uuid=rub_event.version_uuid,
-        name="Recursion",
-        description="An assignment",
-        version_timestamp=get_miliseconds_since_epoch(),
-    )
-    events_to_send.append(ass_event)
+    # Remember to implement your solution using recursion.
+    # The final program should take user input from the terminal specifying the desired Fibonacci number and display the calculated result.
+    # (Note: The first entry is N=1)"""
+    # register_assignment = RegisterAssignmentPublicUUIDEvent(
+    #     lms_id=str(randint(0, 100000000)),
+    #     organization_public_uuid=org_event.public_uuid,
+    # )
+    # ass_event = AssignmentEvent(
+    #     public_uuid=register_assignment.public_uuid,
+    #     rubric_version_uuid=rub_event.version_uuid,
+    #     name="Recursion",
+    #     description="An assignment",
+    #     version_timestamp=get_miliseconds_since_epoch(),
+    # )
+    # events_to_send.append(ass_event)
 
-    print("Creating Submission Files Event")
-    file_content = """def fibonacci(n):
-        \"\"\"
-        Calculates the Fibonacci number at the given position and generates the Fibonacci series up to that position using recursion.
+    # print("Creating Submission Files Event")
+    # file_content = """def fibonacci(n):
+    #     \"\"\"
+    #     Calculates the Fibonacci number at the given position and generates the Fibonacci series up to that position using recursion.
 
-        Args:
-            n (int): The position of the Fibonacci number.
+    #     Args:
+    #         n (int): The position of the Fibonacci number.
 
-        Returns:
-            list: The Fibonacci series up to the given position.
-        \"\"\"
-        if n <= 0:
-            raise ValueError("Invalid input. Please enter a positive integer.")
-        elif n == 1:
-            return [0]
-        elif n == 2:
-            return [0, 1]
-        else:
-            series = fibonacci(n - 1)
-            series.append(series[-1] + series[-2])
-            return series
+    #     Returns:
+    #         list: The Fibonacci series up to the given position.
+    #     \"\"\"
+    #     if n <= 0:
+    #         raise ValueError("Invalid input. Please enter a positive integer.")
+    #     elif n == 1:
+    #         return [0]
+    #     elif n == 2:
+    #         return [0, 1]
+    #     else:
+    #         series = fibonacci(n - 1)
+    #         series.append(series[-1] + series[-2])
+    #         return series
 
-    def main():
-        \"\"\"
-        Entrypoint of the program.
-        \"\"\"
-        try:
-            n = int(input("Enter the position of the Fibonacci number: "))
-            series = fibonacci(n)
+    # def main():
+    #     \"\"\"
+    #     Entrypoint of the program.
+    #     \"\"\"
+    #     try:
+    #         n = int(input("Enter the position of the Fibonacci number: "))
+    #         series = fibonacci(n)
 
-            print(f"The Fibonacci series up to position {n} is:")
-            for i, num in enumerate(series, start=1):
-                print(f"{i}: {num}")
-        except ValueError:
-            print("Invalid input. Please enter a valid integer.")
+    #         print(f"The Fibonacci series up to position {n} is:")
+    #         for i, num in enumerate(series, start=1):
+    #             print(f"{i}: {num}")
+    #     except ValueError:
+    #         print("Invalid input. Please enter a valid integer.")
 
-    if __name__ == "__main__":
-        main()"""
-    file_obj = FileContent(file_name="submission", file_type="py", content=file_content)
-    sub_files = SubmissionFileGroupEvent(
-        student_public_uuid=register_student.public_uuid, files=[file_obj]
-    )
-    events_to_send.append(sub_files)
+    # if __name__ == "__main__":
+    #     main()"""
+    # file_obj = FileContent(file_name="submission", file_type="py", content=file_content)
+    # sub_files = SubmissionFileGroupEvent(
+    #     student_public_uuid=register_student.public_uuid, files=[file_obj]
+    # )
+    # events_to_send.append(sub_files)
 
-    # print("Creating Submission Event")
-    sub_event = SubmissionEvent(
-        public_uuid=str(uuid4()),
-        student_public_uuid=student.public_uuid,
-        assignment_version_uuid=ass_event.version_uuid,
-        submission_file_group_uuid=sub_files.uuid,
-        version_timestamp=get_miliseconds_since_epoch(),
-    )
+    # # print("Creating Submission Event")
+    # sub_event = SubmissionEvent(
+    #     public_uuid=str(uuid4()),
+    #     student_public_uuid=student.public_uuid,
+    #     assignment_version_uuid=ass_event.version_uuid,
+    #     submission_file_group_uuid=sub_files.uuid,
+    #     version_timestamp=get_miliseconds_since_epoch(),
+    # )
 
-    events_to_send.append(sub_event)
+    # events_to_send.append(sub_event)
 
-    print("Create AI Grading Started Event")
-    crit_ids = [crit.id for crit in rub_event.rubric_criteria.values()]
-    ai_grade_event = GradingStartedEvent(sub_event.id, "GPT-3.5 Turbo", crit_ids)
-    events_to_send.append(ai_grade_event)
+    # print("Create AI Grading Started Event")
+    # crit_ids = [crit.id for crit in rub_event.rubric_criteria.values()]
+    # ai_grade_event = GradingStartedEvent(sub_event.id, "GPT-3.5 Turbo", crit_ids)
+    # events_to_send.append(ai_grade_event)
 
-    # print("Create ai graded crit event")
-    crit_graded = CriteriaGradeEvent(
-        ai_grade_event.id,
-        crit_ids[0],
-        GradeType.AI_GRADED,
-        1,
-        "Their code did not run.",
-    )
-    events_to_send.append(crit_graded)
+    # # print("Create ai graded crit event")
+    # crit_graded = CriteriaGradeEvent(
+    #     ai_grade_event.id,
+    #     crit_ids[0],
+    #     GradeType.AI_GRADED,
+    #     1,
+    #     "Their code did not run.",
+    # )
+    # events_to_send.append(crit_graded)
 
-    # print("Create Faculty graded crit event")
-    grade_identifier = GradeIdentifier(sub_event.id, instructor.public_id, None)
-    faculty_crit_graded = CriteriaGradeEvent(
-        grade_identifier,
-        crit_ids[1],
-        GradeType.FACULTY_ADJUSTED,
-        3,
-        "The student's code was nearly flawless",
-    )
-    events_to_send.append(faculty_crit_graded)
+    # # print("Create Faculty graded crit event")
+    # grade_identifier = GradeIdentifier(sub_event.id, instructor.public_id, None)
+    # faculty_crit_graded = CriteriaGradeEvent(
+    #     grade_identifier,
+    #     crit_ids[1],
+    #     GradeType.FACULTY_ADJUSTED,
+    #     3,
+    #     "The student's code was nearly flawless",
+    # )
+    # events_to_send.append(faculty_crit_graded)
 
-    print("Create criteria grade embeddigns")
-    ai_grade_embedding = CriteriaGradeEmbeddingEvent(
-        crit_graded.id, "Roberta-3", [0.0 for i in range(20)]
-    )
-    events_to_send.append(ai_grade_embedding)
-    faculty_grade_embedding = CriteriaGradeEmbeddingEvent(
-        faculty_crit_graded.id, "Roberta-3", [1.0 for i in range(20)]
-    )
-    events_to_send.append(faculty_grade_embedding)
+    # print("Create criteria grade embeddigns")
+    # ai_grade_embedding = CriteriaGradeEmbeddingEvent(
+    #     crit_graded.id, "Roberta-3", [0.0 for i in range(20)]
+    # )
+    # events_to_send.append(ai_grade_embedding)
+    # faculty_grade_embedding = CriteriaGradeEmbeddingEvent(
+    #     faculty_crit_graded.id, "Roberta-3", [1.0 for i in range(20)]
+    # )
+    # events_to_send.append(faculty_grade_embedding)
 
-    # print("Create instructor review event")
-    instructor_review_event = InstructorReviewEvent(
-        sub_event.id,
-        instructor.public_id,
-        time_reviewed=get_miliseconds_since_epoch(),
-        criteria_grade_ids=[crit_graded.id, faculty_crit_graded.id],
-    )
-    events_to_send.append(instructor_review_event)
+    # # print("Create instructor review event")
+    # instructor_review_event = InstructorReviewEvent(
+    #     sub_event.id,
+    #     instructor.public_id,
+    #     time_reviewed=get_miliseconds_since_epoch(),
+    #     criteria_grade_ids=[crit_graded.id, faculty_crit_graded.id],
+    # )
+    # events_to_send.append(instructor_review_event)
 
-    # # PUBLISH EVENTS
-    lms_course = RegisterCoursePublicIDEvent(
-        public_id=course.public_id, lms_id=str(randint(0, 100000000))
-    )
-    events_to_send.append(lms_course)
+    # # # PUBLISH EVENTS
+    # lms_course = RegisterCoursePublicIDEvent(
+    #     public_id=course.public_id, lms_id=str(randint(0, 100000000))
+    # )
+    # events_to_send.append(lms_course)
 
-    lms_section = RegisterSectionPublicIDEvent(
-        public_id=section.public_id, lms_id=str(randint(0, 100000000))
-    )
-    events_to_send.append(lms_section)
+    # lms_section = RegisterSectionPublicIDEvent(
+    #     public_id=section.public_id, lms_id=str(randint(0, 100000000))
+    # )
+    # events_to_send.append(lms_section)
 
-    lms_student = RegisterStudentPublicIDEvent(
-        public_id=student.public_id, lms_id=str(randint(0, 100000000))
-    )
-    events_to_send.append(lms_student)
+    # lms_student = RegisterStudentPublicIDEvent(
+    #     public_id=student.public_id, lms_id=str(randint(0, 100000000))
+    # )
+    # events_to_send.append(lms_student)
 
-    lms_instructor = RegisterInstructorPublicIDEvent(
-        public_id=instructor.public_id,
-        lms_id=str(randint(0, 100000000)),
-        user_type=LMSInstructorType.FACULTY,
-    )
-    events_to_send.append(lms_instructor)
+    # lms_instructor = RegisterInstructorPublicIDEvent(
+    #     public_id=instructor.public_id,
+    #     lms_id=str(randint(0, 100000000)),
+    #     user_type=LMSInstructorType.FACULTY,
+    # )
+    # events_to_send.append(lms_instructor)
 
-    lms_assignment = RegisterAssignmentPublicIDEvent(
-        public_id=str(uuid4()),
-        lms_id=str(randint(0, 100000000)),
-        organization_id=org_event.id,
-    )
-    events_to_send.append(lms_assignment)
+    # lms_assignment = RegisterAssignmentPublicIDEvent(
+    #     public_id=str(uuid4()),
+    #     lms_id=str(randint(0, 100000000)),
+    #     organization_id=org_event.id,
+    # )
+    # events_to_send.append(lms_assignment)
 
-    lms_rubric = RegisterRubricPublicIDEvent(
-        public_id=str(uuid4()),
-        lms_id=str(randint(0, 100000000)),
-        organization_id=org_event.id,
-    )
-    events_to_send.append(lms_rubric)
+    # lms_rubric = RegisterRubricPublicIDEvent(
+    #     public_id=str(uuid4()),
+    #     lms_id=str(randint(0, 100000000)),
+    #     organization_id=org_event.id,
+    # )
+    # events_to_send.append(lms_rubric)
 
-    lms_submission = RegisterSubmissionPublicIDEvent(
-        public_id=str(uuid4()),
-        lms_assignment_id=lms_assignment.lms_id,
-        lms_student_id=lms_student.lms_id,
-        organization_id=org_event.id,
-    )
-    events_to_send.append(lms_submission)
+    # lms_submission = RegisterSubmissionPublicIDEvent(
+    #     public_id=str(uuid4()),
+    #     lms_assignment_id=lms_assignment.lms_id,
+    #     lms_student_id=lms_student.lms_id,
+    #     organization_id=org_event.id,
+    # )
+    # events_to_send.append(lms_submission)
 
-    # Test the actual publish event
-    when = get_miliseconds_since_epoch()
-    publish_course = PublishedToLMSEvent(
-        public_id_of_published_entity=lms_course.public_id,
-        private_id_of_published_entity=course.id,
-        when=when,
-    )
-    events_to_send.append(publish_course)
+    # # Test the actual publish event
+    # when = get_miliseconds_since_epoch()
+    # publish_course = PublishedToLMSEvent(
+    #     public_id_of_published_entity=lms_course.public_id,
+    #     private_id_of_published_entity=course.id,
+    #     when=when,
+    # )
+    # events_to_send.append(publish_course)
 
-    publish_section = PublishedToLMSEvent(
-        public_id_of_published_entity=lms_section.public_id,
-        private_id_of_published_entity=section.id,
-        when=when,
-    )
-    events_to_send.append(publish_section)
+    # publish_section = PublishedToLMSEvent(
+    #     public_id_of_published_entity=lms_section.public_id,
+    #     private_id_of_published_entity=section.id,
+    #     when=when,
+    # )
+    # events_to_send.append(publish_section)
 
-    publish_student = PublishedToLMSEvent(
-        public_id_of_published_entity=lms_student.public_id,
-        private_id_of_published_entity=student.id,
-        when=when,
-    )
-    events_to_send.append(publish_student)
+    # publish_student = PublishedToLMSEvent(
+    #     public_id_of_published_entity=lms_student.public_id,
+    #     private_id_of_published_entity=student.id,
+    #     when=when,
+    # )
+    # events_to_send.append(publish_student)
 
-    publish_instructor = PublishedToLMSEvent(
-        public_id_of_published_entity=lms_instructor.public_id,
-        private_id_of_published_entity=instructor.id,
-        when=when,
-    )
-    events_to_send.append(publish_instructor)
+    # publish_instructor = PublishedToLMSEvent(
+    #     public_id_of_published_entity=lms_instructor.public_id,
+    #     private_id_of_published_entity=instructor.id,
+    #     when=when,
+    # )
+    # events_to_send.append(publish_instructor)
 
-    publish_assignment = PublishedToLMSEvent(
-        public_id_of_published_entity=lms_assignment.public_id,
-        private_id_of_published_entity=ass_event.id,
-        when=when,
-    )
-    events_to_send.append(publish_assignment)
+    # publish_assignment = PublishedToLMSEvent(
+    #     public_id_of_published_entity=lms_assignment.public_id,
+    #     private_id_of_published_entity=ass_event.id,
+    #     when=when,
+    # )
+    # events_to_send.append(publish_assignment)
 
-    publish_rubric = PublishedToLMSEvent(
-        public_id_of_published_entity=lms_rubric.public_id,
-        private_id_of_published_entity=rub_event.id,
-        when=when,
-    )
-    events_to_send.append(publish_rubric)
+    # publish_rubric = PublishedToLMSEvent(
+    #     public_id_of_published_entity=lms_rubric.public_id,
+    #     private_id_of_published_entity=rub_event.id,
+    #     when=when,
+    # )
+    # events_to_send.append(publish_rubric)
 
-    publish_submission = PublishedToLMSEvent(
-        public_id_of_published_entity=lms_submission.public_id,
-        private_id_of_published_entity=sub_event.id,
-        when=when,
-    )
-    events_to_send.append(publish_submission)
+    # publish_submission = PublishedToLMSEvent(
+    #     public_id_of_published_entity=lms_submission.public_id,
+    #     private_id_of_published_entity=sub_event.id,
+    #     when=when,
+    # )
+    # events_to_send.append(publish_submission)
 
-    publish_grade = PublishedGradeToLMSEvent(
-        public_submission_id=lms_submission.public_id,
-        instructor_review_id=instructor_review_event.id,
-        when=when,
-    )
-    events_to_send.append(publish_grade)
-    # # RELATIONSHIP
-    add_assignment_to_course = AssignmentAddedToCourseEvent(
-        ass_event.id, course.public_id
-    )
-    events_to_send.append(add_assignment_to_course)
+    # publish_grade = PublishedGradeToLMSEvent(
+    #     public_submission_id=lms_submission.public_id,
+    #     instructor_review_id=instructor_review_event.id,
+    #     when=when,
+    # )
+    # events_to_send.append(publish_grade)
+    # # # RELATIONSHIP
+    # add_assignment_to_course = AssignmentAddedToCourseEvent(
+    #     ass_event.id, course.public_id
+    # )
+    # events_to_send.append(add_assignment_to_course)
 
-    remove_assignment_to_course = AssignmentRemovedFromCourseEvent(
-        ass_event.id, course.public_id
-    )
-    events_to_send.append(remove_assignment_to_course)
+    # remove_assignment_to_course = AssignmentRemovedFromCourseEvent(
+    #     ass_event.id, course.public_id
+    # )
+    # events_to_send.append(remove_assignment_to_course)
 
-    second_add_to_course = AssignmentAddedToCourseEvent(ass_event.id, course.public_id)
-    events_to_send.append(second_add_to_course)
+    # second_add_to_course = AssignmentAddedToCourseEvent(ass_event.id, course.public_id)
+    # events_to_send.append(second_add_to_course)
 
-    instructor_added_to_course = InstructorAddedToCourseEvent(
-        instructor.public_id, course.public_id
-    )
-    events_to_send.append(instructor_added_to_course)
+    # instructor_added_to_course = InstructorAddedToCourseEvent(
+    #     instructor.public_id, course.public_id
+    # )
+    # events_to_send.append(instructor_added_to_course)
 
-    instructor_removed_from_course = InstructorRemovedFromCourseEvent(
-        instructor.public_id, course.public_id
-    )
-    events_to_send.append(instructor_removed_from_course)
+    # instructor_removed_from_course = InstructorRemovedFromCourseEvent(
+    #     instructor.public_id, course.public_id
+    # )
+    # events_to_send.append(instructor_removed_from_course)
 
-    send_instructor_add = InstructorAddedToCourseEvent(
-        instructor.public_id, course.public_id
-    )
-    events_to_send.append(send_instructor_add)
+    # send_instructor_add = InstructorAddedToCourseEvent(
+    #     instructor.public_id, course.public_id
+    # )
+    # events_to_send.append(send_instructor_add)
 
-    student_added_section = StudentAddedToSectionEvent(
-        student.public_id, section.public_id
-    )
-    events_to_send.append(student_added_section)
+    # student_added_section = StudentAddedToSectionEvent(
+    #     student.public_id, section.public_id
+    # )
+    # events_to_send.append(student_added_section)
 
-    student_removed_section = StudentRemovedFromSectionEvent(
-        student.public_id, section.public_id
-    )
-    events_to_send.append(student_removed_section)
+    # student_removed_section = StudentRemovedFromSectionEvent(
+    #     student.public_id, section.public_id
+    # )
+    # events_to_send.append(student_removed_section)
 
-    student_added_section = StudentAddedToSectionEvent(
-        student.public_id, section.public_id
-    )
-    events_to_send.append(student_added_section)
+    # student_added_section = StudentAddedToSectionEvent(
+    #     student.public_id, section.public_id
+    # )
+    # events_to_send.append(student_added_section)
 
     return events_to_send
 
