@@ -255,7 +255,7 @@ def create_demo_assignment(
     course_public_uuid: str,
 ) -> Tuple[List[Union[RegisterAssignmentPublicUUIDEvent, AssignmentEvent]], str]:
     register_rubric = RegisterRubricPublicUUIDEvent(
-        lms_id="5",
+        lms_id="117",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     rubric = RubricEvent(
@@ -387,6 +387,8 @@ def create_demo_assignment(
         timestamp=get_miliseconds_since_epoch(),
     )
     return [
+        register_rubric,
+        rubric,
         register_assignment,
         assignment,
         add_assignment_to_course,
@@ -397,7 +399,7 @@ def create_demo_student(
     section_public_uuid: str,
 ) -> Tuple[List[Union[RegisterStudentPublicUUIDEvent, StudentEvent]], str]:
     register_student = RegisterStudentPublicUUIDEvent(
-        lms_id="4",
+        lms_id="8",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     student = StudentEvent(

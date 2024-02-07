@@ -64,7 +64,7 @@ class SubmissionFileGroupEvent(PowerGraderEvent, ProtoWrapper[SubmissionFileGrou
 
     @staticmethod
     def get_event_type() -> EventType:
-        return EventType.SUBMISSION_FILES
+        return EventType.SUBMISSION_GROUP_FILE
 
     @classmethod
     def deserialize(cls, event: bytes) -> "SubmissionFileGroupEvent":
