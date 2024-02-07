@@ -1,4 +1,4 @@
-from typing import Dict, List, Sequence
+from typing import Dict, List, Sequence, Union
 from dataclasses import dataclass
 
 from powergrader_event_utils.events.base import (
@@ -110,7 +110,7 @@ class RubricEvent(PowerGraderEvent, ProtoWrapper[Rubric]):
         public_uuid: str,
         instructor_public_uuid: str,
         name: str,
-        rubric_criteria: Dict[str, RubricCriterion],
+        rubric_criteria: Union[Dict[str, RubricCriterion], Sequence[RubricCriterion]],
         version_timestamp: int,
     ) -> None:
         if isinstance(rubric_criteria, Sequence) and not isinstance(

@@ -25,9 +25,12 @@ class FileContent(ProtoWrapper[FileContentProto]):
     content: bytes
 
     def __init__(
-        self, file_name: str, file_type: str, content: Union[bytes, List[int]]
+        self, file_name: str, file_type: str, content: Union[bytes, List[int], str]
     ) -> None:
-        content = bytes(content) if isinstance(content, list) else content
+        if isinstance(content, str):
+            content = content.encode("utf-8")
+        elif isinstance(content, list):
+            content = bytes(content)
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=FileContentProto,
