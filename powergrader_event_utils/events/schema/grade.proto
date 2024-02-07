@@ -22,8 +22,6 @@ message Grade {
 
 message AICriterionGrade {
     string grading_started_version_uuid = 1;
-    string criterion_uuid = 2;
-    string submission_version_uuid = 3;
     string grading_method_uuid = 4;
     Grade grade = 5;
     uint64 time_finished = 6;
@@ -31,8 +29,6 @@ message AICriterionGrade {
 
 message AIInferredCriterionGrade {
     string grading_started_version_uuid = 1;
-    string criterion_uuid = 2;
-    string submission_version_uuid = 3;
     string grading_method_uuid = 4;
     string previous_criterion_grade_version_uuid = 5;
     string faculty_override_criterion_grade_version_uuid = 6;

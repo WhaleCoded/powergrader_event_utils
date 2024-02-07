@@ -118,8 +118,6 @@ class Grade(ProtoWrapper[GradeProto]):
 @dataclass
 class AICriterionGradeEvent(PowerGraderEvent, ProtoWrapper[AICriterionGrade]):
     grading_started_version_uuid: str
-    criterion_uuid: str
-    submission_version_uuid: str
     grading_method_uuid: str
     grade: Grade
     time_finished: int
@@ -127,8 +125,6 @@ class AICriterionGradeEvent(PowerGraderEvent, ProtoWrapper[AICriterionGrade]):
     def __init__(
         self,
         grading_started_version_uuid: str,
-        criterion_uuid: str,
-        submission_version_uuid: str,
         grading_method_uuid: str,
         grade: Grade,
         time_finished: int,
@@ -138,8 +134,6 @@ class AICriterionGradeEvent(PowerGraderEvent, ProtoWrapper[AICriterionGrade]):
             proto_type=AICriterionGrade,
             key_field_name="grading_started_version_uuid",
             grading_started_version_uuid=grading_started_version_uuid,
-            criterion_uuid=criterion_uuid,
-            submission_version_uuid=submission_version_uuid,
             grading_method_uuid=grading_method_uuid,
             grade=grade,
             time_finished=time_finished,
@@ -164,8 +158,6 @@ class AIInferredCriterionGradeEvent(
     PowerGraderEvent, ProtoWrapper[AIInferredCriterionGrade]
 ):
     grading_started_version_uuid: str
-    criterion_uuid: str
-    submission_version_uuid: str
     grading_method_uuid: str
     previous_criterion_grade_version_uuid: str
     faculty_override_criterion_grade_version_uuid: str
@@ -175,8 +167,6 @@ class AIInferredCriterionGradeEvent(
     def __init__(
         self,
         grading_started_version_uuid: str,
-        criterion_uuid: str,
-        submission_version_uuid: str,
         grading_method_uuid: str,
         previous_criterion_grade_version_uuid: str,
         faculty_override_criterion_grade_version_uuid: str,
@@ -188,8 +178,6 @@ class AIInferredCriterionGradeEvent(
             proto_type=AIInferredCriterionGrade,
             key_field_name="grading_started_version_uuid",
             grading_started_version_uuid=grading_started_version_uuid,
-            criterion_uuid=criterion_uuid,
-            submission_version_uuid=submission_version_uuid,
             grading_method_uuid=grading_method_uuid,
             previous_criterion_grade_version_uuid=previous_criterion_grade_version_uuid,
             faculty_override_criterion_grade_version_uuid=faculty_override_criterion_grade_version_uuid,
