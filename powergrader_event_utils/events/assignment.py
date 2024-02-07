@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, Sequence
 from dataclasses import dataclass
 
 from powergrader_event_utils.events.base import (
@@ -113,6 +113,13 @@ class RubricEvent(PowerGraderEvent, ProtoWrapper[Rubric]):
         rubric_criteria: Dict[str, RubricCriterion],
         version_timestamp: int,
     ) -> None:
+        if isinstance(rubric_criteria, Sequence) and not isinstance(
+            rubric_criteria, str
+        ):
+            rubric_criteria: List[RubricCriterion] = rubric_criteria
+            rubric_criteria = {
+                criterion.name: criterion for criterion in rubric_criteria
+            }
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=Rubric,
