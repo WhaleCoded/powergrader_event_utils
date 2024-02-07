@@ -22,6 +22,7 @@ from powergrader_event_utils.events.utils import (
 @dataclass
 class AssignmentEvent(PowerGraderEvent, ProtoWrapper[Assignment]):
     public_uuid: str
+    instructor_public_uuid: str
     version_uuid: str
     rubric_version_uuid: str
     name: str
@@ -31,6 +32,7 @@ class AssignmentEvent(PowerGraderEvent, ProtoWrapper[Assignment]):
     def __init__(
         self,
         public_uuid: str,
+        instructor_public_uuid: str,
         rubric_version_uuid: str,
         name: str,
         description: str,
@@ -41,6 +43,7 @@ class AssignmentEvent(PowerGraderEvent, ProtoWrapper[Assignment]):
             proto_type=Assignment,
             key_field_name="version_uuid",
             public_uuid=public_uuid,
+            instructor_public_uuid=instructor_public_uuid,
             rubric_version_uuid=rubric_version_uuid,
             name=name,
             description=description,

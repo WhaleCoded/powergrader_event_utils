@@ -3,11 +3,12 @@ package assignment;
 
 message Assignment {
     string public_uuid = 1;
-    string version_uuid = 2;
-    string rubric_version_uuid = 3;
-    string name = 4;
-    string description = 5;
-    uint64 version_timestamp = 6;
+    string instructor_public_uuid = 2;
+    string version_uuid = 3;
+    string rubric_version_uuid = 4;
+    string name = 5;
+    string description = 6;
+    uint64 version_timestamp = 7;
 }
 
 message Rubric {
