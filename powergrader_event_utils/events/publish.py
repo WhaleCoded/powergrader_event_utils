@@ -44,7 +44,7 @@ class RegisterCoursePublicUUIDEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        return EventType.COURSE_PUBLIC_ID
+        return EventType.REGISTER_COURSE_PUBLIC_UUID
 
     @classmethod
     def deserialize(cls, event: bytes) -> "RegisterCoursePublicUUIDEvent":
@@ -75,7 +75,7 @@ class RegisterSectionPublicUUIDEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        return EventType.SECTION_PUBLIC_ID
+        return EventType.REGISTER_SECTION_PUBLIC_UUID
 
     @classmethod
     def deserialize(cls, event: bytes) -> "RegisterSectionPublicUUIDEvent":
@@ -116,7 +116,7 @@ class RegisterInstructorPublicUUIDEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        return EventType.INSTRUCTOR_PUBLIC_ID
+        return EventType.REGISTER_INSTRUCTOR_PUBLIC_UUID
 
     @classmethod
     def deserialize(cls, event: bytes) -> "RegisterInstructorPublicUUIDEvent":
@@ -147,7 +147,7 @@ class RegisterStudentPublicUUIDEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        return EventType.STUDENT_PUBLIC_ID
+        return EventType.REGISTER_STUDENT_PUBLIC_UUID
 
     @classmethod
     def deserialize(cls, event: bytes) -> "RegisterStudentPublicUUIDEvent":
@@ -178,7 +178,7 @@ class RegisterAssignmentPublicUUIDEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        return EventType.ASSIGNMENT_PUBLIC_ID
+        return EventType.REGISTER_INSTRUCTOR_PUBLIC_UUID
 
     @classmethod
     def deserialize(cls, event: bytes) -> "RegisterAssignmentPublicUUIDEvent":
@@ -209,7 +209,7 @@ class RegisterRubricPublicUUIDEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        return EventType.RUBRIC_PUBLIC_ID
+        return EventType.REGISTER_RUBRIC_PUBLIC_UUID
 
     @classmethod
     def deserialize(cls, event: bytes) -> "RegisterRubricPublicUUIDEvent":
@@ -247,7 +247,7 @@ class RegisterSubmissionPublicUUIDEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        return EventType.SUBMISSION_PUBLIC_ID
+        return EventType.REGISTER_SUBMISSION_PUBLIC_UUID
 
     @classmethod
     def deserialize(cls, event: bytes) -> "RegisterSubmissionPublicUUIDEvent":
