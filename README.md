@@ -12,3 +12,14 @@ Courses, Sections, and Users can be mutated. They have a public_id (the id every
 
 # TODO
 * Add an error class, so we can get mroe information on why an event was not valid and make error handeling a lot easier. Currently all the events could throw an exception or also return False when something is not valid. It would be better if we just returned an error object describing the issue.
+
+# Installing
+For standard use
+```
+pip install .
+```
+
+For development use
+```
+pip install .[dev]
+```

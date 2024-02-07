@@ -15,4 +15,5 @@ if __name__ == "__main__":
         author_email="d.hutchison@apporto.com",
         packages=find_packages(),
         install_requires=["kafka-python", "protobuf", "strenum", "confluent-kafka"],
+        extras_require={"dev": ["pytest", "black"]},
     )
