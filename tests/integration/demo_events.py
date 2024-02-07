@@ -233,8 +233,8 @@ def create_demo_submission(
     )
 
     register_submission = RegisterSubmissionPublicUUIDEvent(
-        lms_assignment_id="lms-7",
-        lms_student_id="lms-8",
+        lms_assignment_id="7",
+        lms_student_id="8",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     submission = SubmissionEvent(
@@ -255,7 +255,7 @@ def create_demo_assignment(
     course_public_uuid: str,
 ) -> Tuple[List[Union[RegisterAssignmentPublicUUIDEvent, AssignmentEvent]], str]:
     register_rubric = RegisterRubricPublicUUIDEvent(
-        lms_id="lms-5",
+        lms_id="5",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     rubric = RubricEvent(
@@ -360,7 +360,7 @@ def create_demo_assignment(
     )
 
     register_assignment = RegisterAssignmentPublicUUIDEvent(
-        lms_id="lms-6",
+        lms_id="6",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     assignment = AssignmentEvent(
@@ -397,7 +397,7 @@ def create_demo_student(
     section_public_uuid: str,
 ) -> Tuple[List[Union[RegisterStudentPublicUUIDEvent, StudentEvent]], str]:
     register_student = RegisterStudentPublicUUIDEvent(
-        lms_id="lms-4",
+        lms_id="4",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     student = StudentEvent(
@@ -421,7 +421,7 @@ def create_demo_section(
     course_public_uuid: str,
 ) -> Tuple[List[Union[RegisterSectionPublicUUIDEvent, SectionEvent]], str]:
     register_section = RegisterSectionPublicUUIDEvent(
-        lms_id="lms-3",
+        lms_id="3",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     section = SectionEvent(
@@ -438,7 +438,7 @@ def create_demo_course(
     instructor_public_id: str,
 ) -> Tuple[List[Union[RegisterCoursePublicUUIDEvent, CourseEvent]], str]:
     register_course = RegisterCoursePublicUUIDEvent(
-        lms_id="lms-2",
+        lms_id="2",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     course = CourseEvent(
@@ -460,7 +460,7 @@ def create_demo_instructor() -> (
     Tuple[List[Union[RegisterInstructorPublicUUIDEvent, InstructorEvent]], str]
 ):
     register_instructor = RegisterInstructorPublicUUIDEvent(
-        lms_id="lms-1",
+        lms_id="1",
         user_type=LMSInstructorType.FACULTY,
         organization_public_uuid="ORGANIZATION-Apporto",
     )

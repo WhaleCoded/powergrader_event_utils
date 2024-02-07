@@ -178,7 +178,7 @@ class RegisterAssignmentPublicUUIDEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        return EventType.REGISTER_INSTRUCTOR_PUBLIC_UUID
+        return EventType.REGISTER_ASSIGNMENT_PUBLIC_UUID
 
     @classmethod
     def deserialize(cls, event: bytes) -> "RegisterAssignmentPublicUUIDEvent":

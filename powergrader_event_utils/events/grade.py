@@ -52,7 +52,7 @@ class AICriterionGradingStartedEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        raise NotImplementedError
+        return EventType.AI_CRITERION_GRADING_STARTED
 
     @classmethod
     def deserialize(cls, event: bytes) -> "AICriterionGradingStartedEvent":
@@ -88,7 +88,7 @@ class GradingMethodEvent(PowerGraderEvent, ProtoWrapper[GradingMethodProto]):
 
     @staticmethod
     def get_event_type() -> EventType:
-        raise NotImplementedError
+        return EventType.GRADING_METHOD
 
     @classmethod
     def deserialize(cls, event: bytes) -> "GradingMethodEvent":
@@ -144,7 +144,7 @@ class AICriterionGradeEvent(PowerGraderEvent, ProtoWrapper[AICriterionGrade]):
 
     @staticmethod
     def get_event_type() -> EventType:
-        raise NotImplementedError
+        return EventType.AI_CRITERION_GRADE
 
     @classmethod
     def deserialize(cls, event: bytes) -> "AICriterionGradeEvent":
@@ -190,7 +190,7 @@ class AIInferredCriterionGradeEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        raise NotImplementedError
+        return EventType.AI_INFERRED_CRITERION_GRADE
 
     @classmethod
     def deserialize(cls, event: bytes) -> "AIInferredCriterionGradeEvent":
@@ -231,7 +231,7 @@ class InstructorCriterionGradeEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        raise NotImplementedError
+        return EventType.INSTRUCTOR_CRITERION_GRADE
 
     @classmethod
     def deserialize(cls, event: bytes) -> "InstructorCriterionGradeEvent":
@@ -275,7 +275,7 @@ class InstructorOverrideCriterionGradeEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        raise NotImplementedError
+        return EventType.INSTRUCTOR_OVERRIDE_CRITERION_GRADE
 
     @classmethod
     def deserialize(cls, event: bytes) -> "InstructorOverrideCriterionGradeEvent":
@@ -313,7 +313,7 @@ class CriterionGradeEmbeddingEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        raise NotImplementedError
+        return EventType.CRITERION_GRADE_EMBEDDING
 
     @classmethod
     def deserialize(cls, event: bytes) -> "CriterionGradeEmbeddingEvent":
@@ -354,7 +354,7 @@ class InstructorSubmissionGradeApprovalEvent(
 
     @staticmethod
     def get_event_type() -> EventType:
-        raise NotImplementedError
+        return EventType.INSTRUCTOR_SUBMISSION_GRADE_APPROVAL
 
     @classmethod
     def deserialize(cls, event: bytes) -> "InstructorSubmissionGradeApprovalEvent":

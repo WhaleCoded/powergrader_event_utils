@@ -236,30 +236,36 @@ def create_org_worth_of_events():
     )
     events_to_send.append(apporto_test_event)
 
-    # print("Creating instructor")
-    # register_instructor = RegisterInstructorPublicUUIDEvent(
-    #     lms_id=str(randint(0, 100000000)),
-    #     user_type=2,
-    #     organization_public_uuid=org_event.public_uuid,
-    # )
-    # events_to_send.append(register_instructor)
-    # instructor = InstructorEvent(
-    #     public_uuid=register_instructor.public_uuid,
-    #     name="Mr.Bean",
-    #     email="bean@email.com",
-    #     version_timestamp=get_miliseconds_since_epoch(),
-    # )
-    # events_to_send.append(instructor)
+    apporto_test_update = OrganizationEvent(
+        apporto_test_event.public_uuid,
+        "Updated Apporto Test",
+        version_timestamp=when + 2,
+    )
+    events_to_send.append(apporto_test_update)
+    print("Creating instructor")
+    register_instructor = RegisterInstructorPublicUUIDEvent(
+        lms_id=str(randint(0, 100000000)),
+        user_type=2,
+        organization_public_uuid=org_event.public_uuid,
+    )
+    events_to_send.append(register_instructor)
+    instructor = InstructorEvent(
+        public_uuid=register_instructor.public_uuid,
+        name="Mr.Bean",
+        email="bean@email.com",
+        version_timestamp=get_miliseconds_since_epoch(),
+    )
+    events_to_send.append(instructor)
 
-    # time.sleep(0.1)
+    time.sleep(0.1)
 
-    # instructor = InstructorEvent(
-    #     public_uuid=register_instructor.public_uuid,
-    #     name="Mr.Bean",
-    #     email="bean02@email.com",
-    #     version_timestamp=get_miliseconds_since_epoch(),
-    # )
-    # events_to_send.append(instructor)
+    instructor = InstructorEvent(
+        public_uuid=register_instructor.public_uuid,
+        name="Mr.Bean",
+        email="bean02@email.com",
+        version_timestamp=get_miliseconds_since_epoch(),
+    )
+    events_to_send.append(instructor)
 
     # register_course = RegisterCoursePublicUUIDEvent(
     #     lms_id=str(randint(0, 100000000)),
@@ -289,19 +295,19 @@ def create_org_worth_of_events():
     # )
     # events_to_send.append(section)
 
-    # print("Creating Student event")
-    # register_student = RegisterStudentPublicUUIDEvent(
-    #     lms_id=str(randint(0, 100000000)),
-    #     organization_public_uuid=org_event.public_uuid,
-    # )
-    # events_to_send.append(register_student)
-    # student = StudentEvent(
-    #     public_uuid=register_student.public_uuid,
-    #     name="Dallin",
-    #     email="d@apporto.com",
-    #     version_timestamp=get_miliseconds_since_epoch(),
-    # )
-    # events_to_send.append(student)
+    print("Creating Student event")
+    register_student = RegisterStudentPublicUUIDEvent(
+        lms_id=str(randint(0, 100000000)),
+        organization_public_uuid=org_event.public_uuid,
+    )
+    events_to_send.append(register_student)
+    student = StudentEvent(
+        public_uuid=register_student.public_uuid,
+        name="Dallin",
+        email="d@apporto.com",
+        version_timestamp=get_miliseconds_since_epoch(),
+    )
+    events_to_send.append(student)
 
     # time.sleep(0.1)
     # time.sleep(0.1)
@@ -659,388 +665,13 @@ print("Created producer")
 events_to_send = []
 for i in range(1):
     events_to_send.extend(create_org_worth_of_events())
+from tests.integration.demo_events import create_demo_events
+
+events_to_send = create_demo_events()
 
 for event in tqdm(events_to_send):
     event.publish(producer)
-    producer.flush()
-    sleep(1)
+    # producer.flush()
+    # sleep(1)
     # producer.commit_transaction()
-# producer.flush()
-
-
-# def publish_event(event):
-#     producer = Producer(conf)
-#     # print("Created producer")
-#     producer.init_transactions()
-
-#     producer.begin_transaction()
-#     event.publish(producer)
-#     producer.flush()
-#     producer.commit_transaction()
-
-
-# # Publish all the events simultaneously
-# with ThreadPoolExecutor() as executor:
-#     futures = []
-#     for event in events_to_send:
-#         futures.append(executor.submit(publish_event, event))
-
-#     for future in tqdm(futures):
-#         future.result()
-
-
-# producer.commit_transaction()
-
-# ----------------------------------------------------------------
-
-# def create_assignment(organization_id, instructor_id, timestamp) -> (list, str):
-#     register = RegisterRubricPublicUUIDEvent(
-#         lms_id=str(randint(0, 100000000)), organization_public_uuid=organization_id
-#     )
-#     timestamp = timestamp + randint(0, 100000)
-#     rubric = RubricEvent(
-#         public_uuid=register.public_uuid,
-#         instructor_public_uuid=instructor_id,
-#         name=rubric_names[randint(0, len(rubric_names) - 1)],
-#         rubric_criteria={
-#             key: RubricCriterion(
-#                 uuid=str(uuid4()),
-#                 name=value["name"],
-#                 levels=[
-#                     CriterionLevel(
-#                         score=level["score"], description=level["description"]
-#                     )
-#                     for level in value["levels"]
-#                 ],
-#             )
-#             for key, value in criteria.items()
-#         },
-#         version_timestamp=timestamp,
-#     )
-#     register = RegisterAssignmentPublicUUIDEvent(
-#         lms_id=str(randint(0, 100000000)), organization_public_uuid=organization_id
-#     )
-#     timestamp = timestamp + randint(0, 100000)
-#     assignment = AssignmentEvent(
-#         public_uuid=register.public_uuid,
-#         rubric_version_uuid=rubric.version_uuid,
-#         name=rubric_names[randint(0, len(rubric_names) - 1)],
-#         description=descriptions[randint(0, len(descriptions) - 1)],
-#         version_timestamp=timestamp,
-#     )
-#     events = [register, rubric, register, assignment]
-#     if randint(0, 1) == 1:
-#         timestamp = timestamp + randint(0, 100000)
-#         assignment = AssignmentEvent(
-#             public_uuid=register.public_uuid,
-#             rubric_version_uuid=rubric.version_uuid,
-#             name=rubric_names[randint(0, len(rubric_names) - 1)],
-#             description=descriptions[randint(0, len(descriptions) - 1)],
-#             version_timestamp=timestamp,
-#         )
-#         events.append(assignment)
-#     return (events, assignment.public_uuid)
-
-
-# def generate_dummy_data() -> list:
-#     events = []
-
-#     organizations_timestamp = {}
-#     # Create some organizations
-#     for _ in range(30):
-#         # Create a random timestamp
-#         timestamp = 1707133928 + randint(-100000, 100000)
-#         uuid = str(uuid4())
-#         org = OrganizationEvent(
-#             public_uuid=uuid,
-#             name=organization_names[randint(0, len(organization_names) - 1)],
-#             version_timestamp=timestamp,
-#         )
-#         events.append(org)
-#         organizations_timestamp[uuid] = timestamp
-
-#         for _ in range(randint(0, 3)):
-#             # Create a random timestamp which is greater than the organization timestamp
-#             timestamp = timestamp + randint(0, 100000)
-#             org = OrganizationEvent(
-#                 public_uuid=uuid,
-#                 name=organization_names[randint(0, len(organization_names) - 1)],
-#                 version_timestamp=timestamp,
-#             )
-#             events.append(org)
-
-#     # Create some instructors
-#     instructors_org = {}
-#     instructors_timestamp = {}
-#     for _ in range(50):
-#         # Select a random organization
-#         org_uuid = list(organizations_timestamp.keys())[
-#             randint(0, len(organizations_timestamp) - 1)
-#         ]
-#         timestamp = organizations_timestamp[org_uuid] + randint(0, 100000)
-
-#         instructor_type = randint(1, 2)
-
-#         registry = RegisterInstructorPublicUUIDEvent(
-#             lms_id=str(randint(0, 100000000)),
-#             user_type=instructor_type,
-#             organization_public_uuid=org_uuid,
-#         )
-#         instructor = InstructorEvent(
-#             public_uuid=registry.public_uuid,
-#             name=instructor_names[randint(0, len(instructor_names) - 1)],
-#             email=emails[randint(0, len(emails) - 1)],
-#             version_timestamp=timestamp,
-#         )
-#         events.append(instructor)
-#         instructors_org[registry.public_uuid] = org_uuid
-#         instructors_timestamp[registry.public_uuid] = timestamp
-#         events.append(registry)
-
-#         for _ in range(0, 1):
-#             timestamp = timestamp + randint(0, 100000)
-#             instructor = InstructorEvent(
-#                 public_uuid=registry.public_uuid,
-#                 name=instructor_names[randint(0, len(instructor_names) - 1)],
-#                 email=emails[randint(0, len(emails) - 1)],
-#                 version_timestamp=timestamp,
-#             )
-#             events.append(instructor)
-
-#     # Create some students
-#     students_org = {}
-#     students_timestamp = {}
-#     for _ in range(1000):
-#         # Select a random organization
-#         org_uuid = list(organizations_timestamp.keys())[
-#             randint(0, len(organizations_timestamp) - 1)
-#         ]
-#         timestamp = organizations_timestamp[org_uuid] + randint(0, 100000)
-
-#         registry = RegisterStudentPublicUUIDEvent(
-#             lms_id=str(randint(0, 100000000)),
-#             organization_public_uuid=org_uuid,
-#         )
-#         student = StudentEvent(
-#             public_uuid=registry.public_uuid,
-#             name=instructor_names[randint(0, len(instructor_names) - 1)],
-#             email=emails[randint(0, len(emails) - 1)],
-#             version_timestamp=timestamp,
-#         )
-#         events.append(student)
-#         students_org[registry.public_uuid] = org_uuid
-#         students_timestamp[registry.public_uuid] = timestamp
-#         events.append(registry)
-
-#         for _ in range(0, 1):
-#             timestamp = timestamp + randint(0, 100000)
-#             student = StudentEvent(
-#                 public_uuid=registry.public_uuid,
-#                 name=instructor_names[randint(0, len(instructor_names) - 1)],
-#                 email=emails[randint(0, len(emails) - 1)],
-#                 version_timestamp=timestamp,
-#             )
-#             events.append(student)
-
-#     # Create some courses
-#     courses_instructors = {}
-#     courses_timestamp = {}
-#     for _ in range(100):
-#         # Select a random instructor
-#         instructor_uuid = list(instructors_timestamp.keys())[
-#             randint(0, len(instructors_timestamp) - 1)
-#         ]
-#         timestamp = organizations_timestamp[instructors_org[instructor_uuid]] + randint(
-#             0, 100000
-#         )
-
-#         registry = RegisterCoursePublicUUIDEvent(
-#             lms_id=str(randint(0, 100000000)),
-#             organization_public_uuid=instructors_org[instructor_uuid],
-#         )
-#         course = CourseEvent(
-#             public_uuid=registry.public_uuid,
-#             instructor_public_uuid=instructor_uuid,
-#             name=course_names[randint(0, len(course_names) - 1)],
-#             description=descriptions[randint(0, len(descriptions) - 1)],
-#         )
-#         events.append(course)
-#         courses_instructors[registry.public_uuid] = instructor_uuid
-#         courses_timestamp[registry.public_uuid] = timestamp
-#         events.append(registry)
-
-#         add_to_course_timestamp = instructors_timestamp[instructor_uuid] + randint(
-#             0, 100000
-#         )
-
-#         add_instructor = InstructorAddedToCourseEvent(
-#             instructor_public_uuid=instructor_uuid,
-#             course_public_uuid=registry.public_uuid,
-#             version_timestamp=add_to_course_timestamp,
-#         )
-#         events.append(add_instructor)
-
-#         # Now, randomly maybe remove the instructor from the course and add a different one back on
-#         if randint(0, 1) == 1:
-#             remove_instructor = InstructorRemovedFromCourseEvent(
-#                 instructor_public_uuid=instructor_uuid,
-#                 course_public_uuid=registry.public_uuid,
-#                 version_timestamp=add_to_course_timestamp + randint(0, 1000),
-#             )
-#             events.append(remove_instructor)
-
-#             # Find all instructors in the same organization as the removed instructor
-#             instructors_in_org = [
-#                 instructor
-#                 for instructor in instructors_org
-#                 if instructors_org[instructor] == instructors_org[instructor_uuid]
-#             ]
-#             # Add a new instructor to the course
-#             new_instructor = instructors_in_org[randint(0, len(instructors_in_org) - 1)]
-#             add_instructor = InstructorAddedToCourseEvent(
-#                 instructor_public_uuid=new_instructor,
-#                 course_public_uuid=registry.public_uuid,
-#                 version_timestamp=add_to_course_timestamp + randint(0, 1000),
-#             )
-#             events.append(add_instructor)
-
-#         for _ in range(0, 1):
-#             timestamp = timestamp + randint(0, 100000)
-#             course = CourseEvent(
-#                 public_uuid=registry.public_uuid,
-#                 instructor_public_uuid=instructor_uuid,
-#                 name=course_names[randint(0, len(course_names) - 1)],
-#                 description=descriptions[randint(0, len(descriptions) - 1)],
-#             )
-#             events.append(course)
-
-#     # Now, create a bunch of assignments
-#     assignment_course = {}
-#     for _ in range(1000):
-#         # Select a random course and get the instructor
-#         course_uuid = list(courses_timestamp.keys())[
-#             randint(0, len(courses_timestamp) - 1)
-#         ]
-#         instructor_uuid = courses_instructors[course_uuid]
-#         timestamp = courses_timestamp[course_uuid] + randint(0, 100000)
-
-#         (assignment_events, assignment_uuid) = create_assignment(
-#             instructors_org[instructor_uuid], instructor_uuid, timestamp
-#         )
-#         events.extend(assignment_events)
-#         assignment_course[assignment_uuid] = course_uuid
-
-#     # Now, create a bunch of sections
-#     section_course = {}
-#     for _ in range(50):
-#         # Select a random course
-#         course_uuid = list(courses_timestamp.keys())[
-#             randint(0, len(courses_timestamp) - 1)
-#         ]
-#         timestamp = courses_timestamp[course_uuid] + randint(0, 100000)
-
-#         registry = RegisterSectionPublicUUIDEvent(
-#             lms_id=str(randint(0, 10000000)),
-#             course_public_uuid=course_uuid,
-#         )
-#         section = SectionEvent(
-#             public_uuid=registry.public_uuid,
-#             course_public_uuid=course_uuid,
-#             name=course_names[randint(0, len(course_names) - 1)],
-#             version_timestamp=timestamp,
-#         )
-#         events.append(section)
-#         section_course[registry.public_uuid] = course_uuid
-#         events.append(registry)
-
-#         for _ in range(0, 1):
-#             timestamp = timestamp + randint(0, 100000)
-#             section = SectionEvent(
-#                 public_uuid=registry.public_uuid,
-#                 course_public_uuid=course_uuid,
-#                 name=course_names[randint(0, len(course_names) - 1)],
-#                 version_timestamp=timestamp,
-#             )
-#             events.append(section)
-
-#     # Now, assign students to sections
-#     student_sections = {}
-#     for student_id in students_org:
-#         section_uuid = list(section_course.keys())[randint(0, len(section_course) - 1)]
-#         timestamp = max(
-#             students_timestamp[student_id], section_course[section_uuid]
-#         ) + randint(0, 100000)
-#         student_section = StudentAddedToSectionEvent(
-#             student_public_uuid=student_id,
-#             section_public_uuid=section_uuid,
-#             version_timestamp=timestamp,
-#         )
-#         events.append(student_section)
-#         student_sections[student_id] = section_uuid
-#         if randint(0, 5) == 1:
-#             timestamp = timestamp + randint(0, 100000)
-#             student_section = StudentRemovedFromSectionEvent(
-#                 student_public_uuid=student_id,
-#                 section_public_uuid=section_uuid,
-#                 version_timestamp=timestamp,
-#             )
-#             events.append(student_section)
-#             student_sections.pop(student_id)
-
-#     # Now, create some submissions
-#     submissions = {}
-#     for student_id in student_sections:
-#         # Get the course for the section
-#         course_uuid = section_course[student_sections[student_id]]
-#         # Find all assignments for the course
-#         assignments = [
-#             assignment
-#             for assignment in assignment_course
-#             if assignment_course[assignment] == course_uuid
-#         ]
-#         for assignment_uuid in assignments:
-#             submission_file_group = SubmissionFileGroupEvent(
-#                 student_public_uuid=student_id,
-#                 file_contents=[
-#                     FileContent(
-#                         "submission",
-#                         "py",
-#                         "Hello World",
-#                     ),
-#                     FileContent(
-#                         "submission",
-#                         "py",
-#                         "Hello World",
-#                     ),
-#                 ],
-#             )
-#             events.append(submission_file_group)
-
-#             timestamp = max(
-#                 students_timestamp[student_id], courses_timestamp[course_uuid]
-#             ) + randint(0, 100000)
-#             registry = RegisterSubmissionPublicUUIDEvent(
-#                 lms_id=str(randint(0, 100000000)),
-#                 organization_public_uuid=students_org[student_id],
-#             )
-#             submission = SubmissionEvent(
-#                 public_uuid=registry.public_uuid,
-#                 student_public_uuid=student_id,
-#                 assignment_public_uuid=assignment_uuid,
-#                 submission_file_group_uuid=submission_file_group.uuid,
-#                 version_timestamp=timestamp,
-#             )
-#             events.append(submission)
-#             submissions[registry.public_uuid] = (student_id, assignment_uuid)
-#             events.append(registry)
-
-#             if randint(0, 1) == 1:
-#                 timestamp = timestamp + randint(0, 100000)
-#                 submission = SubmissionEvent(
-#                     public_uuid=registry.public_uuid,
-#                     student_public_uuid=student_id,
-#                     assignment_public_uuid=assignment_uuid,
-#                     submission_file_group_uuid=submission_file_group.uuid,
-#                     version_timestamp=timestamp,
-#                 )
-#                 events.append(submission)
+producer.flush()
