@@ -63,15 +63,15 @@ def create_demo_events() -> list:
     )
     events.extend(submission_events)
 
-    ai_grading_events, override_criterion_uuid = create_ai_grading_events(
-        submission_public_id
-    )
-    events.extend(ai_grading_events)
+    # ai_grading_events, override_criterion_uuid = create_ai_grading_events(
+    #     submission_public_id
+    # )
+    # events.extend(ai_grading_events)
 
-    ai_inference_events = create_ai_inference_events(
-        instructor_public_id, override_criterion_uuid, submission_public_id
-    )
-    events.extend(ai_inference_events)
+    # ai_inference_events = create_ai_inference_events(
+    #     instructor_public_id, override_criterion_uuid, submission_public_id
+    # )
+    # events.extend(ai_inference_events)
 
     return events
 

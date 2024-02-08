@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12relationship.proto\x12\x0crelationship\"h\n\x17\x41ssignmentAddedToCourse\x12\x1e\n\x16\x61ssignment_public_uuid\x18\x01 \x01(\t\x12\x1a\n\x12\x63ourse_public_uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\"l\n\x1b\x41ssignmentRemovedFromCourse\x12\x1e\n\x16\x61ssignment_public_uuid\x18\x01 \x01(\t\x12\x1a\n\x12\x63ourse_public_uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\"d\n\x15StudentAddedToSection\x12\x1b\n\x13student_public_uuid\x18\x01 \x01(\t\x12\x1b\n\x13section_public_uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\"h\n\x19StudentRemovedFromSection\x12\x1b\n\x13student_public_uuid\x18\x01 \x01(\t\x12\x1b\n\x13section_public_uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\"h\n\x17InstructorAddedToCourse\x12\x1e\n\x16instructor_public_uuid\x18\x01 \x01(\t\x12\x1a\n\x12\x63ourse_public_uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\"l\n\x1bInstructorRemovedFromCourse\x12\x1e\n\x16instructor_public_uuid\x18\x01 \x01(\t\x12\x1a\n\x12\x63ourse_public_uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12relationship.proto\x12\x0crelationship\"~\n\x17\x41ssignmentAddedToCourse\x12\x1e\n\x16\x61ssignment_public_uuid\x18\x01 \x01(\t\x12\x1a\n\x12\x63ourse_public_uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\x12\x14\n\x0cversion_uuid\x18\x04 \x01(\t\"\x82\x01\n\x1b\x41ssignmentRemovedFromCourse\x12\x1e\n\x16\x61ssignment_public_uuid\x18\x01 \x01(\t\x12\x1a\n\x12\x63ourse_public_uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\x12\x14\n\x0cversion_uuid\x18\x04 \x01(\t\"z\n\x15StudentAddedToSection\x12\x1b\n\x13student_public_uuid\x18\x01 \x01(\t\x12\x1b\n\x13section_public_uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\x12\x14\n\x0cversion_uuid\x18\x04 \x01(\t\"~\n\x19StudentRemovedFromSection\x12\x1b\n\x13student_public_uuid\x18\x01 \x01(\t\x12\x1b\n\x13section_public_uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\x12\x14\n\x0cversion_uuid\x18\x04 \x01(\t\"~\n\x17InstructorAddedToCourse\x12\x1e\n\x16instructor_public_uuid\x18\x01 \x01(\t\x12\x1a\n\x12\x63ourse_public_uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\x12\x14\n\x0cversion_uuid\x18\x04 \x01(\t\"\x82\x01\n\x1bInstructorRemovedFromCourse\x12\x1e\n\x16instructor_public_uuid\x18\x01 \x01(\t\x12\x1a\n\x12\x63ourse_public_uuid\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x03 \x01(\x04\x12\x14\n\x0cversion_uuid\x18\x04 \x01(\tb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'relationship_pb2', globals())
@@ -21,15 +21,15 @@ if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
   _ASSIGNMENTADDEDTOCOURSE._serialized_start=36
-  _ASSIGNMENTADDEDTOCOURSE._serialized_end=140
-  _ASSIGNMENTREMOVEDFROMCOURSE._serialized_start=142
-  _ASSIGNMENTREMOVEDFROMCOURSE._serialized_end=250
-  _STUDENTADDEDTOSECTION._serialized_start=252
-  _STUDENTADDEDTOSECTION._serialized_end=352
-  _STUDENTREMOVEDFROMSECTION._serialized_start=354
-  _STUDENTREMOVEDFROMSECTION._serialized_end=458
-  _INSTRUCTORADDEDTOCOURSE._serialized_start=460
-  _INSTRUCTORADDEDTOCOURSE._serialized_end=564
-  _INSTRUCTORREMOVEDFROMCOURSE._serialized_start=566
-  _INSTRUCTORREMOVEDFROMCOURSE._serialized_end=674
+  _ASSIGNMENTADDEDTOCOURSE._serialized_end=162
+  _ASSIGNMENTREMOVEDFROMCOURSE._serialized_start=165
+  _ASSIGNMENTREMOVEDFROMCOURSE._serialized_end=295
+  _STUDENTADDEDTOSECTION._serialized_start=297
+  _STUDENTADDEDTOSECTION._serialized_end=419
+  _STUDENTREMOVEDFROMSECTION._serialized_start=421
+  _STUDENTREMOVEDFROMSECTION._serialized_end=547
+  _INSTRUCTORADDEDTOCOURSE._serialized_start=549
+  _INSTRUCTORADDEDTOCOURSE._serialized_end=675
+  _INSTRUCTORREMOVEDFROMCOURSE._serialized_start=678
+  _INSTRUCTORREMOVEDFROMCOURSE._serialized_end=808
 # @@protoc_insertion_point(module_scope)

@@ -6,34 +6,40 @@ message AssignmentAddedToCourse {
     string assignment_public_uuid = 1;
     string course_public_uuid = 2;
     uint64 timestamp = 3;
+    string version_uuid = 4;
 }
 
 message AssignmentRemovedFromCourse {
     string assignment_public_uuid = 1;
     string course_public_uuid = 2;
     uint64 timestamp = 3;
+    string version_uuid = 4;
 }
 
 message StudentAddedToSection {
     string student_public_uuid = 1;
     string section_public_uuid = 2;
     uint64 timestamp = 3;
+    string version_uuid = 4;
 }
 
 message StudentRemovedFromSection {
     string student_public_uuid = 1;
     string section_public_uuid = 2;
     uint64 timestamp = 3;
+    string version_uuid = 4;
 }
 
 message InstructorAddedToCourse {
     string instructor_public_uuid = 1;
     string course_public_uuid = 2;
     uint64 timestamp = 3;
+    string version_uuid = 4;
 }
 
 message InstructorRemovedFromCourse {
     string instructor_public_uuid = 1;
     string course_public_uuid = 2;
     uint64 timestamp = 3;
+    string version_uuid = 4;
 }

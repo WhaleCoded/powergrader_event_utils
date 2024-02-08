@@ -27,6 +27,7 @@ class AssignmentAddedToCourseEvent(
     assignment_public_uuid: str
     course_public_uuid: str
     timestamp: int
+    version_uuid: str
 
     def __init__(
         self, assignment_public_uuid: str, course_public_uuid: str, timestamp: int
@@ -34,7 +35,7 @@ class AssignmentAddedToCourseEvent(
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=AssignmentAddedToCourse,
-            key_field_name="assignment_public_uuid",
+            key_field_name="version_uuid",
             assignment_public_uuid=assignment_public_uuid,
             course_public_uuid=course_public_uuid,
             timestamp=timestamp,
@@ -61,6 +62,7 @@ class AssignmentRemovedFromCourseEvent(
     assignment_public_uuid: str
     course_public_uuid: str
     timestamp: int
+    version_uuid: str
 
     def __init__(
         self, assignment_public_uuid: str, course_public_uuid: str, timestamp: int
@@ -68,7 +70,7 @@ class AssignmentRemovedFromCourseEvent(
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=AssignmentRemovedFromCourse,
-            key_field_name="assignment_public_uuid",
+            key_field_name="version_uuid",
             assignment_public_uuid=assignment_public_uuid,
             course_public_uuid=course_public_uuid,
             timestamp=timestamp,
@@ -93,6 +95,7 @@ class StudentAddedToSectionEvent(PowerGraderEvent, ProtoWrapper[StudentAddedToSe
     student_public_uuid: str
     section_public_uuid: str
     timestamp: int
+    version_uuid: str
 
     def __init__(
         self, student_public_uuid: str, section_public_uuid: str, timestamp: int
@@ -100,7 +103,7 @@ class StudentAddedToSectionEvent(PowerGraderEvent, ProtoWrapper[StudentAddedToSe
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=StudentAddedToSection,
-            key_field_name="student_public_uuid",
+            key_field_name="version_uuid",
             student_public_uuid=student_public_uuid,
             section_public_uuid=section_public_uuid,
             timestamp=timestamp,
@@ -127,6 +130,7 @@ class StudentRemovedFromSectionEvent(
     student_public_uuid: str
     section_public_uuid: str
     timestamp: int
+    version_uuid: str
 
     def __init__(
         self, student_public_uuid: str, section_public_uuid: str, timestamp: int
@@ -134,7 +138,7 @@ class StudentRemovedFromSectionEvent(
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=StudentRemovedFromSection,
-            key_field_name="student_public_uuid",
+            key_field_name="version_uuid",
             student_public_uuid=student_public_uuid,
             section_public_uuid=section_public_uuid,
             timestamp=timestamp,
@@ -161,6 +165,7 @@ class InstructorAddedToCourseEvent(
     instructor_public_uuid: str
     course_public_uuid: str
     timestamp: int
+    version_uuid: str
 
     def __init__(
         self, instructor_public_uuid: str, course_public_uuid: str, timestamp: int
@@ -168,7 +173,7 @@ class InstructorAddedToCourseEvent(
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=InstructorAddedToCourse,
-            key_field_name="instructor_public_uuid",
+            key_field_name="version_uuid",
             instructor_public_uuid=instructor_public_uuid,
             course_public_uuid=course_public_uuid,
             timestamp=timestamp,
@@ -195,6 +200,7 @@ class InstructorRemovedFromCourseEvent(
     instructor_public_uuid: str
     course_public_uuid: str
     timestamp: int
+    version_uuid: str
 
     def __init__(
         self, instructor_public_uuid: str, course_public_uuid: str, timestamp: int
@@ -202,7 +208,7 @@ class InstructorRemovedFromCourseEvent(
         general_proto_type_init(
             object_to_initialize=self,
             proto_type=InstructorRemovedFromCourse,
-            key_field_name="instructor_public_uuid",
+            key_field_name="version_uuid",
             instructor_public_uuid=instructor_public_uuid,
             course_public_uuid=course_public_uuid,
             timestamp=timestamp,
