@@ -32,6 +32,7 @@ from powergrader_event_utils.events import (
     InstructorAddedToCourseEvent,
     StudentAddedToSectionEvent,
     AssignmentAddedToCourseEvent,
+    InstructorSubmissionGradeApprovalEvent,
 )
 
 
@@ -64,7 +65,7 @@ def create_demo_events() -> list:
     events.extend(submission_events)
 
     ai_grading_events, override_criterion_uuid = create_ai_grading_events(
-        submission_version_uuid
+        submission_version_uuid, instructor_public_id
     )
     events.extend(ai_grading_events)
 
@@ -85,6 +86,7 @@ def create_ai_inference_events(
         AICriterionGradingStartedEvent,
         AIInferredCriterionGradeEvent,
         InstructorOverrideCriterionGradeEvent,
+        InstructorSubmissionGradeApprovalEvent,
     ]
 ]:
     grade_override = InstructorOverrideCriterionGradeEvent(
@@ -101,10 +103,11 @@ def create_ai_inference_events(
 
 
 def create_ai_grading_events(
-    submission_version_uuid: str,
+    submission_version_uuid: str, instructor_public_id: str
 ) -> Tuple[List[Union[AICriterionGradingStartedEvent, AICriterionGradeEvent]], str]:
     override_criterion_uuid = None
     events = []
+    grade_version_uuids = []
     grading_started = AICriterionGradingStartedEvent(
         criterion_uuid="criterion-1",
         submission_version_uuid=submission_version_uuid,
@@ -120,6 +123,7 @@ def create_ai_grading_events(
         time_finished=get_miliseconds_since_epoch(),
     )
     events.extend([grading_started, grading])
+    grade_version_uuids.append(grading.grading_started_version_uuid)
 
     grading_started = AICriterionGradingStartedEvent(
         criterion_uuid="criterion-2",
@@ -136,6 +140,7 @@ def create_ai_grading_events(
         time_finished=get_miliseconds_since_epoch(),
     )
     events.extend([grading_started, grading])
+    grade_version_uuids.append(grading.grading_started_version_uuid)
 
     grading_started = AICriterionGradingStartedEvent(
         criterion_uuid="criterion-3",
@@ -153,6 +158,7 @@ def create_ai_grading_events(
     )
     override_criterion_uuid = grading_started.criterion_uuid
     events.extend([grading_started, grading])
+    grade_version_uuids.append(grading.grading_started_version_uuid)
 
     grading_started = AICriterionGradingStartedEvent(
         criterion_uuid="criterion-4",
@@ -168,7 +174,15 @@ def create_ai_grading_events(
         ),
         time_finished=get_miliseconds_since_epoch(),
     )
-    events.extend([grading_started, grading])
+    grade_version_uuids.append(grading.grading_started_version_uuid)
+
+    instructor_review = InstructorSubmissionGradeApprovalEvent(
+        submission_version_uuid=submission_version_uuid,
+        instructor_public_uuid=instructor_public_id,
+        version_timestamp=get_miliseconds_since_epoch(),
+        criterion_grade_version_uuids=grade_version_uuids,
+    )
+    events.extend([grading_started, grading, instructor_review])
 
     return events, override_criterion_uuid
 
