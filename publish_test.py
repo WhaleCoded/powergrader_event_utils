@@ -671,7 +671,7 @@ events_to_send = create_demo_events()
 
 for event in tqdm(events_to_send):
     event.publish(producer)
-    # producer.flush()
+    producer.flush()
     # sleep(1)
     # producer.commit_transaction()
-producer.flush()
+# producer.flush()

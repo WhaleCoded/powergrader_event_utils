@@ -58,20 +58,20 @@ def create_demo_events() -> list:
     )
     events.extend(assignment_events)
 
-    submission_events, submission_public_id = create_demo_submission(
+    submission_events, submission_version_uuid = create_demo_submission(
         student_public_id, assignment_version_id
     )
     events.extend(submission_events)
 
-    # ai_grading_events, override_criterion_uuid = create_ai_grading_events(
-    #     submission_public_id
-    # )
-    # events.extend(ai_grading_events)
+    ai_grading_events, override_criterion_uuid = create_ai_grading_events(
+        submission_version_uuid
+    )
+    events.extend(ai_grading_events)
 
-    # ai_inference_events = create_ai_inference_events(
-    #     instructor_public_id, override_criterion_uuid, submission_public_id
-    # )
-    # events.extend(ai_inference_events)
+    ai_inference_events = create_ai_inference_events(
+        instructor_public_id, override_criterion_uuid, submission_version_uuid
+    )
+    events.extend(ai_inference_events)
 
     return events
 
@@ -246,7 +246,7 @@ def create_demo_submission(
     )
     return (
         [submission_file_group, register_submission, submission],
-        submission.public_uuid,
+        submission.version_uuid,
     )
 
 
