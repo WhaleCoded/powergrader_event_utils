@@ -11,7 +11,6 @@ from powergrader_event_utils.events.proto_events.user_pb2 import (
 from powergrader_event_utils.events.utils import (
     ProtoWrapper,
     general_deserialization,
-    general_proto_type_init,
 )
 
 

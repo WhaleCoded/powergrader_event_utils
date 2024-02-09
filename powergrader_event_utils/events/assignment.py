@@ -15,7 +15,7 @@ from powergrader_event_utils.events.proto_events.assignment_pb2 import (
 from powergrader_event_utils.events.utils import (
     ProtoWrapper,
     general_deserialization,
-    general_proto_type_init,
+    generate_event_uuid,
 )
 
 
@@ -68,14 +68,9 @@ class CriterionLevel(ProtoWrapper[CriterionLevelProto]):
     description: str
 
     def __init__(self, score: int, description: str) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=CriterionLevelProto,
-            key_field_name=None,
-            is_powergrader_event=False,
-            score=score,
-            description=description,
-        )
+        ProtoWrapper.__init__(self, CriterionLevelProto)
+        self.score = score
+        self.description = description
 
 
 @dataclass
@@ -84,16 +79,11 @@ class RubricCriterion(ProtoWrapper[RubricCriterionProto]):
     name: str
     levels: List[CriterionLevel]
 
-    def __init__(self, uuid: str, name: str, levels: List[CriterionLevel]) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=RubricCriterionProto,
-            key_field_name="uuid",
-            is_powergrader_event=False,
-            uuid=uuid,
-            name=name,
-            levels=levels,
-        )
+    def __init__(self, name: str, levels: List[CriterionLevel]) -> None:
+        ProtoWrapper.__init__(self, RubricCriterionProto)
+        self.uuid = generate_event_uuid(self.__class__.__name__)
+        self.name = name
+        self.levels = levels
 
 
 @dataclass
@@ -144,6 +134,13 @@ class RubricEvent(PowerGraderEvent, ProtoWrapper[Rubric]):
 
 
 if __name__ == "__main__":
+    new_criterion_level = CriterionLevel(1, "test")
+    copied_criterion_level = CriterionLevel.from_proto(new_criterion_level.proto)
+
+    new_criterion = RubricCriterion(
+        "test", [CriterionLevel(1, "test"), CriterionLevel(2, "test")]
+    )
+
     new_rubric = RubricEvent(
         public_uuid="123",
         instructor_public_uuid="123",
