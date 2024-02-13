@@ -32,6 +32,7 @@ from powergrader_event_utils.events import (
     InstructorAddedToCourseEvent,
     StudentAddedToSectionEvent,
     AssignmentAddedToCourseEvent,
+    InstructorSubmissionGradeApprovalEvent,
 )
 
 
@@ -58,7 +59,7 @@ def create_demo_events() -> list:
     )
     events.extend(assignment_events)
 
-    submission_events, submission_public_id = create_demo_submission(
+    submission_events, submission_version_uuid = create_demo_submission(
         student_public_id, assignment_version_id
     )
     events.extend(submission_events)
@@ -89,6 +90,7 @@ def create_ai_inference_events(
         AICriterionGradingStartedEvent,
         AIInferredCriterionGradeEvent,
         InstructorOverrideCriterionGradeEvent,
+        InstructorSubmissionGradeApprovalEvent,
     ]
 ]:
     grade_override = InstructorOverrideCriterionGradeEvent(
@@ -110,6 +112,7 @@ def create_ai_grading_events(
 ) -> Tuple[List[Union[AICriterionGradingStartedEvent, AICriterionGradeEvent]], str]:
     override_criterion_grading_started_uuid = None
     events = []
+    grade_version_uuids = []
     grading_started = AICriterionGradingStartedEvent(
         criterion_uuid=criterion_uuids[0],
         submission_version_uuid=submission_version_uuid,
@@ -125,6 +128,7 @@ def create_ai_grading_events(
         time_finished=get_miliseconds_since_epoch(),
     )
     events.extend([grading_started, grading])
+    grade_version_uuids.append(grading.grading_started_version_uuid)
 
     grading_started = AICriterionGradingStartedEvent(
         criterion_uuid=criterion_uuids[1],
@@ -141,6 +145,7 @@ def create_ai_grading_events(
         time_finished=get_miliseconds_since_epoch(),
     )
     events.extend([grading_started, grading])
+    grade_version_uuids.append(grading.grading_started_version_uuid)
 
     grading_started = AICriterionGradingStartedEvent(
         criterion_uuid=criterion_uuids[2],
@@ -158,6 +163,7 @@ def create_ai_grading_events(
     )
     override_criterion_grading_started_uuid = grading_started.criterion_uuid
     events.extend([grading_started, grading])
+    grade_version_uuids.append(grading.grading_started_version_uuid)
 
     grading_started = AICriterionGradingStartedEvent(
         criterion_uuid=criterion_uuids[3],
@@ -173,7 +179,15 @@ def create_ai_grading_events(
         ),
         time_finished=get_miliseconds_since_epoch(),
     )
-    events.extend([grading_started, grading])
+    grade_version_uuids.append(grading.grading_started_version_uuid)
+
+    instructor_review = InstructorSubmissionGradeApprovalEvent(
+        submission_version_uuid=submission_version_uuid,
+        instructor_public_uuid=instructor_public_id,
+        version_timestamp=get_miliseconds_since_epoch(),
+        criterion_grade_version_uuids=grade_version_uuids,
+    )
+    events.extend([grading_started, grading, instructor_review])
 
     return events, override_criterion_grading_started_uuid
 
@@ -230,8 +244,8 @@ def create_demo_submission(
     )
 
     register_submission = RegisterSubmissionPublicUUIDEvent(
-        lms_assignment_id="lms-7",
-        lms_student_id="lms-8",
+        lms_assignment_id="7",
+        lms_student_id="8",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     submission = SubmissionEvent(
@@ -243,7 +257,7 @@ def create_demo_submission(
     )
     return (
         [submission_file_group, register_submission, submission],
-        submission.public_uuid,
+        submission.version_uuid,
     )
 
 
@@ -254,7 +268,7 @@ def create_demo_assignment(
     List[Union[RegisterAssignmentPublicUUIDEvent, AssignmentEvent]], str, List[str]
 ]:
     register_rubric = RegisterRubricPublicUUIDEvent(
-        lms_id="lms-5",
+        lms_id="117",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     rubric = RubricEvent(
@@ -355,7 +369,7 @@ def create_demo_assignment(
     )
 
     register_assignment = RegisterAssignmentPublicUUIDEvent(
-        lms_id="lms-6",
+        lms_id="6",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     assignment = AssignmentEvent(
@@ -399,7 +413,7 @@ def create_demo_student(
     section_public_uuid: str,
 ) -> Tuple[List[Union[RegisterStudentPublicUUIDEvent, StudentEvent]], str]:
     register_student = RegisterStudentPublicUUIDEvent(
-        lms_id="lms-4",
+        lms_id="8",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     student = StudentEvent(
@@ -423,7 +437,7 @@ def create_demo_section(
     course_public_uuid: str,
 ) -> Tuple[List[Union[RegisterSectionPublicUUIDEvent, SectionEvent]], str]:
     register_section = RegisterSectionPublicUUIDEvent(
-        lms_id="lms-3",
+        lms_id="3",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     section = SectionEvent(
@@ -440,7 +454,7 @@ def create_demo_course(
     instructor_public_id: str,
 ) -> Tuple[List[Union[RegisterCoursePublicUUIDEvent, CourseEvent]], str]:
     register_course = RegisterCoursePublicUUIDEvent(
-        lms_id="lms-2",
+        lms_id="2",
         organization_public_uuid="ORGANIZATION-Apporto",
     )
     course = CourseEvent(
@@ -462,7 +476,7 @@ def create_demo_instructor() -> (
     Tuple[List[Union[RegisterInstructorPublicUUIDEvent, InstructorEvent]], str]
 ):
     register_instructor = RegisterInstructorPublicUUIDEvent(
-        lms_id="lms-1",
+        lms_id="1",
         user_type=LMSInstructorType.FACULTY,
         organization_public_uuid="ORGANIZATION-Apporto",
     )

@@ -3,6 +3,7 @@ from typing import Optional
 from powergrader_event_utils.events.event import (
     ProtoPowerGraderEvent,
     generate_event_timestamp,
+    generate_event_uuid,
 )
 from powergrader_event_utils.events.proto_events.relationship_pb2 import (
     AssignmentAddedToCourse,
@@ -21,6 +22,7 @@ class AssignmentAddedToCourseEvent(ProtoPowerGraderEvent):
     assignment_public_uuid: str
     course_public_uuid: str
     timestamp: int
+    version_uuid: str
 
     def __init__(
         self,
@@ -29,6 +31,7 @@ class AssignmentAddedToCourseEvent(ProtoPowerGraderEvent):
         timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
         self.assignment_public_uuid = assignment_public_uuid
         self.course_public_uuid = course_public_uuid
         if timestamp == None:
@@ -43,6 +46,7 @@ class AssignmentRemovedFromCourseEvent(ProtoPowerGraderEvent):
     assignment_public_uuid: str
     course_public_uuid: str
     timestamp: int
+    version_uuid: str
 
     def __init__(
         self,
@@ -51,6 +55,7 @@ class AssignmentRemovedFromCourseEvent(ProtoPowerGraderEvent):
         timestamp: Optional[int] = None,
     ):
         super().__init__()
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
         self.assignment_public_uuid = assignment_public_uuid
         self.course_public_uuid = course_public_uuid
         if timestamp == None:
@@ -65,6 +70,7 @@ class StudentAddedToSectionEvent(ProtoPowerGraderEvent):
     student_public_uuid: str
     section_public_uuid: str
     timestamp: int
+    version_uuid: str
 
     def __init__(
         self,
@@ -73,6 +79,7 @@ class StudentAddedToSectionEvent(ProtoPowerGraderEvent):
         timestamp: Optional[int] = None,
     ):
         super().__init__()
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
         self.student_public_uuid = student_public_uuid
         self.section_public_uuid = section_public_uuid
         if timestamp == None:
@@ -87,6 +94,7 @@ class StudentRemovedFromSectionEvent(ProtoPowerGraderEvent):
     student_public_uuid: str
     section_public_uuid: str
     timestamp: int
+    version_uuid: str
 
     def __init__(
         self,
@@ -95,6 +103,7 @@ class StudentRemovedFromSectionEvent(ProtoPowerGraderEvent):
         timestamp: Optional[int] = None,
     ):
         super().__init__()
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
         self.student_public_uuid = student_public_uuid
         self.section_public_uuid = section_public_uuid
         if timestamp == None:
@@ -109,6 +118,7 @@ class InstructorAddedToCourseEvent(ProtoPowerGraderEvent):
     instructor_public_uuid: str
     course_public_uuid: str
     timestamp: int
+    version_uuid: str
 
     def __init__(
         self,
@@ -117,6 +127,7 @@ class InstructorAddedToCourseEvent(ProtoPowerGraderEvent):
         timestamp: Optional[int] = None,
     ):
         super().__init__()
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
         self.instructor_public_uuid = instructor_public_uuid
         self.course_public_uuid = course_public_uuid
         if timestamp == None:
@@ -131,6 +142,7 @@ class InstructorRemovedFromCourseEvent(ProtoPowerGraderEvent):
     instructor_public_uuid: str
     course_public_uuid: str
     timestamp: int
+    version_uuid: str
 
     def __init__(
         self,
@@ -139,6 +151,7 @@ class InstructorRemovedFromCourseEvent(ProtoPowerGraderEvent):
         timestamp: Optional[int] = None,
     ):
         super().__init__()
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
         self.instructor_public_uuid = instructor_public_uuid
         self.course_public_uuid = course_public_uuid
         if timestamp == None:
