@@ -84,6 +84,10 @@ def test_valid_relationship_creation(
         uuid2,
         version_timestamp,
     )
+    relationship_event_type(
+        uuid1,
+        uuid2,
+    )
 
 
 @pytest.mark.parametrize(
@@ -117,6 +121,9 @@ def test_getting_relationship_attributes(
         parameter_names, [uuid1, uuid2, version_timestamp]
     ):
         assert getattr(relationship_event, parameter_name) == parameter_value
+
+    relationship_event = relationship_event_type(uuid1, uuid2)
+    assert relationship_event.timestamp is not None
 
 
 @pytest.mark.parametrize(

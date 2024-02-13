@@ -72,6 +72,20 @@ def test_valid_ai_inferred_criterion_grade_creation(
         grade,
         time_finished,
     )
+    AIInferredCriterionGradeEvent(
+        grading_started_version_uuid=grading_started_version_uuid,
+        grading_method_uuid=grading_method_uuid,
+        previous_criterion_grade_version_uuid=previous_criterion_grade_version_uuid,
+        faculty_override_criterion_grade_version_uuid=faculty_override_criterion_grade_version_uuid,
+        grade=grade,
+    )
+    AIInferredCriterionGradeEvent(
+        grading_started_version_uuid,
+        grading_method_uuid,
+        previous_criterion_grade_version_uuid,
+        faculty_override_criterion_grade_version_uuid,
+        grade,
+    )
 
 
 @pytest.mark.parametrize(
@@ -142,6 +156,26 @@ def test_getting_ai_inferred_criterion_grade_fields(
     )
     assert event.grade == grade
     assert event.time_finished == time_finished
+
+    event = AIInferredCriterionGradeEvent(
+        grading_started_version_uuid=grading_started_version_uuid,
+        grading_method_uuid=grading_method_uuid,
+        previous_criterion_grade_version_uuid=previous_criterion_grade_version_uuid,
+        faculty_override_criterion_grade_version_uuid=faculty_override_criterion_grade_version_uuid,
+        grade=grade,
+    )
+    assert event.grading_started_version_uuid == grading_started_version_uuid
+    assert event.grading_method_uuid == grading_method_uuid
+    assert (
+        event.previous_criterion_grade_version_uuid
+        == previous_criterion_grade_version_uuid
+    )
+    assert (
+        event.faculty_override_criterion_grade_version_uuid
+        == faculty_override_criterion_grade_version_uuid
+    )
+    assert event.grade == grade
+    assert event.time_finished is not None
 
 
 @pytest.mark.parametrize(

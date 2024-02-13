@@ -34,6 +34,12 @@ def test_valid_published_grade_to_lms_creation(
         instructor_grade_approval_version_uuid,
         publish_timestamp,
     )
+    PublishedGradeToLMSEvent(
+        instructor_grade_approval_version_uuid=instructor_grade_approval_version_uuid,
+    )
+    PublishedGradeToLMSEvent(
+        instructor_grade_approval_version_uuid,
+    )
 
 
 @pytest.mark.parametrize(
@@ -75,6 +81,15 @@ def test_gettting_published_grade_to_lms_fields(
         == instructor_grade_approval_version_uuid
     )
     assert event.publish_timestamp == publish_timestamp
+
+    event = PublishedGradeToLMSEvent(
+        instructor_grade_approval_version_uuid=instructor_grade_approval_version_uuid,
+    )
+    assert (
+        event.instructor_grade_approval_version_uuid
+        == instructor_grade_approval_version_uuid
+    )
+    assert event.publish_timestamp is not None
 
 
 @pytest.mark.parametrize(

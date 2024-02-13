@@ -1,8 +1,9 @@
-from typing import List, Union
+from typing import List, Union, Optional
 
 from powergrader_event_utils.events.event import (
     ProtoPowerGraderEvent,
     generate_event_uuid,
+    generate_event_timestamp,
 )
 from powergrader_event_utils.events.proto_events.submission_pb2 import (
     Submission,
@@ -72,7 +73,7 @@ class SubmissionEvent(ProtoPowerGraderEvent):
         student_public_uuid: str,
         assignment_version_uuid: str,
         submission_file_group_uuid: str,
-        version_timestamp: int,
+        version_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
         self.public_uuid = public_uuid
@@ -80,4 +81,6 @@ class SubmissionEvent(ProtoPowerGraderEvent):
         self.assignment_version_uuid = assignment_version_uuid
         self.submission_file_group_uuid = submission_file_group_uuid
         self.version_uuid = generate_event_uuid(self.__class__.__name__)
+        if version_timestamp == None:
+            version_timestamp = generate_event_timestamp()
         self.version_timestamp = version_timestamp

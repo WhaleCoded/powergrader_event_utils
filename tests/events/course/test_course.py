@@ -42,11 +42,23 @@ def test_valid_course_creation(
         version_timestamp=version_timestamp,
     )
     CourseEvent(
+        public_uuid=public_uuid,
+        instructor_public_uuid=instructor_public_uuid,
+        name=name,
+        description=description,
+    )
+    CourseEvent(
         public_uuid,
         instructor_public_uuid,
         name,
         description,
         version_timestamp,
+    )
+    CourseEvent(
+        public_uuid,
+        instructor_public_uuid,
+        name,
+        description,
     )
 
 
@@ -98,6 +110,19 @@ def test_getting_course_fields(
     assert course.name == name
     assert course.description == description
     assert course.version_timestamp == version_timestamp
+    assert course.version_uuid is not None
+
+    course = CourseEvent(
+        public_uuid=public_uuid,
+        instructor_public_uuid=instructor_public_uuid,
+        name=name,
+        description=description,
+    )
+    assert course.public_uuid == public_uuid
+    assert course.instructor_public_uuid == instructor_public_uuid
+    assert course.name == name
+    assert course.description == description
+    assert course.version_timestamp is not None
     assert course.version_uuid is not None
 
 

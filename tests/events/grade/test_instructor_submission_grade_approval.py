@@ -62,6 +62,16 @@ def test_valid_instructor_submission_grade_approval_creation(
         criterion_grade_version_uuids,
         version_timestamp,
     )
+    InstructorSubmissionGradeApprovalEvent(
+        submission_version_uuid=submission_version_uuid,
+        instructor_public_uuid=instructor_public_uuid,
+        criterion_grade_version_uuids=criterion_grade_version_uuids,
+    )
+    InstructorSubmissionGradeApprovalEvent(
+        submission_version_uuid,
+        instructor_public_uuid,
+        criterion_grade_version_uuids,
+    )
 
 
 @pytest.mark.parametrize(
@@ -120,6 +130,19 @@ def test_getting_instructor_submission_grade_approval_fields(
         criterion_grade_version_uuids
     )
     assert event.version_timestamp == version_timestamp
+    assert event.version_uuid is not None
+
+    event = InstructorSubmissionGradeApprovalEvent(
+        submission_version_uuid=submission_version_uuid,
+        instructor_public_uuid=instructor_public_uuid,
+        criterion_grade_version_uuids=criterion_grade_version_uuids,
+    )
+    assert event.submission_version_uuid == submission_version_uuid
+    assert event.instructor_public_uuid == instructor_public_uuid
+    assert set(event.criterion_grade_version_uuids) == set(
+        criterion_grade_version_uuids
+    )
+    assert event.version_timestamp is not None
     assert event.version_uuid is not None
 
 

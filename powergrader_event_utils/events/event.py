@@ -1,6 +1,8 @@
+from typing import Self, List, Optional
+
+import time
 from uuid import uuid4
 from strenum import StrEnum
-from typing import Self, List, Optional
 
 from confluent_kafka import Producer
 
@@ -111,6 +113,14 @@ def generate_event_uuid(class_name: str) -> str:
     """
 
     return class_name.replace("Event", "") + "--" + str(uuid4())
+
+
+def generate_event_timestamp() -> int:
+    """
+    Generates a timestamp for the event in milliseconds since epoch.
+    """
+
+    return int(time.time_ns() / 1_000_000)
 
 
 def get_event_type_from_uuid(uuid: str) -> EventType:

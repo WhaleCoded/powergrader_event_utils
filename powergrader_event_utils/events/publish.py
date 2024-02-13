@@ -1,7 +1,9 @@
-from enum import Enum
+from typing import Optional
+
 from powergrader_event_utils.events.event import (
     ProtoPowerGraderEvent,
     generate_event_uuid,
+    generate_event_timestamp,
 )
 from powergrader_event_utils.events.proto_events.publish_pb2 import (
     RegisterCoursePublicUUID,
@@ -164,10 +166,12 @@ class PublishedToLMSEvent(ProtoPowerGraderEvent):
     def __init__(
         self,
         published_entity_version_uuid: str,
-        publish_timestamp: int,
+        publish_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
         self.published_entity_version_uuid = published_entity_version_uuid
+        if publish_timestamp is None:
+            publish_timestamp = generate_event_timestamp()
         self.publish_timestamp = publish_timestamp
 
 
@@ -179,10 +183,14 @@ class PublishedGradeToLMSEvent(ProtoPowerGraderEvent):
     publish_timestamp: int
 
     def __init__(
-        self, instructor_grade_approval_version_uuid: str, publish_timestamp: int
+        self,
+        instructor_grade_approval_version_uuid: str,
+        publish_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
         self.instructor_grade_approval_version_uuid = (
             instructor_grade_approval_version_uuid
         )
+        if publish_timestamp is None:
+            publish_timestamp = generate_event_timestamp()
         self.publish_timestamp = publish_timestamp

@@ -36,6 +36,11 @@ def test_valid_ai_grading_started_creation(
     AICriterionGradingStartedEvent(
         criterion_uuid, submission_version_uuid, time_started
     )
+    AICriterionGradingStartedEvent(
+        criterion_uuid=criterion_uuid,
+        submission_version_uuid=submission_version_uuid,
+    )
+    AICriterionGradingStartedEvent(criterion_uuid, submission_version_uuid)
 
 
 @pytest.mark.parametrize(
@@ -80,6 +85,18 @@ def test_getting_ai_grading_started_fields(
     assert event.criterion_uuid == criterion_uuid
     assert event.submission_version_uuid == submission_version_uuid
     assert event.time_started == time_started
+
+    from powergrader_event_utils.events.grade import (
+        AICriterionGradingStartedEvent,
+    )
+
+    event = AICriterionGradingStartedEvent(
+        criterion_uuid=criterion_uuid,
+        submission_version_uuid=submission_version_uuid,
+    )
+    assert event.criterion_uuid == criterion_uuid
+    assert event.submission_version_uuid == submission_version_uuid
+    assert event.time_started is not None
 
 
 @pytest.mark.parametrize(

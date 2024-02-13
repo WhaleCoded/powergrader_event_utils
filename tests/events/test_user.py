@@ -52,12 +52,9 @@ def test_valid_user_creation(
         email=email,
         version_timestamp=version_timestamp,
     )
-    user_type(
-        public_uuid,
-        name,
-        email,
-        version_timestamp,
-    )
+    user_type(public_uuid, name, email, version_timestamp)
+    user_type(public_uuid=public_uuid, name=name, email=email)
+    user_type(public_uuid, name, email)
 
 
 @pytest.mark.parametrize(
@@ -108,6 +105,13 @@ def test_getting_user_fields(
     assert user.name == name
     assert user.email == email
     assert user.version_timestamp == version_timestamp
+    assert user.version_uuid is not None
+
+    user = user_type(public_uuid=public_uuid, name=name, email=email)
+    assert user.public_uuid == public_uuid
+    assert user.name == name
+    assert user.email == email
+    assert user.version_timestamp is not None
     assert user.version_uuid is not None
 
 

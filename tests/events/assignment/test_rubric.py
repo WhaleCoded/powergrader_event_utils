@@ -71,12 +71,19 @@ def test_valid_rubric_creation(
         version_timestamp=version_timestamp,
     )
     RubricEvent(
+        public_uuid=public_uuid,
+        instructor_public_uuid=instructor_public_uuid,
+        name=name,
+        rubric_criteria=rubric_criteria,
+    )
+    RubricEvent(
         public_uuid,
         instructor_public_uuid,
         name,
         rubric_criteria,
         version_timestamp,
     )
+    RubricEvent(public_uuid, instructor_public_uuid, name, rubric_criteria)
 
 
 @pytest.mark.parametrize(
@@ -137,6 +144,29 @@ def test_getting_rubric_fields(
         [criterion in rubric.rubric_criteria.values() for criterion in rubric_criteria]
     )
     assert rubric.version_timestamp == version_timestamp
+    assert rubric.version_uuid is not None
+
+    rubric = RubricEvent(
+        public_uuid=public_uuid,
+        instructor_public_uuid=instructor_public_uuid,
+        name=name,
+        rubric_criteria=rubric_criteria,
+    )
+    assert rubric.public_uuid == public_uuid
+    assert rubric.instructor_public_uuid == instructor_public_uuid
+    assert rubric.name == name
+    if isinstance(rubric_criteria, dict):
+        rubric_criteria = list(rubric_criteria.values())
+    print(len(rubric_criteria))
+    if len(rubric_criteria) == 3:
+        print(rubric_criteria[1])
+        print(
+            "\n".join([str(criterion) for criterion in rubric.rubric_criteria.values()])
+        )
+    assert all(
+        [criterion in rubric.rubric_criteria.values() for criterion in rubric_criteria]
+    )
+    assert rubric.version_timestamp is not None
     assert rubric.version_uuid is not None
 
 

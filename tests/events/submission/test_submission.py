@@ -44,6 +44,18 @@ def test_valid_submission_creation(
         submission_file_group_uuid,
         version_timestamp,
     )
+    SubmissionEvent(
+        public_uuid=public_uuid,
+        student_public_uuid=student_public_uuid,
+        assignment_version_uuid=assignment_version_uuid,
+        submission_file_group_uuid=submission_file_group_uuid,
+    )
+    SubmissionEvent(
+        public_uuid,
+        student_public_uuid,
+        assignment_version_uuid,
+        submission_file_group_uuid,
+    )
 
 
 @pytest.mark.parametrize(
@@ -102,6 +114,19 @@ def test_getting_submission_fields(
     assert event.assignment_version_uuid == assignment_version_uuid
     assert event.submission_file_group_uuid == submission_file_group_uuid
     assert event.version_timestamp == version_timestamp
+    assert event.version_uuid is not None
+
+    event = SubmissionEvent(
+        public_uuid=public_uuid,
+        student_public_uuid=student_public_uuid,
+        assignment_version_uuid=assignment_version_uuid,
+        submission_file_group_uuid=submission_file_group_uuid,
+    )
+    assert event.public_uuid == public_uuid
+    assert event.student_public_uuid == student_public_uuid
+    assert event.assignment_version_uuid == assignment_version_uuid
+    assert event.submission_file_group_uuid == submission_file_group_uuid
+    assert event.version_timestamp is not None
     assert event.version_uuid is not None
 
 

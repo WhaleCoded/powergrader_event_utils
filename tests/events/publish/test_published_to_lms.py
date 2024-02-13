@@ -34,6 +34,12 @@ def test_valid_published_to_lms_creation(
         published_entity_version_uuid,
         publish_timestamp,
     )
+    PublishedToLMSEvent(
+        published_entity_version_uuid=published_entity_version_uuid,
+    )
+    PublishedToLMSEvent(
+        published_entity_version_uuid,
+    )
 
 
 @pytest.mark.parametrize(
@@ -72,6 +78,12 @@ def test_getting_published_to_lms_fields(
     )
     assert event.published_entity_version_uuid == published_entity_version_uuid
     assert event.publish_timestamp == publish_timestamp
+
+    event = PublishedToLMSEvent(
+        published_entity_version_uuid=published_entity_version_uuid,
+    )
+    assert event.published_entity_version_uuid == published_entity_version_uuid
+    assert event.publish_timestamp is not None
 
 
 @pytest.mark.parametrize(

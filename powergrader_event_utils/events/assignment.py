@@ -1,8 +1,9 @@
-from typing import Dict, List, Sequence, Union
+from typing import Dict, List, Sequence, Union, Optional
 
 from powergrader_event_utils.events.event import (
     ProtoPowerGraderEvent,
     generate_event_uuid,
+    generate_event_timestamp,
 )
 from powergrader_event_utils.events.proto_events.assignment_pb2 import (
     Assignment,
@@ -33,7 +34,7 @@ class AssignmentEvent(ProtoPowerGraderEvent):
         rubric_version_uuid: str,
         name: str,
         description: str,
-        version_timestamp: int,
+        version_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
         self.public_uuid = public_uuid
@@ -42,6 +43,8 @@ class AssignmentEvent(ProtoPowerGraderEvent):
         self.rubric_version_uuid = rubric_version_uuid
         self.name = name
         self.description = description
+        if version_timestamp is None:
+            version_timestamp = generate_event_timestamp()
         self.version_timestamp = version_timestamp
 
 
@@ -93,7 +96,7 @@ class RubricEvent(ProtoPowerGraderEvent):
         instructor_public_uuid: str,
         name: str,
         rubric_criteria: Union[Dict[str, RubricCriterion], Sequence[RubricCriterion]],
-        version_timestamp: int,
+        version_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
         if isinstance(rubric_criteria, Sequence) and not isinstance(
@@ -125,4 +128,6 @@ class RubricEvent(ProtoPowerGraderEvent):
         self.instructor_public_uuid = instructor_public_uuid
         self.name = name
         self.rubric_criteria = rubric_criteria
+        if version_timestamp is None:
+            version_timestamp = generate_event_timestamp()
         self.version_timestamp = version_timestamp

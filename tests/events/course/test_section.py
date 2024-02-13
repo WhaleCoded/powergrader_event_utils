@@ -50,6 +50,18 @@ def test_valid_section_creation(
         closed,
         version_timestamp,
     )
+    SectionEvent(
+        public_uuid=public_uuid,
+        course_public_uuid=course_public_uuid,
+        name=name,
+        closed=closed,
+    )
+    SectionEvent(
+        public_uuid,
+        course_public_uuid,
+        name,
+        closed,
+    )
 
 
 @pytest.mark.parametrize(
@@ -100,6 +112,20 @@ def test_getting_section_attributes(
     assert section.name == name
     assert section.closed == closed
     assert section.version_timestamp == version_timestamp
+    assert section.version_uuid is not None
+
+    section = SectionEvent(
+        public_uuid=public_uuid,
+        course_public_uuid=course_public_uuid,
+        name=name,
+        closed=closed,
+        version_timestamp=version_timestamp,
+    )
+    assert section.public_uuid == public_uuid
+    assert section.course_public_uuid == course_public_uuid
+    assert section.name == name
+    assert section.closed == closed
+    assert section.version_timestamp is not None
     assert section.version_uuid is not None
 
 

@@ -23,7 +23,7 @@ VALID_STRS = [
 INVALID_STRS = [None, 1, -1.0, [1, 2, 3], {"a": "b"}]
 
 VALID_TIMESTAMPS = [0, 1, 1234567890, 9876543210]
-INVALID_TIMESTAMPS = [None, -1, -1.0, [1, 2, 3], b"123", {"a": "b"}, "10"]
+INVALID_TIMESTAMPS = [-1, -1.0, [1, 2, 3], b"123", {"a": "b"}, "10"]
 
 VALID_INTS = [0, 1, 1234567890, 4294967295]
 INVALID_INTS = [None, -1, -1.0, [1, 2, 3], b"123", {"a": "b"}, "10"]

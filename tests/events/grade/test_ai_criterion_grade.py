@@ -46,6 +46,16 @@ def test_valid_ai_criterion_grade_creation(
     AICriterionGradeEvent(
         grading_started_version_uuid, grading_method_uuid, grade, time_finished
     )
+    AICriterionGradeEvent(
+        grading_started_version_uuid=grading_started_version_uuid,
+        grading_method_uuid=grading_method_uuid,
+        grade=grade,
+    )
+    AICriterionGradeEvent(
+        grading_started_version_uuid,
+        grading_method_uuid,
+        grade,
+    )
 
 
 @pytest.mark.parametrize(
@@ -89,6 +99,16 @@ def test_getting_ai_criterion_grade_fields(
     assert event.grading_method_uuid == grading_method_uuid
     assert event.grade == grade
     assert event.time_finished == time_finished
+
+    event = AICriterionGradeEvent(
+        grading_started_version_uuid=grading_started_version_uuid,
+        grading_method_uuid=grading_method_uuid,
+        grade=grade,
+    )
+    assert event.grading_started_version_uuid == grading_started_version_uuid
+    assert event.grading_method_uuid == grading_method_uuid
+    assert event.grade == grade
+    assert event.time_finished is not None
 
 
 @pytest.mark.parametrize(

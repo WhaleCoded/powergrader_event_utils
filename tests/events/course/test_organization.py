@@ -35,6 +35,14 @@ def test_valid_organization_creation(public_uuid, name, version_timestamp):
         name,
         version_timestamp,
     )
+    OrganizationEvent(
+        public_uuid=public_uuid,
+        name=name,
+    )
+    OrganizationEvent(
+        public_uuid,
+        name,
+    )
 
 
 @pytest.mark.parametrize(
@@ -71,6 +79,12 @@ def test_getting_organization_attributes(public_uuid, name, version_timestamp):
     assert organization.public_uuid == public_uuid
     assert organization.name == name
     assert organization.version_timestamp == version_timestamp
+    assert organization.version_uuid is not None
+
+    organization = OrganizationEvent(public_uuid=public_uuid, name=name)
+    assert organization.public_uuid == public_uuid
+    assert organization.name == name
+    assert organization.version_timestamp is not None
     assert organization.version_uuid is not None
 
 

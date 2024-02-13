@@ -49,12 +49,26 @@ def test_valid_assignment_creation(
         version_timestamp=version_timestamp,
     )
     AssignmentEvent(
+        public_uuid=public_uuid,
+        instructor_public_uuid=instructor_public_uuid,
+        rubric_version_uuid=rubric_version_uuid,
+        name=name,
+        description=description,
+    )
+    AssignmentEvent(
         public_uuid,
         instructor_public_uuid,
         rubric_version_uuid,
         name,
         description,
         version_timestamp,
+    )
+    AssignmentEvent(
+        public_uuid,
+        instructor_public_uuid,
+        rubric_version_uuid,
+        name,
+        description,
     )
 
 
@@ -120,6 +134,21 @@ def test_getting_assignment_fields(
     assert event.name == name
     assert event.description == description
     assert event.version_timestamp == version_timestamp
+    assert event.version_uuid is not None
+
+    event = AssignmentEvent(
+        public_uuid=public_uuid,
+        instructor_public_uuid=instructor_public_uuid,
+        rubric_version_uuid=rubric_version_uuid,
+        name=name,
+        description=description,
+    )
+    assert event.public_uuid == public_uuid
+    assert event.instructor_public_uuid == instructor_public_uuid
+    assert event.rubric_version_uuid == rubric_version_uuid
+    assert event.name == name
+    assert event.description == description
+    assert event.version_timestamp is not None
     assert event.version_uuid is not None
 
 

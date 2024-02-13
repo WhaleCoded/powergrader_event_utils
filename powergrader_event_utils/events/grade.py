@@ -1,9 +1,9 @@
-from typing import List
-from dataclasses import dataclass
+from typing import List, Optional
 
 from powergrader_event_utils.events.event import (
     ProtoPowerGraderEvent,
     generate_event_uuid,
+    generate_event_timestamp,
 )
 from powergrader_event_utils.events.proto_events.grade_pb2 import (
     AICriterionGradingStarted,
@@ -32,12 +32,14 @@ class AICriterionGradingStartedEvent(ProtoPowerGraderEvent):
         self,
         criterion_uuid: str,
         submission_version_uuid: str,
-        time_started: int,
+        time_started: Optional[int] = None,
     ) -> None:
         super().__init__()
         self.version_uuid = generate_event_uuid(self.__class__.__name__)
         self.criterion_uuid = criterion_uuid
         self.submission_version_uuid = submission_version_uuid
+        if time_started is None:
+            time_started = generate_event_timestamp()
         self.time_started = time_started
 
 
@@ -93,7 +95,7 @@ class AICriterionGradeEvent(ProtoPowerGraderEvent):
         grading_started_version_uuid: str,
         grading_method_uuid: str,
         grade: Grade,
-        time_finished: int,
+        time_finished: Optional[int] = None,
     ) -> None:
         if not isinstance(grade, Grade):
             raise TypeError(
@@ -103,6 +105,8 @@ class AICriterionGradeEvent(ProtoPowerGraderEvent):
         self.grading_started_version_uuid = grading_started_version_uuid
         self.grading_method_uuid = grading_method_uuid
         self.grade = grade
+        if time_finished is None:
+            time_finished = generate_event_timestamp()
         self.time_finished = time_finished
 
 
@@ -124,7 +128,7 @@ class AIInferredCriterionGradeEvent(ProtoPowerGraderEvent):
         previous_criterion_grade_version_uuid: str,
         faculty_override_criterion_grade_version_uuid: str,
         grade: Grade,
-        time_finished: int,
+        time_finished: Optional[int] = None,
     ) -> None:
         if not isinstance(grade, Grade):
             raise TypeError(
@@ -140,6 +144,8 @@ class AIInferredCriterionGradeEvent(ProtoPowerGraderEvent):
             faculty_override_criterion_grade_version_uuid
         )
         self.grade = grade
+        if time_finished is None:
+            time_finished = generate_event_timestamp()
         self.time_finished = time_finished
 
 
@@ -247,11 +253,13 @@ class InstructorSubmissionGradeApprovalEvent(ProtoPowerGraderEvent):
         submission_version_uuid: str,
         instructor_public_uuid: str,
         criterion_grade_version_uuids: List[str],
-        version_timestamp: int,
+        version_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
         self.version_uuid = generate_event_uuid(self.__class__.__name__)
         self.submission_version_uuid = submission_version_uuid
         self.instructor_public_uuid = instructor_public_uuid
         self.criterion_grade_version_uuids = criterion_grade_version_uuids
+        if version_timestamp is None:
+            version_timestamp = generate_event_timestamp()
         self.version_timestamp = version_timestamp
