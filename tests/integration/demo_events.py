@@ -65,7 +65,7 @@ def create_demo_events() -> list:
     events.extend(submission_events)
 
     ai_grading_events, override_criterion_grading_started_uuid = (
-        create_ai_grading_events(criteria_ids, submission_public_id)
+        create_ai_grading_events(criteria_ids, submission_version_uuid)
     )
     events.extend(ai_grading_events)
 
@@ -73,7 +73,7 @@ def create_demo_events() -> list:
         criteria_ids[2],
         instructor_public_id,
         override_criterion_grading_started_uuid,
-        submission_public_id,
+        submission_version_uuid,
     )
     events.extend(ai_inference_events)
 
