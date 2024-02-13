@@ -53,7 +53,7 @@ def create_demo_events() -> list:
     student_events, student_public_id = create_demo_student(section_public_id)
     events.extend(student_events)
 
-    assignment_events, assignment_version_id = create_demo_assignment(
+    assignment_events, assignment_version_id, criteria_ids = create_demo_assignment(
         instructor_public_id, course_public_id
     )
     events.extend(assignment_events)
@@ -63,13 +63,16 @@ def create_demo_events() -> list:
     )
     events.extend(submission_events)
 
-    ai_grading_events, override_criterion_uuid = create_ai_grading_events(
-        submission_public_id
+    ai_grading_events, override_criterion_grading_started_uuid = (
+        create_ai_grading_events(criteria_ids, submission_public_id)
     )
     events.extend(ai_grading_events)
 
     ai_inference_events = create_ai_inference_events(
-        instructor_public_id, override_criterion_uuid, submission_public_id
+        criteria_ids[2],
+        instructor_public_id,
+        override_criterion_grading_started_uuid,
+        submission_public_id,
     )
     events.extend(ai_inference_events)
 
@@ -77,6 +80,7 @@ def create_demo_events() -> list:
 
 
 def create_ai_inference_events(
+    override_criterion_uuid: str,
     instructor_public_id: str,
     criterion_grade_version_uuid: str,
     submission_version_uuid: str,
@@ -88,7 +92,7 @@ def create_ai_inference_events(
     ]
 ]:
     grade_override = InstructorOverrideCriterionGradeEvent(
-        criterion_uuid="criterion-3",
+        criterion_uuid=override_criterion_uuid,
         submission_version_uuid=submission_version_uuid,
         previous_criterion_grade_version_uuid=criterion_grade_version_uuid,
         instructor_public_uuid=instructor_public_id,
@@ -101,12 +105,13 @@ def create_ai_inference_events(
 
 
 def create_ai_grading_events(
+    criterion_uuids: List[str],
     submission_version_uuid: str,
 ) -> Tuple[List[Union[AICriterionGradingStartedEvent, AICriterionGradeEvent]], str]:
-    override_criterion_uuid = None
+    override_criterion_grading_started_uuid = None
     events = []
     grading_started = AICriterionGradingStartedEvent(
-        criterion_uuid="criterion-1",
+        criterion_uuid=criterion_uuids[0],
         submission_version_uuid=submission_version_uuid,
         time_started=get_miliseconds_since_epoch(),
     )
@@ -122,7 +127,7 @@ def create_ai_grading_events(
     events.extend([grading_started, grading])
 
     grading_started = AICriterionGradingStartedEvent(
-        criterion_uuid="criterion-2",
+        criterion_uuid=criterion_uuids[1],
         submission_version_uuid=submission_version_uuid,
         time_started=get_miliseconds_since_epoch(),
     )
@@ -138,7 +143,7 @@ def create_ai_grading_events(
     events.extend([grading_started, grading])
 
     grading_started = AICriterionGradingStartedEvent(
-        criterion_uuid="criterion-3",
+        criterion_uuid=criterion_uuids[2],
         submission_version_uuid=submission_version_uuid,
         time_started=get_miliseconds_since_epoch(),
     )
@@ -151,11 +156,11 @@ def create_ai_grading_events(
         ),
         time_finished=get_miliseconds_since_epoch(),
     )
-    override_criterion_uuid = grading_started.criterion_uuid
+    override_criterion_grading_started_uuid = grading_started.criterion_uuid
     events.extend([grading_started, grading])
 
     grading_started = AICriterionGradingStartedEvent(
-        criterion_uuid="criterion-4",
+        criterion_uuid=criterion_uuids[3],
         submission_version_uuid=submission_version_uuid,
         time_started=get_miliseconds_since_epoch(),
     )
@@ -170,21 +175,13 @@ def create_ai_grading_events(
     )
     events.extend([grading_started, grading])
 
-    return events, override_criterion_uuid
+    return events, override_criterion_grading_started_uuid
 
 
 def create_demo_submission(
     student_public_uuid: str,
     assignment_version_uuid: str,
-) -> (
-    List[
-        Union[
-            RegisterSubmissionPublicUUIDEvent,
-            SubmissionEvent,
-        ]
-    ],
-    str,
-):
+) -> Tuple[List[Union[RegisterSubmissionPublicUUIDEvent, SubmissionEvent]], str]:
     submission_file_group = SubmissionFileGroupEvent(
         student_public_uuid=student_public_uuid,
         file_contents=[
@@ -253,7 +250,9 @@ def create_demo_submission(
 def create_demo_assignment(
     instructor_public_uuid: str,
     course_public_uuid: str,
-) -> Tuple[List[Union[RegisterAssignmentPublicUUIDEvent, AssignmentEvent]], str]:
+) -> Tuple[
+    List[Union[RegisterAssignmentPublicUUIDEvent, AssignmentEvent]], str, List[str]
+]:
     register_rubric = RegisterRubricPublicUUIDEvent(
         lms_id="lms-5",
         organization_public_uuid="ORGANIZATION-Apporto",
@@ -264,7 +263,6 @@ def create_demo_assignment(
         name="Fibonacci Sequence Rubric",
         rubric_criteria=[
             RubricCriterion(
-                uuid="criterion-1",
                 name="Functionality",
                 levels=[
                     CriterionLevel(
@@ -290,7 +288,6 @@ def create_demo_assignment(
                 ],
             ),
             RubricCriterion(
-                uuid="criterion-2",
                 name="Requirements",
                 levels=[
                     CriterionLevel(
@@ -312,7 +309,6 @@ def create_demo_assignment(
                 ],
             ),
             RubricCriterion(
-                uuid="criterion-3",
                 name="Organization",
                 levels=[
                     CriterionLevel(
@@ -334,7 +330,6 @@ def create_demo_assignment(
                 ],
             ),
             RubricCriterion(
-                uuid="criterion-4",
                 name="Documentation",
                 levels=[
                     CriterionLevel(
@@ -386,11 +381,18 @@ def create_demo_assignment(
         course_public_uuid=course_public_uuid,
         timestamp=get_miliseconds_since_epoch(),
     )
-    return [
-        register_assignment,
-        assignment,
-        add_assignment_to_course,
-    ], assignment.version_uuid
+
+    criteria_uuids = [criterion.uuid for criterion in rubric.rubric_criteria.values()]
+
+    return (
+        [
+            register_assignment,
+            assignment,
+            add_assignment_to_course,
+        ],
+        assignment.version_uuid,
+        criteria_uuids,
+    )
 
 
 def create_demo_student(
