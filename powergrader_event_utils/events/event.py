@@ -1,10 +1,14 @@
 from uuid import uuid4
 from strenum import StrEnum
-from typing import Tuple
+from typing import Self, List, Optional
 
 from confluent_kafka import Producer
 
+from powergrader_event_utils.events.proto import ProtoWrapper
+
 MAIN_TOPIC = "main-record"
+
+# TODO: docs
 
 
 # This could be replaced with a dynamically created enum with the following syntax: DynamicEnum = enum.Enum('DynamicEnum', {'foo':42, 'bar':24})
@@ -59,7 +63,7 @@ class EventType(StrEnum):
 
     # Submission events
     SUBMISSION = "SubmissionEvent"
-    SUBMISSION_GROUP_FILE = "SubmissionFileGroupEvent"
+    SUBMISSION_FILE_GROUP = "SubmissionFileGroupEvent"
 
     # User events
     STUDENT = "StudentEvent"
@@ -77,7 +81,9 @@ def get_kafka_topic_name_for_event_type(event_type: EventType) -> str:
     return event_type.value.replace("Event", "")
 
 
-def get_kafka_topic_names_for_event_types(event_types: list[EventType]) -> list[str]:
+def get_kafka_topic_names_for_event_types(
+    event_types: Optional[List[EventType]] = None,
+) -> List[str]:
     """
     Returns the kafka topic names for a given list of event types.
     """
@@ -120,105 +126,140 @@ def get_event_type_from_uuid(uuid: str) -> EventType:
 
     try:
         event_type = EventType(class_name)
-    except Exception as e:
+    except Exception:
         return EventType.NOT_SPECIFIED
 
     return event_type
 
 
-# Setup a common interface for the event system
-
-
 class PowerGraderEvent:
-    def __init__(
-        self, key: str, event_type: str, alternate_topic_event_type: EventType = None
-    ):
-        self.key = key
-        self.event_type = EventType(event_type)
-        if alternate_topic_event_type is not None:
-            self.topic_name = get_kafka_topic_name_for_event_type(
-                alternate_topic_event_type
+    """
+    A base class for all events. This class provides methods for publishing and
+    serializing events. Subclasses must implement the serialize and deserialize
+    methods.
+    """
+
+    key_field_name: str = None
+    event_type: EventType
+    topic_name: str
+
+    def __init__(self, event_type: str):
+        if self.key_field_name is None:
+            raise NotImplementedError(
+                "Implementations of the PowerGraderEvent class must have a key_field_name class attribute set."
             )
-        else:
-            self.topic_name = get_kafka_topic_name_for_event_type(self.event_type)
+        self.event_type = EventType(event_type)
+        self.topic_name = get_kafka_topic_name_for_event_type(self.event_type)
 
     def publish(self, producer: Producer) -> bool:
+        """
+        Publishes the event to a kafka topic. The topic name is determined by the event
+        type. The event is serialized and published as a byte object.
+
+        Args:
+            producer (Producer): A kafka producer object.
+
+        Returns:
+            bool: True if the event was successfully published, False otherwise.
+        """
         serialized_event = self.serialize()
         if isinstance(serialized_event, bytes):
-            # producer.begin_transaction()
             producer.produce(
                 self.topic_name,
                 key=self.key,
                 value=serialized_event,
                 headers={"event_type": self.event_type.value},
             )
-            # producer.flush()
-            # producer.commit_transaction()
             return True
-
         return False
 
     async def publish_async(self, producer: Producer) -> bool:
+        """
+        Publishes the event to a kafka topic. The topic name is determined by the event
+        type. The event is serialized and published as a byte object.
+
+        Args:
+            producer (Producer): A kafka producer object.
+
+        Returns:
+            bool: True if the event was successfully published, False otherwise.
+        """
         serialized_event = self.serialize()
         if isinstance(serialized_event, bytes):
-            # producer.begin_transaction()
             producer.produce(
                 self.topic_name,
                 key=self.key,
                 value=serialized_event,
                 headers={"event_type": self.event_type.value},
             )
-            # producer.commit_transaction()
             return True
-
         return False
 
     def publish_to_custom_topic(self, producer: Producer, topic_name: str) -> bool:
+        """
+        Publishes the event to a custom kafka topic. The event is serialized and published as a byte object.
+
+        Args:
+            producer (Producer): A kafka producer object.
+            topic_name (str): The name of the kafka topic.
+
+        Returns:
+            bool: True if the event was successfully published, False otherwise.
+        """
         serialized_event = self.serialize()
         if isinstance(serialized_event, bytes):
-            # producer.begin_transaction()
             producer.produce(
                 topic_name,
                 key=self.key,
                 value=serialized_event,
                 headers={"event_type": self.event_type},
             )
-            # producer.flush()
-            # producer.commit_transaction()
             return True
-
         return False
 
-    def _package_into_proto(self) -> object:
-        pass
-
-    def serialize(self) -> str:
-        return self._package_into_proto().SerializeToString()
+    def serialize(self) -> bytes:
+        raise NotImplementedError("This method must be implemented in the subclass.")
 
     @classmethod
-    def deserialize(cls, event: str):
-        pass
-
-    @staticmethod
-    def get_event_type() -> EventType:
-        return EventType.NOT_SPECIFIED
+    def deserialize(cls, event: bytes) -> "PowerGraderEvent":
+        raise NotImplementedError("This method must be implemented in the subclass.")
 
 
-def deserialize_powergrader_event(
-    event_type: bytes, event: bytes
-) -> Tuple[PowerGraderEvent, EventType] or None:
-    str_event_type = event_type.decode("utf-8")
+class ProtoPowerGraderEvent(PowerGraderEvent, ProtoWrapper):
+    """
+    A base class for all events that use protobuf serialization. This class provides
+    methods for publishing and serializing events, and functionality for smoothly
+    wrapping the protobuf types into nice python classes. Subclasses must set their
+    `proto_type` and `key_field_name` class attributes.
+    """
 
-    powergrader_event_classes = {}
-    for event_class in PowerGraderEvent.__subclasses__():
-        powergrader_event_classes[event_class.__name__] = event_class
+    def __init__(self):
+        ProtoWrapper.__init__(self)
+        PowerGraderEvent.__init__(self, self.__class__.__name__)
 
-    if str_event_type in powergrader_event_classes:
-        deserialized_event = powergrader_event_classes[str_event_type].deserialize(
-            event
-        )
-        event_type = powergrader_event_classes[str_event_type].get_event_type()
+    def serialize(self) -> bytes:
+        """
+        Serializes the event to a bytes object, using the protobuf serialization.
+        Serialization schema can be found in this objects proto_type attribute.
 
-        return deserialized_event, event_type
+        Returns:
+            bytes: The serialized event.
+        """
+        return self.proto.SerializeToString()
 
-    return None
+    @classmethod
+    def deserialize(cls, event: bytes) -> Self:
+        """
+        Deserializes the event from a bytes object, using the protobuf deserialization.
+        Deserialization schema can be found in this objects proto_type attribute.
+
+        Args:
+            event (bytes): The serialized event.
+
+        Returns:
+            ProtoPowerGraderEvent: The deserialized event.
+        """
+        proto = cls.proto_type()
+        proto.ParseFromString(event)
+        event = cls.from_proto(proto)
+        return event
