@@ -48,9 +48,8 @@ class ProtoWrapperMeta(type):
             raise TypeError(f"{e}") from None
         except ValueError as e:
             raise ValueError(f"{e}") from None
-        # TODO: undo
-        # except AttributeError as e:
-        #     raise AttributeError(f"{e}") from None
+        except AttributeError as e:
+            raise AttributeError(f"{e}") from None
 
         new_proto_wrapper_instance._ProtoWrapper__frozen = True
         return new_proto_wrapper_instance

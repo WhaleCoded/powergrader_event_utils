@@ -4,7 +4,7 @@ from powergrader_event_utils.events.event import (
     ProtoPowerGraderEvent,
     EventType,
 )
-from powergrader_event_utils.events.proto_events.event_wrapper_pb2 import (
+from powergrader_event_utils.events.proto_events.retry_pb2 import (
     Retry,
     DeadLetter,
 )
@@ -66,31 +66,3 @@ class DeadLetterEvent(ProtoPowerGraderEvent):
         self.dead_letter_reason = dead_letter_reason
         self.instance_name = instance_name
         self.event = event
-
-
-if __name__ == "__main__":
-    from powergrader_event_utils.events.assignment import AssignmentEvent
-
-    assignment = AssignmentEvent(
-        public_uuid="public_uuid",
-        instructor_public_uuid="instructor_public_uuid",
-        rubric_version_uuid="rubric_version_uuid",
-        name="name",
-        description="description",
-        version_timestamp=123456,
-    )
-    retry_event = RetryEvent(
-        retry_number=1,
-        retry_reason="reason",
-        instance_name="instance",
-        event=assignment,
-    )
-    print(retry_event.serialize())
-    print(RetryEvent.deserialize(retry_event.serialize()))
-    print(retry_event.event_type)
-
-    dead_letter_event = DeadLetterEvent(
-        dead_letter_reason="reason", instance_name="instance", event=assignment
-    )
-    print(dead_letter_event.serialize())
-    print(DeadLetterEvent.deserialize(dead_letter_event.serialize()))

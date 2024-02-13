@@ -126,30 +126,3 @@ class RubricEvent(ProtoPowerGraderEvent):
         self.name = name
         self.rubric_criteria = rubric_criteria
         self.version_timestamp = version_timestamp
-
-
-if __name__ == "__main__":
-    public_uuid = "this is a really long super annoying string which is still a valid uuid for our particular use case"
-    instructor_public_uuid = "this is a really long super annoying string which is still a valid uuid for our particular use case"
-    name = "\n"
-    rubric_criteria = [
-        RubricCriterion(
-            levels=[
-                CriterionLevel(score=0, description="0"),
-                CriterionLevel(score=0, description="this is a description"),
-                CriterionLevel(score=4294967295, description="\n"),
-            ],
-            name="\n",
-        )
-    ]
-    version_timestamp = 9876543210
-
-    event = RubricEvent(
-        public_uuid=public_uuid,
-        instructor_public_uuid=instructor_public_uuid,
-        name=name,
-        rubric_criteria=rubric_criteria,
-        version_timestamp=version_timestamp,
-    )
-    print(event.rubric_criteria)
-    print(event.rubric_criteria.values())
