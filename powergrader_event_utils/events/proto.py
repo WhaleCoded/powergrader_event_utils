@@ -14,8 +14,6 @@ import google.protobuf.descriptor
 
 PROTO_TO_PROTO_WRAPPER_MAP: Dict[str, Type["ProtoWrapper"]] = {}
 
-# TODO: docs
-
 
 class ProtoWrapperMeta(type):
     def __init__(cls, name, bases, clsdict):
@@ -155,7 +153,6 @@ class ProtoEnumWrapper(metaclass=ProtoEnumWrapperMeta):
         return self._value_
 
 
-# TODO: Test that optional fields have the correct behaviour
 class ProtoWrapper(metaclass=ProtoWrapperMeta):
     """
     Wrapper for protobuf messages. This class handles all packing and unpacking for
@@ -426,7 +423,6 @@ class ProtoWrapper(metaclass=ProtoWrapperMeta):
     def _get_proto_field_names_and_one_of_map(
         cls,
     ) -> Tuple[Sequence[str], Dict[str, str]]:
-        # TODO: fix this so that we don't grab the optional fields with the oneofs
         base_field_names = set(
             [field.name for field in cls.proto_type.DESCRIPTOR.fields]
         )

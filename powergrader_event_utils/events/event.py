@@ -10,8 +10,6 @@ from powergrader_event_utils.events.proto import ProtoWrapper
 
 MAIN_TOPIC = "main-record"
 
-# TODO: docs
-
 
 # This could be replaced with a dynamically created enum with the following syntax: DynamicEnum = enum.Enum('DynamicEnum', {'foo':42, 'bar':24})
 # However, this would mean that there would be no type hints for the enum.
@@ -161,6 +159,7 @@ class PowerGraderEvent:
         self.event_type = EventType(event_type)
         self.topic_name = get_kafka_topic_name_for_event_type(self.event_type)
 
+    # TODO: add additional topic name parameter optional
     def publish(self, producer: Producer) -> bool:
         """
         Publishes the event to a kafka topic. The topic name is determined by the event
@@ -183,6 +182,7 @@ class PowerGraderEvent:
             return True
         return False
 
+    # TODO: add additional topic name parameter optional
     async def publish_async(self, producer: Producer) -> bool:
         """
         Publishes the event to a kafka topic. The topic name is determined by the event
@@ -201,28 +201,6 @@ class PowerGraderEvent:
                 key=self.key,
                 value=serialized_event,
                 headers={"event_type": self.event_type.value},
-            )
-            return True
-        return False
-
-    def publish_to_custom_topic(self, producer: Producer, topic_name: str) -> bool:
-        """
-        Publishes the event to a custom kafka topic. The event is serialized and published as a byte object.
-
-        Args:
-            producer (Producer): A kafka producer object.
-            topic_name (str): The name of the kafka topic.
-
-        Returns:
-            bool: True if the event was successfully published, False otherwise.
-        """
-        serialized_event = self.serialize()
-        if isinstance(serialized_event, bytes):
-            producer.produce(
-                topic_name,
-                key=self.key,
-                value=serialized_event,
-                headers={"event_type": self.event_type},
             )
             return True
         return False
