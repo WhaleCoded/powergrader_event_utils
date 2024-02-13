@@ -240,11 +240,10 @@ Remember to use good commenting practices, use doc strings, and include a header
 
 
 def create_random_rubric_criterion() -> RubricCriterion:
-    num_levels = random.randint(1, 10)
+    num_levels = random.randint(2, 10)
     level_scores = [random.randint(1, 100) for _ in range(num_levels)]
     level_scores.sort()
     criterion = RubricCriterion(
-        uuid=generate_random_uuid(),
         name=select_from_string_list(RUBRIC_NAMES),
         levels=[
             CriterionLevel(
@@ -281,7 +280,6 @@ def create_random_rubric(
         rubric_criteria=create_random_rubric_criteria(),
         version_timestamp=generate_random_timestamp(instructor_creation_timestamp),
     )
-    rubric_event.proto.public_uuid = 1421
     return [register_event, rubric_event]
 
 
@@ -307,5 +305,5 @@ def create_random_assignment(
 
 
 if __name__ == "__main__":
-    # print(create_random_assignment("123", 123, "123", "123"))
+    print(create_random_assignment("123", 123, "123", "123"))
     print(create_random_rubric("123", "123", 123))
