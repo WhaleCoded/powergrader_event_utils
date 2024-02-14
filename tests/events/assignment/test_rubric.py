@@ -9,6 +9,7 @@ from helpers.utils import (
     INVALID_UUIDS,
     VALID_TIMESTAMPS,
     INVALID_TIMESTAMPS,
+    MockProducer,
 )
 
 from powergrader_event_utils.events.assignment import CriterionLevel, RubricCriterion
@@ -271,6 +272,28 @@ def test_str_rubric(
         version_timestamp=version_timestamp,
     )
     assert isinstance(str(rubric), str)
+
+
+@pytest.mark.parametrize(
+    "public_uuid, instructor_public_uuid, name, rubric_criteria, version_timestamp",
+    valid_rubric_parameters,
+)
+def test_publish_rubric(
+    public_uuid, instructor_public_uuid, name, rubric_criteria, version_timestamp
+):
+    from powergrader_event_utils.events.assignment import RubricEvent
+
+    event = RubricEvent(
+        public_uuid=public_uuid,
+        instructor_public_uuid=instructor_public_uuid,
+        name=name,
+        rubric_criteria=rubric_criteria,
+        version_timestamp=version_timestamp,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_assignment_event_type():

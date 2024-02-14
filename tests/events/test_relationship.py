@@ -6,6 +6,7 @@ from helpers.utils import (
     INVALID_UUIDS,
     VALID_TIMESTAMPS,
     INVALID_TIMESTAMPS,
+    MockProducer,
 )
 
 valid_relationship_parameters = generate_all_permutations(
@@ -193,6 +194,22 @@ def test_str_relationship(uuid1, uuid2, version_timestamp, relationship_event_ty
         version_timestamp,
     )
     assert isinstance(str(relationship_event), str)
+
+
+@pytest.mark.parametrize(
+    "uuid1, uuid2, version_timestamp, relationship_event_type",
+    valid_relationship_parameters,
+)
+def test_publish_relationship(uuid1, uuid2, version_timestamp, relationship_event_type):
+    event = relationship_event_type(
+        uuid1,
+        uuid2,
+        version_timestamp,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 @pytest.mark.parametrize(

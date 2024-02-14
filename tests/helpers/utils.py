@@ -47,3 +47,21 @@ def generate_singularly_invalid_permutations(
         ]
         permutations.extend(list(itertools.product(*lists_with_single_invalid)))
     return permutations
+
+
+class MockProducer:
+    was_called: bool
+
+    def __init__(self, *args, **kwargs):
+        self.was_called = False
+
+    def produce(self, topic_name, key, value, headers):
+        self.was_called = True
+        assert isinstance(topic_name, str)
+        assert isinstance(key, (str, bytes))
+        assert isinstance(value, bytes)
+        # Ensure that the headers are a dictionary of strings to (str, bytes, None)
+        assert isinstance(headers, dict)
+        for header_key, header_value in headers.items():
+            assert isinstance(header_key, str)
+            assert isinstance(header_value, (str, bytes, type(None)))

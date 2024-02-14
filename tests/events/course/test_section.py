@@ -8,6 +8,7 @@ from helpers.utils import (
     INVALID_STRS,
     VALID_TIMESTAMPS,
     INVALID_TIMESTAMPS,
+    MockProducer,
 )
 
 
@@ -222,6 +223,28 @@ def test_str_section(public_uuid, course_public_uuid, name, closed, version_time
         version_timestamp=version_timestamp,
     )
     assert isinstance(str(section), str)
+
+
+@pytest.mark.parametrize(
+    "public_uuid, course_public_uuid, name, closed, version_timestamp",
+    valid_section_parameters,
+)
+def test_publish_section(
+    public_uuid, course_public_uuid, name, closed, version_timestamp
+):
+    from powergrader_event_utils.events.course import SectionEvent
+
+    event = SectionEvent(
+        public_uuid=public_uuid,
+        course_public_uuid=course_public_uuid,
+        name=name,
+        closed=closed,
+        version_timestamp=version_timestamp,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_section_event_type():

@@ -6,6 +6,7 @@ from helpers.utils import (
     INVALID_UUIDS,
     VALID_TIMESTAMPS,
     INVALID_TIMESTAMPS,
+    MockProducer,
 )
 
 valid_submission_parameters = generate_all_permutations(
@@ -240,6 +241,32 @@ def test_str_submission(
         version_timestamp=version_timestamp,
     )
     assert isinstance(str(event), str)
+
+
+@pytest.mark.parametrize(
+    "public_uuid, student_public_uuid, assignment_version_uuid, submission_file_group_uuid, version_timestamp",
+    valid_submission_parameters,
+)
+def test_publish_submission(
+    public_uuid,
+    student_public_uuid,
+    assignment_version_uuid,
+    submission_file_group_uuid,
+    version_timestamp,
+):
+    from powergrader_event_utils.events.submission import SubmissionEvent
+
+    event = SubmissionEvent(
+        public_uuid=public_uuid,
+        student_public_uuid=student_public_uuid,
+        assignment_version_uuid=assignment_version_uuid,
+        submission_file_group_uuid=submission_file_group_uuid,
+        version_timestamp=version_timestamp,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_submission_event_type():

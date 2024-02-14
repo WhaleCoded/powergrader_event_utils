@@ -6,6 +6,7 @@ from helpers.utils import (
     INVALID_UUIDS,
     VALID_TIMESTAMPS,
     INVALID_TIMESTAMPS,
+    MockProducer,
 )
 
 valid_published_grade_to_lms_parameters = generate_all_permutations(
@@ -168,6 +169,25 @@ def test_str_published_grade_to_lms(
         publish_timestamp=publish_timestamp,
     )
     assert isinstance(str(event), str)
+
+
+@pytest.mark.parametrize(
+    "instructor_grade_approval_version_uuid, publish_timestamp",
+    valid_published_grade_to_lms_parameters,
+)
+def test_publish_published_grade_to_lms(
+    instructor_grade_approval_version_uuid, publish_timestamp
+):
+    from powergrader_event_utils.events.publish import PublishedGradeToLMSEvent
+
+    event = PublishedGradeToLMSEvent(
+        instructor_grade_approval_version_uuid=instructor_grade_approval_version_uuid,
+        publish_timestamp=publish_timestamp,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_publish_grade_to_lms_event_type():

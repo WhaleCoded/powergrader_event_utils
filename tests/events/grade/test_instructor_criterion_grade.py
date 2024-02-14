@@ -6,6 +6,7 @@ from helpers.utils import (
     INVALID_UUIDS,
     VALID_STRS,
     VALID_INTS,
+    MockProducer,
 )
 
 from powergrader_event_utils.events.grade import Grade
@@ -196,6 +197,29 @@ def test_str_instructor_criterion_grade(
         grade=grade,
     )
     assert isinstance(str(event), str)
+
+
+@pytest.mark.parametrize(
+    "criterion_uuid, submission_version_uuid, instructor_public_uuid, grade",
+    valid_instructor_criterion_grade_parameters,
+)
+def test_publish_instructor_criterion_grade(
+    criterion_uuid, submission_version_uuid, instructor_public_uuid, grade
+):
+    from powergrader_event_utils.events.grade import (
+        InstructorCriterionGradeEvent,
+    )
+
+    event = InstructorCriterionGradeEvent(
+        criterion_uuid=criterion_uuid,
+        submission_version_uuid=submission_version_uuid,
+        instructor_public_uuid=instructor_public_uuid,
+        grade=grade,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_instructor_criterion_grade_event_type():

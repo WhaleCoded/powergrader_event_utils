@@ -5,6 +5,7 @@ from helpers.utils import (
     VALID_UUIDS,
     INVALID_UUIDS,
     VALID_STRS,
+    MockProducer,
 )
 
 from powergrader_event_utils.events.submission import FileContent
@@ -149,6 +150,23 @@ def test_str_submission_file_group(student_public_uuid, file_contents):
         file_contents=file_contents,
     )
     assert isinstance(str(event), str)
+
+
+@pytest.mark.parametrize(
+    "student_public_uuid, file_contents",
+    valid_submission_file_group_parameters,
+)
+def test_publish_submission_file_group(student_public_uuid, file_contents):
+    from powergrader_event_utils.events.submission import SubmissionFileGroupEvent
+
+    event = SubmissionFileGroupEvent(
+        student_public_uuid=student_public_uuid,
+        file_contents=file_contents,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_submission_file_group_event_type():

@@ -4,6 +4,7 @@ from helpers.utils import (
     generate_singularly_invalid_permutations,
     VALID_UUIDS,
     INVALID_UUIDS,
+    MockProducer,
 )
 
 valid_register_submission_public_uuid_parameters = generate_all_permutations(
@@ -162,6 +163,26 @@ def test_str_register_submission_public_uuid(
         organization_public_uuid=organization_public_uuid,
     )
     assert isinstance(str(event), str)
+
+
+@pytest.mark.parametrize(
+    "lms_assignment_id, lms_student_id, organization_public_uuid",
+    valid_register_submission_public_uuid_parameters,
+)
+def test_publish_register_submission_public_uuid(
+    lms_assignment_id, lms_student_id, organization_public_uuid
+):
+    from powergrader_event_utils.events.publish import RegisterSubmissionPublicUUIDEvent
+
+    event = RegisterSubmissionPublicUUIDEvent(
+        lms_assignment_id=lms_assignment_id,
+        lms_student_id=lms_student_id,
+        organization_public_uuid=organization_public_uuid,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_register_submission_public_uuid_event_type():

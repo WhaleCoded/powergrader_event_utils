@@ -6,6 +6,7 @@ from helpers.utils import (
     INVALID_UUIDS,
     VALID_TIMESTAMPS,
     INVALID_TIMESTAMPS,
+    MockProducer,
 )
 
 valid_ai_grading_started_parameters = generate_all_permutations(
@@ -190,6 +191,28 @@ def test_str_ai_criterion_grading_started(
         time_started=time_started,
     )
     assert isinstance(str(event), str)
+
+
+@pytest.mark.parametrize(
+    "criterion_uuid, submission_version_uuid, time_started",
+    valid_ai_grading_started_parameters,
+)
+def test_publish_ai_criterion_grading_started(
+    criterion_uuid, submission_version_uuid, time_started
+):
+    from powergrader_event_utils.events.grade import (
+        AICriterionGradingStartedEvent,
+    )
+
+    event = AICriterionGradingStartedEvent(
+        criterion_uuid=criterion_uuid,
+        submission_version_uuid=submission_version_uuid,
+        time_started=time_started,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_ai_criterion_grading_started_event_type():

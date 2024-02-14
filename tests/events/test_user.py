@@ -8,6 +8,7 @@ from helpers.utils import (
     INVALID_UUIDS,
     VALID_TIMESTAMPS,
     INVALID_TIMESTAMPS,
+    MockProducer,
 )
 
 valid_user_parameters = generate_all_permutations(
@@ -211,6 +212,29 @@ def test_str_user(
         version_timestamp=version_timestamp,
     )
     assert isinstance(str(user), str)
+
+
+@pytest.mark.parametrize(
+    "public_uuid, name, email, version_timestamp, user_type",
+    valid_user_parameters,
+)
+def test_publish_user(
+    public_uuid,
+    name,
+    email,
+    version_timestamp,
+    user_type,
+):
+    event = user_type(
+        public_uuid=public_uuid,
+        name=name,
+        email=email,
+        version_timestamp=version_timestamp,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 @pytest.mark.parametrize(

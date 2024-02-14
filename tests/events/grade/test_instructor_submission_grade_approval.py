@@ -6,6 +6,7 @@ from helpers.utils import (
     INVALID_UUIDS,
     VALID_TIMESTAMPS,
     INVALID_TIMESTAMPS,
+    MockProducer,
 )
 
 valid_criterion_grade_version_uuids = generate_all_permutations(
@@ -256,6 +257,32 @@ def test_str_instructor_submission_grade_approval(
         version_timestamp=version_timestamp,
     )
     assert isinstance(str(event), str)
+
+
+@pytest.mark.parametrize(
+    "submission_version_uuid, instructor_public_uuid, criterion_grade_version_uuids, version_timestamp",
+    valid_instructor_submission_grade_approval_parameters,
+)
+def test_publish_instructor_submission_grade_approval(
+    submission_version_uuid,
+    instructor_public_uuid,
+    criterion_grade_version_uuids,
+    version_timestamp,
+):
+    from powergrader_event_utils.events.grade import (
+        InstructorSubmissionGradeApprovalEvent,
+    )
+
+    event = InstructorSubmissionGradeApprovalEvent(
+        submission_version_uuid=submission_version_uuid,
+        instructor_public_uuid=instructor_public_uuid,
+        criterion_grade_version_uuids=criterion_grade_version_uuids,
+        version_timestamp=version_timestamp,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_instructor_submission_grade_approval_event_type():

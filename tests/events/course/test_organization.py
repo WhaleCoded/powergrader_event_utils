@@ -8,6 +8,7 @@ from helpers.utils import (
     INVALID_STRS,
     VALID_TIMESTAMPS,
     INVALID_TIMESTAMPS,
+    MockProducer,
 )
 
 valid_organization_parameters = generate_all_permutations(
@@ -157,6 +158,23 @@ def test_str_organization(public_uuid, name, version_timestamp):
         version_timestamp=version_timestamp,
     )
     assert isinstance(str(organization), str)
+
+
+@pytest.mark.parametrize(
+    "public_uuid, name, version_timestamp", valid_organization_parameters
+)
+def test_publish_organization(public_uuid, name, version_timestamp):
+    from powergrader_event_utils.events.course import OrganizationEvent
+
+    event = OrganizationEvent(
+        public_uuid=public_uuid,
+        name=name,
+        version_timestamp=version_timestamp,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_organization_event_type():

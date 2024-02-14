@@ -5,11 +5,10 @@ from helpers.utils import (
     VALID_UUIDS,
     INVALID_UUIDS,
     VALID_STRS,
-    INVALID_STRS,
     VALID_TIMESTAMPS,
     INVALID_TIMESTAMPS,
     VALID_INTS,
-    INVALID_INTS,
+    MockProducer,
 )
 
 
@@ -198,6 +197,27 @@ def test_str_ai_criterion_grade(
         time_finished=time_finished,
     )
     assert isinstance(str(event), str)
+
+
+@pytest.mark.parametrize(
+    "grading_started_version_uuid, grading_method_uuid, grade, time_finished",
+    valid_ai_criterion_grade_parameters,
+)
+def test_publish_ai_criterion_grade(
+    grading_started_version_uuid, grading_method_uuid, grade, time_finished
+):
+    from powergrader_event_utils.events.grade import AICriterionGradeEvent
+
+    event = AICriterionGradeEvent(
+        grading_started_version_uuid=grading_started_version_uuid,
+        grading_method_uuid=grading_method_uuid,
+        grade=grade,
+        time_finished=time_finished,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_criterion_grade_event_type():

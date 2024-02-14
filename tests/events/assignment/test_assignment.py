@@ -8,6 +8,7 @@ from helpers.utils import (
     INVALID_STRS,
     VALID_TIMESTAMPS,
     INVALID_TIMESTAMPS,
+    MockProducer,
 )
 
 valid_assignment_parameters = generate_all_permutations(
@@ -276,6 +277,34 @@ def test_str_assignment(
         version_timestamp=version_timestamp,
     )
     assert isinstance(str(event), str)
+
+
+@pytest.mark.parametrize(
+    "public_uuid, instructor_public_uuid, rubric_version_uuid, name, description, version_timestamp",
+    valid_assignment_parameters,
+)
+def test_publish_assignment(
+    public_uuid,
+    instructor_public_uuid,
+    rubric_version_uuid,
+    name,
+    description,
+    version_timestamp,
+):
+    from powergrader_event_utils.events.assignment import AssignmentEvent
+
+    event = AssignmentEvent(
+        public_uuid=public_uuid,
+        instructor_public_uuid=instructor_public_uuid,
+        rubric_version_uuid=rubric_version_uuid,
+        name=name,
+        description=description,
+        version_timestamp=version_timestamp,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_assignment_event_type():

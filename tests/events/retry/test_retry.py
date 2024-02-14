@@ -6,6 +6,7 @@ from helpers.utils import (
     INVALID_STRS,
     VALID_INTS,
     INVALID_INTS,
+    MockProducer,
 )
 
 from powergrader_event_utils.events import (
@@ -191,6 +192,25 @@ def test_str_retry(retry_number, retry_reason, instance_name, event):
         event=event,
     )
     assert isinstance(str(event), str)
+
+
+@pytest.mark.parametrize(
+    "retry_number, retry_reason, instance_name, event",
+    valid_retry_parameters,
+)
+def test_publish_retry(retry_number, retry_reason, instance_name, event):
+    from powergrader_event_utils.events.retry import RetryEvent
+
+    event = RetryEvent(
+        retry_number=retry_number,
+        retry_reason=retry_reason,
+        instance_name=instance_name,
+        event=event,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_retry_event_type():

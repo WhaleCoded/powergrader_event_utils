@@ -6,6 +6,7 @@ from helpers.utils import (
     INVALID_UUIDS,
     VALID_TIMESTAMPS,
     INVALID_TIMESTAMPS,
+    MockProducer,
 )
 
 valid_published_to_lms_parameters = generate_all_permutations(
@@ -150,6 +151,23 @@ def test_str_published_to_lms(published_entity_version_uuid, publish_timestamp):
         publish_timestamp=publish_timestamp,
     )
     assert isinstance(str(event), str)
+
+
+@pytest.mark.parametrize(
+    "published_entity_version_uuid, publish_timestamp",
+    valid_published_to_lms_parameters,
+)
+def test_publish_published_to_lms(published_entity_version_uuid, publish_timestamp):
+    from powergrader_event_utils.events.publish import PublishedToLMSEvent
+
+    event = PublishedToLMSEvent(
+        published_entity_version_uuid=published_entity_version_uuid,
+        publish_timestamp=publish_timestamp,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_published_to_lms_event_type():

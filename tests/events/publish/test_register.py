@@ -4,6 +4,7 @@ from helpers.utils import (
     generate_singularly_invalid_permutations,
     VALID_UUIDS,
     INVALID_UUIDS,
+    MockProducer,
 )
 
 valid_register_parameters = generate_all_permutations(VALID_UUIDS, VALID_UUIDS)
@@ -162,6 +163,21 @@ def test_str_register_type(lms_id, organization_public_uuid, register_event_type
         organization_public_uuid=organization_public_uuid,
     )
     assert isinstance(str(register_event), str)
+
+
+@pytest.mark.parametrize(
+    "lms_id, organization_public_uuid, register_event_type",
+    valid_register_parameters,
+)
+def test_publish_register_type(lms_id, organization_public_uuid, register_event_type):
+    event = register_event_type(
+        lms_id=lms_id,
+        organization_public_uuid=organization_public_uuid,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 @pytest.mark.parametrize(

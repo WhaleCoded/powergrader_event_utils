@@ -4,6 +4,7 @@ from helpers.utils import (
     generate_singularly_invalid_permutations,
     VALID_UUIDS,
     INVALID_UUIDS,
+    MockProducer,
 )
 
 VALID_EMBEDDINGS = [[0, 0, 0], [0.4], [1203, -1.240, 1024, 0.0, 0.0, 0.0, 1.30]]
@@ -165,6 +166,26 @@ def test_str_criterion_grade_embedding(
         embedding=embedding,
     )
     assert isinstance(str(event), str)
+
+
+@pytest.mark.parametrize(
+    "criterion_grade_version_uuid, embedder_uuid, embedding",
+    valid_criterion_grade_embedding_parameters,
+)
+def test_publish_criterion_grade_embedding(
+    criterion_grade_version_uuid, embedder_uuid, embedding
+):
+    from powergrader_event_utils.events.grade import CriterionGradeEmbeddingEvent
+
+    event = CriterionGradeEmbeddingEvent(
+        criterion_grade_version_uuid=criterion_grade_version_uuid,
+        embedder_uuid=embedder_uuid,
+        embedding=embedding,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_criterion_grade_embeddings_event_type():

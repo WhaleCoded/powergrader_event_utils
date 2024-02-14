@@ -4,6 +4,7 @@ from helpers.utils import (
     generate_singularly_invalid_permutations,
     VALID_STRS,
     INVALID_STRS,
+    MockProducer,
 )
 
 from powergrader_event_utils.events import (
@@ -176,6 +177,24 @@ def test_str_dead_letter(dead_letter_reason, instance_name, event):
         event=event,
     )
     assert isinstance(str(dead_letter), str)
+
+
+@pytest.mark.parametrize(
+    "dead_letter_reason, instance_name, event",
+    valid_dead_letter_parameters,
+)
+def test_publish_dead_letter(dead_letter_reason, instance_name, event):
+    from powergrader_event_utils.events.retry import DeadLetterEvent
+
+    event = DeadLetterEvent(
+        dead_letter_reason=dead_letter_reason,
+        instance_name=instance_name,
+        event=event,
+    )
+    producer = MockProducer()
+    event.publish(producer)
+    event.publish(producer, secondary_publishing_topics=["one", "two"])
+    assert producer.was_called
 
 
 def test_dead_letter_event_type():
