@@ -4,7 +4,6 @@ import time
 from uuid import uuid4
 from strenum import StrEnum
 
-from confluent_kafka import Producer
 
 from powergrader_event_utils.events.proto import ProtoWrapper
 
@@ -160,7 +159,7 @@ class PowerGraderEvent:
         self.topic_name = get_kafka_topic_name_for_event_type(self.event_type)
 
     # TODO: add additional topic name parameter optional
-    def publish(self, producer: Producer) -> bool:
+    def publish(self, kafka_producer: "Producer") -> bool:
         """
         Publishes the event to a kafka topic. The topic name is determined by the event
         type. The event is serialized and published as a byte object.
@@ -173,9 +172,9 @@ class PowerGraderEvent:
         """
         serialized_event = self.serialize()
         if isinstance(serialized_event, bytes):
-            producer.produce(
+            kafka_producer.produce(
                 self.topic_name,
-                key=self.key,
+                key=self.key_field_name,
                 value=serialized_event,
                 headers={"event_type": self.event_type.value},
             )
@@ -183,7 +182,7 @@ class PowerGraderEvent:
         return False
 
     # TODO: add additional topic name parameter optional
-    async def publish_async(self, producer: Producer) -> bool:
+    async def publish_async(self, producer: "Producer") -> bool:
         """
         Publishes the event to a kafka topic. The topic name is determined by the event
         type. The event is serialized and published as a byte object.
@@ -198,7 +197,7 @@ class PowerGraderEvent:
         if isinstance(serialized_event, bytes):
             producer.produce(
                 self.topic_name,
-                key=self.key,
+                key=self.key_field_name,
                 value=serialized_event,
                 headers={"event_type": self.event_type.value},
             )
@@ -251,3 +250,14 @@ class ProtoPowerGraderEvent(PowerGraderEvent, ProtoWrapper):
         proto.ParseFromString(event)
         event = cls.from_proto(proto)
         return event
+
+
+class Producer:
+    """
+    Mock class for kafka producer.
+    """
+
+    def produce(self, topic_name, key, value, headers):
+        raise NotImplementedError(
+            "This class is purely for type hinting and should not be instantiated."
+        )
