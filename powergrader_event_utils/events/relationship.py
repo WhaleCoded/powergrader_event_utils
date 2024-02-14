@@ -16,7 +16,7 @@ from powergrader_event_utils.events.proto_events.relationship_pb2 import (
 
 
 class AssignmentAddedToCourseEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "assignment_public_uuid"
+    key_field_name: str = "version_uuid"
     proto_type = AssignmentAddedToCourse
 
     assignment_public_uuid: str
@@ -40,7 +40,7 @@ class AssignmentAddedToCourseEvent(ProtoPowerGraderEvent):
 
 
 class AssignmentRemovedFromCourseEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "assignment_public_uuid"
+    key_field_name: str = "version_uuid"
     proto_type = AssignmentRemovedFromCourse
 
     assignment_public_uuid: str
@@ -64,7 +64,7 @@ class AssignmentRemovedFromCourseEvent(ProtoPowerGraderEvent):
 
 
 class StudentAddedToSectionEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "student_public_uuid"
+    key_field_name: str = "version_uuid"
     proto_type = StudentAddedToSection
 
     student_public_uuid: str
@@ -88,7 +88,7 @@ class StudentAddedToSectionEvent(ProtoPowerGraderEvent):
 
 
 class StudentRemovedFromSectionEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "student_public_uuid"
+    key_field_name: str = "version_uuid"
     proto_type = StudentRemovedFromSection
 
     student_public_uuid: str
@@ -112,7 +112,7 @@ class StudentRemovedFromSectionEvent(ProtoPowerGraderEvent):
 
 
 class InstructorAddedToCourseEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "instructor_public_uuid"
+    key_field_name: str = "version_uuid"
     proto_type = InstructorAddedToCourse
 
     instructor_public_uuid: str
@@ -136,7 +136,7 @@ class InstructorAddedToCourseEvent(ProtoPowerGraderEvent):
 
 
 class InstructorRemovedFromCourseEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "instructor_public_uuid"
+    key_field_name: str = "version_uuid"
     proto_type = InstructorRemovedFromCourse
 
     instructor_public_uuid: str
