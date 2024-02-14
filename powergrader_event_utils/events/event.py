@@ -1,4 +1,4 @@
-from typing import Self, List, Optional
+from typing import Self, List, Optional, Sequence
 
 import time
 from uuid import uuid4
@@ -147,62 +147,116 @@ class PowerGraderEvent:
     """
 
     key_field_name: str = None
+    key: str
     event_type: EventType
     topic_name: str
 
-    def __init__(self, event_type: str):
+    def __init__(self, event_type: str, key: str = None):
         if self.key_field_name is None:
             raise NotImplementedError(
                 "Implementations of the PowerGraderEvent class must have a key_field_name class attribute set."
             )
         self.event_type = EventType(event_type)
         self.topic_name = get_kafka_topic_name_for_event_type(self.event_type)
+        if key is None:
+            key = getattr(self, self.key_field_name)
+        if not isinstance(key, str):
+            raise TypeError(
+                f"{self.__class__.__name__} key field must be of type str. Received {type(key)}"
+            )
+        self.key = key
 
-    # TODO: add additional topic name parameter optional
-    def publish(self, kafka_producer: "Producer") -> bool:
+    def publish(
+        self,
+        kafka_producer: "Producer",
+        secondary_publishing_topics: Optional[List[str]] = None,
+    ) -> bool:
         """
         Publishes the event to a kafka topic. The topic name is determined by the event
-        type. The event is serialized and published as a byte object.
+        type. The event is serialized and published as a byte object. Can optionally
+        publish to additional user specified topics.
 
         Args:
-            producer (Producer): A kafka producer object.
+            kafka_producer (Producer): A kafka producer object.
+            secondary_publishing_topics (Optional[List[str]], optional): A list of
+                additional topics to publish to. Defaults to None.
 
         Returns:
             bool: True if the event was successfully published, False otherwise.
         """
+        # Before we try to start sending anything, we will do some type checking
+        # First, make sure that we have a key, topic and an event type
+        key = self.key
+        if not isinstance(key, str):
+            raise TypeError(
+                f"{self.__class__.__name__} key field must be of type str. Has type {type(key)}"
+            )
+        topic_name = self.topic_name
+        if not isinstance(topic_name, str):
+            raise TypeError(
+                f"{self.__class__.__name__} topic_name must be of type str. Has type {type(topic_name)}"
+            )
+        event_type = self.event_type
+        if not isinstance(event_type, EventType):
+            raise TypeError(
+                f"{self.__class__.__name__} event_type must be of type EventType. Has type {type(event_type)}"
+            )
+
+        # Then, if we have secondary publishing topics, we will make sure that they are a list of strings
+        if secondary_publishing_topics:
+            if (
+                isinstance(secondary_publishing_topics, Sequence)
+                and not isinstance(secondary_publishing_topics, str)
+                and not isinstance(secondary_publishing_topics, bytes)
+            ):
+                for topic in secondary_publishing_topics:
+                    if not isinstance(topic, str):
+                        raise TypeError(
+                            f"secondary_publishing_topics must be a list of strings. Received {type(topic)} in list"
+                        )
+            else:
+                raise TypeError(
+                    f"secondary_publishing_topics must be a list of strings. Received {type(secondary_publishing_topics)}"
+                )
+
         serialized_event = self.serialize()
         if isinstance(serialized_event, bytes):
             kafka_producer.produce(
                 self.topic_name,
-                key=self.key_field_name,
+                key=key,
                 value=serialized_event,
-                headers={"event_type": self.event_type.value},
+                headers={"event_type": event_type.value},
             )
+            if secondary_publishing_topics:
+                for topic in secondary_publishing_topics:
+                    kafka_producer.produce(
+                        topic,
+                        key=key,
+                        value=serialized_event,
+                        headers={"event_type": event_type.value},
+                    )
             return True
         return False
 
-    # TODO: add additional topic name parameter optional
-    async def publish_async(self, producer: "Producer") -> bool:
+    async def publish_async(
+        self,
+        producer: "Producer",
+        secondary_publishing_topics: Optional[List[str]] = None,
+    ) -> bool:
         """
         Publishes the event to a kafka topic. The topic name is determined by the event
-        type. The event is serialized and published as a byte object.
+        type. The event is serialized and published as a byte object. Can optionally
+        publish to additional user specified topics.
 
         Args:
             producer (Producer): A kafka producer object.
+            secondary_publishing_topics (Optional[List[str]], optional): A list of
+                additional topics to publish to. Defaults to None.
 
         Returns:
             bool: True if the event was successfully published, False otherwise.
         """
-        serialized_event = self.serialize()
-        if isinstance(serialized_event, bytes):
-            producer.produce(
-                self.topic_name,
-                key=self.key_field_name,
-                value=serialized_event,
-                headers={"event_type": self.event_type.value},
-            )
-            return True
-        return False
+        return self.publish(producer, secondary_publishing_topics)
 
     def serialize(self) -> bytes:
         raise NotImplementedError("This method must be implemented in the subclass.")
@@ -220,9 +274,9 @@ class ProtoPowerGraderEvent(PowerGraderEvent, ProtoWrapper):
     `proto_type` and `key_field_name` class attributes.
     """
 
-    def __init__(self):
+    def __init__(self, key: str = None):
         ProtoWrapper.__init__(self)
-        PowerGraderEvent.__init__(self, self.__class__.__name__)
+        PowerGraderEvent.__init__(self, self.__class__.__name__, key)
 
     def serialize(self) -> bytes:
         """

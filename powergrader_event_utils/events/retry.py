@@ -35,7 +35,8 @@ class RetryEvent(ProtoPowerGraderEvent):
                 f"Retry events can only contain events which are not retry or dead letter events. Was given {event.event_type}"
             )
         self.key_field_name = event.key_field_name
-        super().__init__()
+        key = getattr(event, self.key_field_name)
+        super().__init__(key=key)
         self.retry_number = retry_number
         self.retry_reason = retry_reason
         self.instance_name = instance_name
@@ -62,7 +63,8 @@ class DeadLetterEvent(ProtoPowerGraderEvent):
                 f"Dead letter events can only contain events which are not retry or dead letter events. Was given {event.event_type}"
             )
         self.key_field_name = event.key_field_name
-        super().__init__()
+        key = getattr(event, self.key_field_name)
+        super().__init__(key=key)
         self.dead_letter_reason = dead_letter_reason
         self.instance_name = instance_name
         self.event = event
