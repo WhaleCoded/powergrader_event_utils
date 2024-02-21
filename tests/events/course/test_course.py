@@ -260,3 +260,5 @@ def test_course_event_type():
         version_timestamp=1234567890,
     )
     assert event.event_type == EventType.COURSE
+    deserialized = CourseEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.COURSE

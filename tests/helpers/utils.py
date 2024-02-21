@@ -58,7 +58,7 @@ class MockProducer:
     def produce(self, topic_name, key, value, headers):
         self.was_called = True
         assert isinstance(topic_name, str)
-        assert isinstance(key, (str, bytes))
+        assert isinstance(key, (str, bytes, type(None)))
         assert isinstance(value, bytes)
         # Ensure that the headers are a dictionary of strings to (str, bytes, None)
         assert isinstance(headers, dict)

@@ -207,3 +207,5 @@ def test_dead_letter_event_type():
         event=valid_events[0],
     )
     assert dead_letter.event_type == EventType.DEAD_LETTER
+    deserialized = DeadLetterEvent.deserialize(dead_letter.serialize())
+    assert deserialized.event_type == EventType.DEAD_LETTER

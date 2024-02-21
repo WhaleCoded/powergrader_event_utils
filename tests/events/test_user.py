@@ -252,3 +252,5 @@ def test_user_event_type(
         version_timestamp=1245,
     )
     assert user.event_type == event_type
+    deserialized = user_type.deserialize(user.serialize())
+    assert deserialized.event_type == event_type

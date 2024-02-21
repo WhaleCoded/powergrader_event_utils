@@ -223,3 +223,5 @@ def test_relationship_event_type(relationship_event_type, event_type):
         123,
     )
     assert event.event_type == event_type
+    deserialized = relationship_event_type.deserialize(event.serialize())
+    assert deserialized.event_type == event_type

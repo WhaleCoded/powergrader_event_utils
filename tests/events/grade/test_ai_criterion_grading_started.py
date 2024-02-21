@@ -227,3 +227,5 @@ def test_ai_criterion_grading_started_event_type():
         time_started=123,
     )
     assert event.event_type == EventType.AI_CRITERION_GRADING_STARTED
+    deserialized = AICriterionGradingStartedEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.AI_CRITERION_GRADING_STARTED

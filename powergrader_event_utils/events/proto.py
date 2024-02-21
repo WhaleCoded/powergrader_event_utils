@@ -388,6 +388,7 @@ class ProtoWrapper(metaclass=ProtoWrapperMeta):
                 f"{self.__class__.__name__} proto does not have a field named {__name}."
             )
 
+    # TODO: Create a more generalizable from_proto method, so that the __init__ and event deserialization are not copied
     @classmethod
     def from_proto(cls, proto: google.protobuf.message.Message) -> Self:
         """

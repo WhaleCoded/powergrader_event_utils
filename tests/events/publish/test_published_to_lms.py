@@ -179,3 +179,5 @@ def test_published_to_lms_event_type():
         publish_timestamp=VALID_TIMESTAMPS[0],
     )
     assert event.event_type == EventType.PUBLISHED_TO_LMS
+    deserialized = PublishedToLMSEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.PUBLISHED_TO_LMS

@@ -224,3 +224,5 @@ def test_retry_event_type():
         event=valid_events[0],
     )
     assert event.event_type == EventType.RETRY
+    deserialized = RetryEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.RETRY
