@@ -6,10 +6,74 @@ from powergrader_event_utils.events.event import (
     generate_event_timestamp,
 )
 from powergrader_event_utils.events.proto_events.grade_pb2 import (
+    AssignmentEmbedding,
     CriterionGradeEmbedding,
     SubmissionEmbedding,
     CriterionEmbedding,
+    ArtifactEmbedding,
 )
+
+
+class AssignmentEmbeddingEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "version_uuid"
+    proto_type = AssignmentEmbedding
+
+    version_uuid: str
+    assignment_version_uuid: str
+    embedder_uuid: str
+    embedding: List[float]
+    version_timestamp: int
+
+    def __init__(
+        self,
+        assignment_version_uuid: str,
+        embedder_uuid: str,
+        embedding: List[float],
+        version_timestamp: Optional[int] = None,
+    ) -> None:
+        if len(embedding) == 0:
+            raise ValueError(
+                f"{self.__class__.__name__} embedding must have at least one element"
+            )
+        super().__init__()
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
+        self.assignment_version_uuid = assignment_version_uuid
+        self.embedder_uuid = embedder_uuid
+        self.embedding = embedding
+        if version_timestamp is None:
+            version_timestamp = generate_event_timestamp()
+        self.version_timestamp = version_timestamp
+
+
+class CriterionEmbeddingEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "version_uuid"
+    proto_type = CriterionEmbedding
+
+    version_uuid: str
+    criterion_version_uuid: str
+    embedder_uuid: str
+    embedding: List[float]
+    version_timestamp: int
+
+    def __init__(
+        self,
+        criterion_version_uuid: str,
+        embedder_uuid: str,
+        embedding: List[float],
+        version_timestamp: Optional[int] = None,
+    ) -> None:
+        if len(embedding) == 0:
+            raise ValueError(
+                f"{self.__class__.__name__} embedding must have at least one element"
+            )
+        super().__init__()
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
+        self.criterion_version_uuid = criterion_version_uuid
+        self.embedder_uuid = embedder_uuid
+        self.embedding = embedding
+        if version_timestamp is None:
+            version_timestamp = generate_event_timestamp()
+        self.version_timestamp = version_timestamp
 
 
 class CriterionGradeEmbeddingEvent(ProtoPowerGraderEvent):
@@ -74,19 +138,19 @@ class SubmissionEmbeddingEvent(ProtoPowerGraderEvent):
         self.version_timestamp = version_timestamp
 
 
-class CriterionEmbeddingEvent(ProtoPowerGraderEvent):
+class ArtifactEmbeddingEvent(ProtoPowerGraderEvent):
     key_field_name: str = "version_uuid"
-    proto_type = CriterionEmbedding
+    proto_type = ArtifactEmbedding
 
     version_uuid: str
-    criterion_version_uuid: str
+    artifact_version_uuid: str
     embedder_uuid: str
     embedding: List[float]
     version_timestamp: int
 
     def __init__(
         self,
-        criterion_version_uuid: str,
+        artifact_version_uuid: str,
         embedder_uuid: str,
         embedding: List[float],
         version_timestamp: Optional[int] = None,
@@ -97,7 +161,7 @@ class CriterionEmbeddingEvent(ProtoPowerGraderEvent):
             )
         super().__init__()
         self.version_uuid = generate_event_uuid(self.__class__.__name__)
-        self.criterion_version_uuid = criterion_version_uuid
+        self.artifact_version_uuid = artifact_version_uuid
         self.embedder_uuid = embedder_uuid
         self.embedding = embedding
         if version_timestamp is None:

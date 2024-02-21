@@ -1,5 +1,5 @@
 syntax = "proto3";
-package course;
+package artifacts;
 
 message AssignmentArtifact {
     string version_uuid = 1;
