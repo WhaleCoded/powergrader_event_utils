@@ -1,9 +1,9 @@
-from typing import Dict, List, Sequence, Union
-from dataclasses import dataclass
+from typing import Dict, List, Sequence, Union, Optional
 
-from powergrader_event_utils.events.base import (
-    PowerGraderEvent,
-    EventType,
+from powergrader_event_utils.events.event import (
+    ProtoPowerGraderEvent,
+    generate_event_uuid,
+    generate_event_timestamp,
 )
 from powergrader_event_utils.events.proto_events.assignment_pb2 import (
     Assignment,
@@ -12,15 +12,13 @@ from powergrader_event_utils.events.proto_events.assignment_pb2 import (
     CriterionLevel as CriterionLevelProto,
 )
 
-from powergrader_event_utils.events.utils import (
-    ProtoWrapper,
-    general_deserialization,
-    general_proto_type_init,
-)
+from powergrader_event_utils.events.proto import ProtoWrapper
 
 
-@dataclass
-class AssignmentEvent(PowerGraderEvent, ProtoWrapper[Assignment]):
+class AssignmentEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "version_uuid"
+    proto_type = Assignment
+
     public_uuid: str
     instructor_public_uuid: str
     version_uuid: str
@@ -36,68 +34,55 @@ class AssignmentEvent(PowerGraderEvent, ProtoWrapper[Assignment]):
         rubric_version_uuid: str,
         name: str,
         description: str,
-        version_timestamp: int,
+        version_timestamp: Optional[int] = None,
     ) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=Assignment,
-            key_field_name="version_uuid",
-            public_uuid=public_uuid,
-            instructor_public_uuid=instructor_public_uuid,
-            rubric_version_uuid=rubric_version_uuid,
-            name=name,
-            description=description,
-            version_timestamp=version_timestamp,
-        )
-
-    def _package_into_proto(self) -> Assignment:
-        return self.proto
-
-    @staticmethod
-    def get_event_type() -> EventType:
-        return EventType.ASSIGNMENT
-
-    @classmethod
-    def deserialize(cls, event: bytes) -> "AssignmentEvent":
-        return general_deserialization(Assignment, cls, event, "version_uuid")
+        super().__init__()
+        self.public_uuid = public_uuid
+        self.instructor_public_uuid = instructor_public_uuid
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
+        self.rubric_version_uuid = rubric_version_uuid
+        self.name = name
+        self.description = description
+        if version_timestamp is None:
+            version_timestamp = generate_event_timestamp()
+        self.version_timestamp = version_timestamp
 
 
-@dataclass
-class CriterionLevel(ProtoWrapper[CriterionLevelProto]):
+class CriterionLevel(ProtoWrapper):
+    proto_type = CriterionLevelProto
+
     score: int
     description: str
 
     def __init__(self, score: int, description: str) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=CriterionLevelProto,
-            key_field_name=None,
-            is_powergrader_event=False,
-            score=score,
-            description=description,
-        )
+        super().__init__()
+        self.score = score
+        self.description = description
 
 
-@dataclass
-class RubricCriterion(ProtoWrapper[RubricCriterionProto]):
+class RubricCriterion(ProtoWrapper):
+    proto_type = RubricCriterionProto
+
     uuid: str
     name: str
     levels: List[CriterionLevel]
 
-    def __init__(self, uuid: str, name: str, levels: List[CriterionLevel]) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=RubricCriterionProto,
-            key_field_name="uuid",
-            is_powergrader_event=False,
-            uuid=uuid,
-            name=name,
-            levels=levels,
-        )
+    def __init__(self, name: str, levels: List[CriterionLevel]) -> None:
+        if len(levels) < 2:
+            raise ValueError("RubricCriterion must have at least two levels")
+        if not all(isinstance(level, CriterionLevel) for level in levels):
+            raise ValueError("RubricCriterion levels must be CriterionLevel")
+
+        super().__init__()
+        self.uuid = generate_event_uuid(self.__class__.__name__)
+        self.name = name
+        self.levels = levels
 
 
-@dataclass
-class RubricEvent(PowerGraderEvent, ProtoWrapper[Rubric]):
+class RubricEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "version_uuid"
+    proto_type = Rubric
+
     public_uuid: str
     version_uuid: str
     instructor_public_uuid: str
@@ -111,57 +96,38 @@ class RubricEvent(PowerGraderEvent, ProtoWrapper[Rubric]):
         instructor_public_uuid: str,
         name: str,
         rubric_criteria: Union[Dict[str, RubricCriterion], Sequence[RubricCriterion]],
-        version_timestamp: int,
+        version_timestamp: Optional[int] = None,
     ) -> None:
+        super().__init__()
         if isinstance(rubric_criteria, Sequence) and not isinstance(
             rubric_criteria, str
         ):
-            rubric_criteria: List[RubricCriterion] = rubric_criteria
-            rubric_criteria = {
-                criterion.name: criterion for criterion in rubric_criteria
-            }
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=Rubric,
-            key_field_name="version_uuid",
-            public_uuid=public_uuid,
-            instructor_public_uuid=instructor_public_uuid,
-            name=name,
-            rubric_criteria=rubric_criteria,
-            version_timestamp=version_timestamp,
-        )
-
-    def _package_into_proto(self) -> Rubric:
-        return self.proto
-
-    @staticmethod
-    def get_event_type() -> EventType:
-        return EventType.RUBRIC
-
-    @classmethod
-    def deserialize(cls, event: bytes) -> "RubricEvent":
-        return general_deserialization(Rubric, cls, event, "version_uuid")
-
-
-if __name__ == "__main__":
-    new_rubric = RubricEvent(
-        public_uuid="123",
-        instructor_public_uuid="123",
-        name="test",
-        rubric_criteria={
-            "123": RubricCriterion("123", "test", [CriterionLevel(1, "test")])
-        },
-        version_timestamp=123,
-    )
-    print(new_rubric.serialize())
-    print(RubricEvent.deserialize(new_rubric.serialize()))
-
-    new_assignment = AssignmentEvent(
-        public_uuid="123",
-        rubric_version_uuid="123",
-        name="test",
-        description="test",
-        version_timestamp=123,
-    )
-    print(new_assignment.serialize())
-    print(AssignmentEvent.deserialize(new_assignment.serialize()))
+            rubric_criteria_dictionary = {}
+            for criterion in rubric_criteria:
+                try:
+                    criterion_name = criterion.name
+                except AttributeError:
+                    raise ValueError(
+                        f"Rubric received a list of RubricCriterion, but one or more elements were not RubricCriterion. Received {type(criterion)}"
+                    )
+                if criterion_name in rubric_criteria_dictionary:
+                    raise ValueError(
+                        f"Rubric received multiple criteria with the same name: {criterion.name}. Each criterion must have a unique name."
+                    )
+                rubric_criteria_dictionary[criterion_name] = criterion
+            rubric_criteria = rubric_criteria_dictionary
+        if len(rubric_criteria) < 1:
+            raise ValueError("Rubric must have at least one criterion")
+        for criterion in rubric_criteria.values():
+            if not isinstance(criterion, RubricCriterion):
+                raise ValueError(
+                    f"rubric_criteria must be a list or dictionary of RubricCriterion. Received {type(criterion)}"
+                )
+        self.public_uuid = public_uuid
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
+        self.instructor_public_uuid = instructor_public_uuid
+        self.name = name
+        self.rubric_criteria = rubric_criteria
+        if version_timestamp is None:
+            version_timestamp = generate_event_timestamp()
+        self.version_timestamp = version_timestamp

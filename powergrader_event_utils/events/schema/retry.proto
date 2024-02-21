@@ -10,7 +10,7 @@ import "submission.proto";
 import "user.proto";
 
 message Retry {
-    int32 retry_number = 1;
+    uint32 retry_number = 1;
     string retry_reason = 2;
     oneof event {
         assignment.Assignment assignment = 3;

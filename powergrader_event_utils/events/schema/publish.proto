@@ -52,7 +52,7 @@ message RegisterSubmissionPublicUUID {
 }
 
 message PublishedToLMS {
-    string version_uuid_of_published_entity = 1;
+    string published_entity_version_uuid = 1;
     uint64 publish_timestamp = 2;
 }
 

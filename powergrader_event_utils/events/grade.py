@@ -1,9 +1,9 @@
-from typing import List
-from dataclasses import dataclass
+from typing import List, Optional
 
-from powergrader_event_utils.events.base import (
-    PowerGraderEvent,
-    EventType,
+from powergrader_event_utils.events.event import (
+    ProtoPowerGraderEvent,
+    generate_event_uuid,
+    generate_event_timestamp,
 )
 from powergrader_event_utils.events.proto_events.grade_pb2 import (
     AICriterionGradingStarted,
@@ -16,17 +16,13 @@ from powergrader_event_utils.events.proto_events.grade_pb2 import (
     CriterionGradeEmbedding,
     InstructorSubmissionGradeApproval,
 )
-from powergrader_event_utils.events.utils import (
-    ProtoWrapper,
-    general_deserialization,
-    general_proto_type_init,
-)
+from powergrader_event_utils.events.proto import ProtoWrapper
 
 
-@dataclass
-class AICriterionGradingStartedEvent(
-    PowerGraderEvent, ProtoWrapper[AICriterionGradingStarted]
-):
+class AICriterionGradingStartedEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "version_uuid"
+    proto_type = AICriterionGradingStarted
+
     version_uuid: str
     criterion_uuid: str
     submission_version_uuid: str
@@ -36,33 +32,21 @@ class AICriterionGradingStartedEvent(
         self,
         criterion_uuid: str,
         submission_version_uuid: str,
-        time_started: int,
+        time_started: Optional[int] = None,
     ) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=AICriterionGradingStarted,
-            key_field_name="version_uuid",
-            criterion_uuid=criterion_uuid,
-            submission_version_uuid=submission_version_uuid,
-            time_started=time_started,
-        )
-
-    def _package_into_proto(self) -> AICriterionGradingStarted:
-        return self.proto
-
-    @staticmethod
-    def get_event_type() -> EventType:
-        return EventType.AI_CRITERION_GRADING_STARTED
-
-    @classmethod
-    def deserialize(cls, event: bytes) -> "AICriterionGradingStartedEvent":
-        return general_deserialization(
-            AICriterionGradingStarted, cls, event, "version_uuid"
-        )
+        super().__init__()
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
+        self.criterion_uuid = criterion_uuid
+        self.submission_version_uuid = submission_version_uuid
+        if time_started is None:
+            time_started = generate_event_timestamp()
+        self.time_started = time_started
 
 
-@dataclass
-class GradingMethodEvent(PowerGraderEvent, ProtoWrapper[GradingMethodProto]):
+class GradingMethodEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "uuid"
+    proto_type = GradingMethodProto
+
     uuid: str
     model_name: str
     method_name: str
@@ -74,29 +58,16 @@ class GradingMethodEvent(PowerGraderEvent, ProtoWrapper[GradingMethodProto]):
         method_name: str,
         git_hash: str,
     ) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=GradingMethodProto,
-            key_field_name="uuid",
-            model_name=model_name,
-            method_name=method_name,
-            git_hash=git_hash,
-        )
-
-    def _package_into_proto(self) -> GradingMethodProto:
-        return self.proto
-
-    @staticmethod
-    def get_event_type() -> EventType:
-        return EventType.GRADING_METHOD
-
-    @classmethod
-    def deserialize(cls, event: bytes) -> "GradingMethodEvent":
-        return general_deserialization(GradingMethodProto, cls, event, "uuid")
+        super().__init__()
+        self.uuid = generate_event_uuid(self.__class__.__name__)
+        self.model_name = model_name
+        self.method_name = method_name
+        self.git_hash = git_hash
 
 
-@dataclass
-class Grade(ProtoWrapper[GradeProto]):
+class Grade(ProtoWrapper):
+    proto_type = GradeProto
+
     score: int
     assessment: str
 
@@ -105,18 +76,15 @@ class Grade(ProtoWrapper[GradeProto]):
         score: int,
         assessment: str,
     ) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=GradeProto,
-            key_field_name=None,
-            is_powergrader_event=False,
-            score=score,
-            assessment=assessment,
-        )
+        super().__init__()
+        self.score = score
+        self.assessment = assessment
 
 
-@dataclass
-class AICriterionGradeEvent(PowerGraderEvent, ProtoWrapper[AICriterionGrade]):
+class AICriterionGradeEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "grading_started_version_uuid"
+    proto_type = AICriterionGrade
+
     grading_started_version_uuid: str
     grading_method_uuid: str
     grade: Grade
@@ -127,36 +95,25 @@ class AICriterionGradeEvent(PowerGraderEvent, ProtoWrapper[AICriterionGrade]):
         grading_started_version_uuid: str,
         grading_method_uuid: str,
         grade: Grade,
-        time_finished: int,
+        time_finished: Optional[int] = None,
     ) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=AICriterionGrade,
-            key_field_name="grading_started_version_uuid",
-            grading_started_version_uuid=grading_started_version_uuid,
-            grading_method_uuid=grading_method_uuid,
-            grade=grade,
-            time_finished=time_finished,
-        )
-
-    def _package_into_proto(self) -> AICriterionGrade:
-        return self.proto
-
-    @staticmethod
-    def get_event_type() -> EventType:
-        return EventType.AI_CRITERION_GRADE
-
-    @classmethod
-    def deserialize(cls, event: bytes) -> "AICriterionGradeEvent":
-        return general_deserialization(
-            AICriterionGrade, cls, event, "grading_started_version_uuid"
-        )
+        if not isinstance(grade, Grade):
+            raise TypeError(
+                f"{self.__class__.__name__} grade must be of type Grade. Received {type(grade)}"
+            )
+        super().__init__()
+        self.grading_started_version_uuid = grading_started_version_uuid
+        self.grading_method_uuid = grading_method_uuid
+        self.grade = grade
+        if time_finished is None:
+            time_finished = generate_event_timestamp()
+        self.time_finished = time_finished
 
 
-@dataclass
-class AIInferredCriterionGradeEvent(
-    PowerGraderEvent, ProtoWrapper[AIInferredCriterionGrade]
-):
+class AIInferredCriterionGradeEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "grading_started_version_uuid"
+    proto_type = AIInferredCriterionGrade
+
     grading_started_version_uuid: str
     grading_method_uuid: str
     previous_criterion_grade_version_uuid: str
@@ -171,38 +128,31 @@ class AIInferredCriterionGradeEvent(
         previous_criterion_grade_version_uuid: str,
         faculty_override_criterion_grade_version_uuid: str,
         grade: Grade,
-        time_finished: int,
+        time_finished: Optional[int] = None,
     ) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=AIInferredCriterionGrade,
-            key_field_name="grading_started_version_uuid",
-            grading_started_version_uuid=grading_started_version_uuid,
-            grading_method_uuid=grading_method_uuid,
-            previous_criterion_grade_version_uuid=previous_criterion_grade_version_uuid,
-            faculty_override_criterion_grade_version_uuid=faculty_override_criterion_grade_version_uuid,
-            grade=grade,
-            time_finished=time_finished,
+        if not isinstance(grade, Grade):
+            raise TypeError(
+                f"{self.__class__.__name__} grade must be of type Grade. Received {type(grade)}"
+            )
+        super().__init__()
+        self.grading_started_version_uuid = grading_started_version_uuid
+        self.grading_method_uuid = grading_method_uuid
+        self.previous_criterion_grade_version_uuid = (
+            previous_criterion_grade_version_uuid
         )
-
-    def _package_into_proto(self) -> AIInferredCriterionGrade:
-        return self.proto
-
-    @staticmethod
-    def get_event_type() -> EventType:
-        return EventType.AI_INFERRED_CRITERION_GRADE
-
-    @classmethod
-    def deserialize(cls, event: bytes) -> "AIInferredCriterionGradeEvent":
-        return general_deserialization(
-            AIInferredCriterionGrade, cls, event, "grading_started_version_uuid"
+        self.faculty_override_criterion_grade_version_uuid = (
+            faculty_override_criterion_grade_version_uuid
         )
+        self.grade = grade
+        if time_finished is None:
+            time_finished = generate_event_timestamp()
+        self.time_finished = time_finished
 
 
-@dataclass
-class InstructorCriterionGradeEvent(
-    PowerGraderEvent, ProtoWrapper[InstructorCriterionGrade]
-):
+class InstructorCriterionGradeEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "version_uuid"
+    proto_type = InstructorCriterionGrade
+
     version_uuid: str
     criterion_uuid: str
     submission_version_uuid: str
@@ -216,34 +166,22 @@ class InstructorCriterionGradeEvent(
         instructor_public_uuid: str,
         grade: Grade,
     ) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=InstructorCriterionGrade,
-            key_field_name="version_uuid",
-            criterion_uuid=criterion_uuid,
-            submission_version_uuid=submission_version_uuid,
-            instructor_public_uuid=instructor_public_uuid,
-            grade=grade,
-        )
-
-    def _package_into_proto(self) -> InstructorCriterionGrade:
-        return self.proto
-
-    @staticmethod
-    def get_event_type() -> EventType:
-        return EventType.INSTRUCTOR_CRITERION_GRADE
-
-    @classmethod
-    def deserialize(cls, event: bytes) -> "InstructorCriterionGradeEvent":
-        return general_deserialization(
-            InstructorCriterionGrade, cls, event, "version_uuid"
-        )
+        if not isinstance(grade, Grade):
+            raise TypeError(
+                f"{self.__class__.__name__} grade must be of type Grade. Received {type(grade)}"
+            )
+        super().__init__()
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
+        self.criterion_uuid = criterion_uuid
+        self.submission_version_uuid = submission_version_uuid
+        self.instructor_public_uuid = instructor_public_uuid
+        self.grade = grade
 
 
-@dataclass
-class InstructorOverrideCriterionGradeEvent(
-    PowerGraderEvent, ProtoWrapper[InstructorOverrideCriterionGrade]
-):
+class InstructorOverrideCriterionGradeEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "version_uuid"
+    proto_type = InstructorOverrideCriterionGrade
+
     version_uuid: str
     criterion_uuid: str
     submission_version_uuid: str
@@ -259,35 +197,25 @@ class InstructorOverrideCriterionGradeEvent(
         instructor_public_uuid: str,
         grade: Grade,
     ) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=InstructorOverrideCriterionGrade,
-            key_field_name="version_uuid",
-            criterion_uuid=criterion_uuid,
-            submission_version_uuid=submission_version_uuid,
-            previous_criterion_grade_version_uuid=previous_criterion_grade_version_uuid,
-            instructor_public_uuid=instructor_public_uuid,
-            grade=grade,
+        if not isinstance(grade, Grade):
+            raise TypeError(
+                f"{self.__class__.__name__} grade must be of type Grade. Received {type(grade)}"
+            )
+        super().__init__()
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
+        self.criterion_uuid = criterion_uuid
+        self.submission_version_uuid = submission_version_uuid
+        self.previous_criterion_grade_version_uuid = (
+            previous_criterion_grade_version_uuid
         )
-
-    def _package_into_proto(self) -> InstructorOverrideCriterionGrade:
-        return self.proto
-
-    @staticmethod
-    def get_event_type() -> EventType:
-        return EventType.INSTRUCTOR_OVERRIDE_CRITERION_GRADE
-
-    @classmethod
-    def deserialize(cls, event: bytes) -> "InstructorOverrideCriterionGradeEvent":
-        return general_deserialization(
-            InstructorOverrideCriterionGrade, cls, event, "version_uuid"
-        )
+        self.instructor_public_uuid = instructor_public_uuid
+        self.grade = grade
 
 
-@dataclass
-class CriterionGradeEmbeddingEvent(
-    PowerGraderEvent, ProtoWrapper[CriterionGradeEmbedding]
-):
+class CriterionGradeEmbeddingEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "version_uuid"
+    proto_type = CriterionGradeEmbedding
+
     version_uuid: str
     criterion_grade_version_uuid: str
     embedder_uuid: str
@@ -299,33 +227,21 @@ class CriterionGradeEmbeddingEvent(
         embedder_uuid: str,
         embedding: List[float],
     ) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=CriterionGradeEmbedding,
-            key_field_name="version_uuid",
-            criterion_grade_version_uuid=criterion_grade_version_uuid,
-            embedder_uuid=embedder_uuid,
-            embedding=embedding,
-        )
-
-    def _package_into_proto(self) -> CriterionGradeEmbedding:
-        return self.proto
-
-    @staticmethod
-    def get_event_type() -> EventType:
-        return EventType.CRITERION_GRADE_EMBEDDING
-
-    @classmethod
-    def deserialize(cls, event: bytes) -> "CriterionGradeEmbeddingEvent":
-        return general_deserialization(
-            CriterionGradeEmbedding, cls, event, "version_uuid"
-        )
+        if len(embedding) == 0:
+            raise ValueError(
+                f"{self.__class__.__name__} embedding must have at least one element"
+            )
+        super().__init__()
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
+        self.criterion_grade_version_uuid = criterion_grade_version_uuid
+        self.embedder_uuid = embedder_uuid
+        self.embedding = embedding
 
 
-@dataclass
-class InstructorSubmissionGradeApprovalEvent(
-    PowerGraderEvent, ProtoWrapper[InstructorSubmissionGradeApproval]
-):
+class InstructorSubmissionGradeApprovalEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "version_uuid"
+    proto_type = InstructorSubmissionGradeApproval
+
     version_uuid: str
     submission_version_uuid: str
     instructor_public_uuid: str
@@ -337,132 +253,13 @@ class InstructorSubmissionGradeApprovalEvent(
         submission_version_uuid: str,
         instructor_public_uuid: str,
         criterion_grade_version_uuids: List[str],
-        version_timestamp: int,
+        version_timestamp: Optional[int] = None,
     ) -> None:
-        general_proto_type_init(
-            object_to_initialize=self,
-            proto_type=InstructorSubmissionGradeApproval,
-            key_field_name="version_uuid",
-            submission_version_uuid=submission_version_uuid,
-            instructor_public_uuid=instructor_public_uuid,
-            criterion_grade_version_uuids=criterion_grade_version_uuids,
-            version_timestamp=version_timestamp,
-        )
-
-    def _package_into_proto(self) -> InstructorSubmissionGradeApproval:
-        return self.proto
-
-    @staticmethod
-    def get_event_type() -> EventType:
-        return EventType.INSTRUCTOR_SUBMISSION_GRADE_APPROVAL
-
-    @classmethod
-    def deserialize(cls, event: bytes) -> "InstructorSubmissionGradeApprovalEvent":
-        return general_deserialization(
-            InstructorSubmissionGradeApproval, cls, event, "version_uuid"
-        )
-
-
-if __name__ == "__main__":
-    ai_criterion_grading_started = AICriterionGradingStartedEvent(
-        criterion_uuid="123",
-        submission_version_uuid="123",
-        time_started=123,
-    )
-    print(ai_criterion_grading_started.serialize())
-    print(
-        AICriterionGradingStartedEvent.deserialize(
-            ai_criterion_grading_started.serialize()
-        )
-    )
-
-    grading_method = GradingMethodEvent(
-        model_name="test",
-        method_name="test",
-        git_hash="test",
-    )
-    print(grading_method.serialize())
-    print(GradingMethodEvent.deserialize(grading_method.serialize()))
-
-    grade = Grade(
-        score=1,
-        assessment="test",
-    )
-
-    ai_criterion_grade = AICriterionGradeEvent(
-        grading_started_version_uuid="123",
-        criterion_uuid="123",
-        submission_version_uuid="123",
-        grading_method_uuid="123",
-        grade=grade,
-        time_finished=123,
-    )
-    print(ai_criterion_grade.serialize())
-    print(AICriterionGradeEvent.deserialize(ai_criterion_grade.serialize()))
-
-    ai_inferred_criterion_grade = AIInferredCriterionGradeEvent(
-        grading_started_version_uuid="123",
-        criterion_uuid="123",
-        submission_version_uuid="123",
-        grading_method_uuid="123",
-        previous_criterion_grade_version_uuid="123",
-        faculty_override_criterion_grade_version_uuid="123",
-        grade=grade,
-        time_finished=123,
-    )
-    print(ai_inferred_criterion_grade.serialize())
-    print(
-        AIInferredCriterionGradeEvent.deserialize(
-            ai_inferred_criterion_grade.serialize()
-        )
-    )
-
-    instructor_criterion_grade = InstructorCriterionGradeEvent(
-        criterion_uuid="123",
-        submission_version_uuid="123",
-        instructor_public_uuid="123",
-        grade=grade,
-    )
-    print(instructor_criterion_grade.serialize())
-    print(
-        InstructorCriterionGradeEvent.deserialize(
-            instructor_criterion_grade.serialize()
-        )
-    )
-
-    instructor_override_criterion_grade = InstructorOverrideCriterionGradeEvent(
-        criterion_uuid="123",
-        submission_version_uuid="123",
-        previous_criterion_grade_version_uuid="123",
-        instructor_public_uuid="123",
-        grade=grade,
-    )
-    print(instructor_override_criterion_grade.serialize())
-    print(
-        InstructorOverrideCriterionGradeEvent.deserialize(
-            instructor_override_criterion_grade.serialize()
-        )
-    )
-
-    criterion_grade_embedding = CriterionGradeEmbeddingEvent(
-        criterion_grade_version_uuid="123",
-        embedder_uuid="123",
-        embedding=[1.0],
-    )
-    print(criterion_grade_embedding.serialize())
-    print(
-        CriterionGradeEmbeddingEvent.deserialize(criterion_grade_embedding.serialize())
-    )
-
-    instructor_submission_grade_approval = InstructorSubmissionGradeApprovalEvent(
-        submission_version_uuid="123",
-        instructor_public_uuid="123",
-        criterion_grade_version_uuids=["123"],
-        version_timestamp=123,
-    )
-    print(instructor_submission_grade_approval.serialize())
-    print(
-        InstructorSubmissionGradeApprovalEvent.deserialize(
-            instructor_submission_grade_approval.serialize()
-        )
-    )
+        super().__init__()
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
+        self.submission_version_uuid = submission_version_uuid
+        self.instructor_public_uuid = instructor_public_uuid
+        self.criterion_grade_version_uuids = criterion_grade_version_uuids
+        if version_timestamp is None:
+            version_timestamp = generate_event_timestamp()
+        self.version_timestamp = version_timestamp
