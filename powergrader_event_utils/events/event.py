@@ -152,17 +152,13 @@ class PowerGraderEvent:
     topic_name: str
 
     def __init__(self, event_type: str, key: str = None):
-        if self.key_field_name is None:
-            raise NotImplementedError(
-                "Implementations of the PowerGraderEvent class must have a key_field_name class attribute set."
-            )
         self.event_type = EventType(event_type)
         self.topic_name = get_kafka_topic_name_for_event_type(self.event_type)
-        if key is None:
+        if key is None and self.key_field_name is not None:
             key = getattr(self, self.key_field_name)
-        if not isinstance(key, str):
+        if not isinstance(key, str) and key is not None:
             raise TypeError(
-                f"{self.__class__.__name__} key field must be of type str. Received {type(key)}"
+                f"{self.__class__.__name__} key field must be of type str or None. Received {type(key)}"
             )
         self.key = key
 
@@ -187,9 +183,9 @@ class PowerGraderEvent:
         # Before we try to start sending anything, we will do some type checking
         # First, make sure that we have a key, topic and an event type
         key = self.key
-        if not isinstance(key, str):
+        if key is not None and not isinstance(key, str):
             raise TypeError(
-                f"{self.__class__.__name__} key field must be of type str. Has type {type(key)}"
+                f"{self.__class__.__name__} key field must be of type str or None. Has type {type(key)}"
             )
         topic_name = self.topic_name
         if not isinstance(topic_name, str):
@@ -300,10 +296,17 @@ class ProtoPowerGraderEvent(PowerGraderEvent, ProtoWrapper):
         Returns:
             ProtoPowerGraderEvent: The deserialized event.
         """
+        new_instance = cls.__new__(cls)
         proto = cls.proto_type()
         proto.ParseFromString(event)
-        event = cls.from_proto(proto)
-        return event
+        if cls.key_field_name:
+            key = getattr(proto, cls.key_field_name)
+        else:
+            key = None
+        ProtoWrapper.__init__(new_instance)
+        PowerGraderEvent.__init__(new_instance, cls.__name__, key=key)
+        new_instance.proto = proto
+        return new_instance
 
 
 class Producer:
