@@ -2,10 +2,9 @@ from typing import Type
 from datetime import datetime
 import time
 
-from powergrader_event_utils.events.base import (
+from powergrader_event_utils.events.event import (
     PowerGraderEvent,
     EventType,
-    deserialize_powergrader_event,
     get_event_type_from_uuid,
     get_kafka_topic_name_for_event_type,
     get_kafka_topic_names_for_event_types,
@@ -14,7 +13,7 @@ from powergrader_event_utils.events.base import (
 
 from powergrader_event_utils.events.assignment import *
 from powergrader_event_utils.events.course import *
-from powergrader_event_utils.events.event_wrapper import RetryEvent, DeadLetterEvent
+from powergrader_event_utils.events.retry import *
 from powergrader_event_utils.events.user import *
 from powergrader_event_utils.events.grade import *
 from powergrader_event_utils.events.relationship import *
