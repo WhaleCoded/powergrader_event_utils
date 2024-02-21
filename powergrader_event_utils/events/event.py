@@ -18,6 +18,13 @@ class EventType(StrEnum):
     The value will be the name of the corresponding event class.
     """
 
+    # Artifact events
+    ASSIGNMENT_ARTIFACT = "AssignmentArtifactEvent"
+    SUBMISSION_ARTIFACT = "SubmissionArtifactEvent"
+    CRITERION_ARTIFACT = "CriterionArtifactEvent"
+    CRITERION_GRADE_ARTIFACT = "CriterionGradeArtifactEvent"
+    ARTIFACT_LOG = "ArtifactLogEvent"
+
     # Assignment events
     ASSIGNMENT = "AssignmentEvent"
     RUBRIC = "RubricEvent"
@@ -27,9 +34,12 @@ class EventType(StrEnum):
     SECTION = "SectionEvent"
     ORGANIZATION = "OrganizationEvent"
 
-    # Event Wrapper events
-    RETRY = "RetryEvent"
-    DEAD_LETTER = "DeadLetterEvent"
+    # Embedding events
+    ASSIGNMENT_EMBEDDING = "AssignmentEmbeddingEvent"
+    CRITERION_EMBEDDING = "CriterionEmbeddingEvent"
+    CRITERION_GRADE_EMBEDDING = "CriterionGradeEmbeddingEvent"
+    SUBMISSION_EMBEDDING = "SubmissionEmbeddingEvent"
+    ARTIFACT_EMBEDDING = "ArtifactEmbeddingEvent"
 
     # Grade events
     AI_CRITERION_GRADING_STARTED = "AICriterionGradingStartedEvent"
@@ -38,7 +48,7 @@ class EventType(StrEnum):
     AI_INFERRED_CRITERION_GRADE = "AIInferredCriterionGradeEvent"
     INSTRUCTOR_CRITERION_GRADE = "InstructorCriterionGradeEvent"
     INSTRUCTOR_OVERRIDE_CRITERION_GRADE = "InstructorOverrideCriterionGradeEvent"
-    CRITERION_GRADE_EMBEDDING = "CriterionGradeEmbeddingEvent"
+    REGRADING_SELECTION_COMPLETE = "RegradingSelectionCompleteEvent"
     INSTRUCTOR_SUBMISSION_GRADE_APPROVAL = "InstructorSubmissionGradeApprovalEvent"
 
     # Publish events
@@ -59,6 +69,10 @@ class EventType(StrEnum):
     STUDENT_REMOVED_FROM_SECTION = "StudentRemovedFromSectionEvent"
     INSTRUCTOR_ADDED_TO_COURSE = "InstructorAddedToCourseEvent"
     INSTRUCTOR_REMOVED_FROM_COURSE = "InstructorRemovedFromCourseEvent"
+
+    # Retry events
+    RETRY = "RetryEvent"
+    DEAD_LETTER = "DeadLetterEvent"
 
     # Submission events
     SUBMISSION = "SubmissionEvent"

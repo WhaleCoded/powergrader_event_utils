@@ -1,0 +1,42 @@
+syntax = "proto3";
+package embedding;
+
+message AssignmentEmbedding {
+    string version_uuid = 1;
+    string assignment_version_uuid = 2;
+    string embedder_uuid = 3;
+    repeated float embedding = 4;
+    uint64 version_timestamp = 5;
+}
+
+message CriterionEmbedding {
+    string version_uuid = 1;
+    string criterion_version_uuid = 2;
+    string embedder_uuid = 3;
+    repeated float embedding = 4;
+    uint64 version_timestamp = 5;
+}
+
+message CriterionGradeEmbedding {
+    string version_uuid = 1;
+    string criterion_grade_version_uuid = 2;
+    string embedder_uuid = 3;
+    repeated float embedding = 4;
+    uint64 version_timestamp = 5;
+}
+
+message SubmissionEmbedding {
+    string version_uuid = 1;
+    string submission_version_uuid = 2;
+    string embedder_uuid = 3;
+    repeated float embedding = 4;
+    uint64 version_timestamp = 5;
+}
+
+message ArtifactEmbedding {
+    string version_uuid = 1;
+    string artifact_version_uuid = 2;
+    string embedder_uuid = 3;
+    repeated float embedding = 4;
+    uint64 version_timestamp = 5;
+}

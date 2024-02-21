@@ -12,14 +12,17 @@ from powergrader_event_utils.events.event import (
     deserialize_powergrader_event,
 )
 
+
+from powergrader_event_utils.events.artifact import *
 from powergrader_event_utils.events.assignment import *
 from powergrader_event_utils.events.course import *
-from powergrader_event_utils.events.retry import *
 from powergrader_event_utils.events.user import *
 from powergrader_event_utils.events.grade import *
 from powergrader_event_utils.events.relationship import *
 from powergrader_event_utils.events.submission import *
 from powergrader_event_utils.events.publish import *
+from powergrader_event_utils.events.embedding import *
+from powergrader_event_utils.events.retry import *
 
 
 def convert_event_type_to_event_class_type(

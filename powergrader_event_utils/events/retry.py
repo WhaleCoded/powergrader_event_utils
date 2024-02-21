@@ -1,5 +1,3 @@
-from typing import Union
-
 from powergrader_event_utils.events.event import (
     ProtoPowerGraderEvent,
     EventType,
