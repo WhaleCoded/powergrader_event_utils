@@ -259,3 +259,5 @@ def test_section_event_type():
         version_timestamp=1234567890,
     )
     assert event.event_type == EventType.SECTION
+    deserialized = SectionEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.SECTION

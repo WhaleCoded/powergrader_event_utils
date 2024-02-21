@@ -298,3 +298,5 @@ def test_instructor_submission_grade_approval_event_type():
         version_timestamp=123,
     )
     assert event.event_type == EventType.INSTRUCTOR_SUBMISSION_GRADE_APPROVAL
+    deserialized = InstructorSubmissionGradeApprovalEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.INSTRUCTOR_SUBMISSION_GRADE_APPROVAL

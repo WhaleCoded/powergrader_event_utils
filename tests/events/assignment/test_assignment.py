@@ -320,3 +320,5 @@ def test_assignment_event_type():
         version_timestamp=123,
     )
     assert event.event_type == EventType.ASSIGNMENT
+    deserialized = AssignmentEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.ASSIGNMENT

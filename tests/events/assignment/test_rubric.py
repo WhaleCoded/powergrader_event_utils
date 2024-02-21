@@ -308,3 +308,5 @@ def test_assignment_event_type():
         version_timestamp=0,
     )
     assert event.event_type == EventType.RUBRIC
+    deserialized = RubricEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.RUBRIC

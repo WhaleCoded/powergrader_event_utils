@@ -198,3 +198,5 @@ def test_criterion_grade_embeddings_event_type():
         embedding=[0, 0, 0],
     )
     assert event.event_type == EventType.CRITERION_GRADE_EMBEDDING
+    deserialized = CriterionGradeEmbeddingEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.CRITERION_GRADE_EMBEDDING
