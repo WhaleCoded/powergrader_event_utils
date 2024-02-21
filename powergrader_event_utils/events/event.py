@@ -48,6 +48,7 @@ class EventType(StrEnum):
     AI_INFERRED_CRITERION_GRADE = "AIInferredCriterionGradeEvent"
     INSTRUCTOR_CRITERION_GRADE = "InstructorCriterionGradeEvent"
     INSTRUCTOR_OVERRIDE_CRITERION_GRADE = "InstructorOverrideCriterionGradeEvent"
+    REGRADING_SELECTION_COMPLETE = "RegradingSelectionCompleteEvent"
     INSTRUCTOR_SUBMISSION_GRADE_APPROVAL = "InstructorSubmissionGradeApprovalEvent"
 
     # Publish events
