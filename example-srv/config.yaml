@@ -1,6 +1,6 @@
 
 KAFKA_CONSUMER:
-  bootstrap.servers: power_kafka:9092
+  bootstrap.servers: localhost:9094
   group.id: power_grader_publish_server
   default.topic.config:
     auto.offset.reset: earliest
@@ -8,5 +8,5 @@ KAFKA_CONSUMER:
   auto.commit.interval.ms: 100
 
 KAFKA_PRODUCER:
-  bootstrap.servers: power_kafka:9092
+  bootstrap.servers: localhost:9094
   client.id: power_grader_publish_server

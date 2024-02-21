@@ -1,4 +1,4 @@
-docker run -it --rm  --network power_grader_architecture \
+docker run -it --rm  --network host \
     -v `pwd`/example-srv:/srv \
     -v `pwd`/src/:/app/ \
     -v /run:/run \
