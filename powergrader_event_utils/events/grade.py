@@ -13,8 +13,8 @@ from powergrader_event_utils.events.proto_events.grade_pb2 import (
     AIInferredCriterionGrade,
     InstructorCriterionGrade,
     InstructorOverrideCriterionGrade,
-    CriterionGradeEmbedding,
     InstructorSubmissionGradeApproval,
+    RegradingSelectionComplete,
 )
 from powergrader_event_utils.events.proto import ProtoWrapper
 
@@ -212,30 +212,23 @@ class InstructorOverrideCriterionGradeEvent(ProtoPowerGraderEvent):
         self.grade = grade
 
 
-class CriterionGradeEmbeddingEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "version_uuid"
-    proto_type = CriterionGradeEmbedding
+class RegradingSelectionCompleteEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "instructor_override_criterion_grade_version_uuid"
+    proto_type = RegradingSelectionComplete
 
-    version_uuid: str
-    criterion_grade_version_uuid: str
-    embedder_uuid: str
-    embedding: List[float]
+    instructor_override_criterion_grade_version_uuid: str
+    criterion_grade_version_uuids: List[str]
 
     def __init__(
         self,
-        criterion_grade_version_uuid: str,
-        embedder_uuid: str,
-        embedding: List[float],
+        instructor_override_criterion_grade_version_uuid: str,
+        criterion_grade_version_uuids: List[str],
     ) -> None:
-        if len(embedding) == 0:
-            raise ValueError(
-                f"{self.__class__.__name__} embedding must have at least one element"
-            )
         super().__init__()
-        self.version_uuid = generate_event_uuid(self.__class__.__name__)
-        self.criterion_grade_version_uuid = criterion_grade_version_uuid
-        self.embedder_uuid = embedder_uuid
-        self.embedding = embedding
+        self.instructor_override_criterion_grade_version_uuid = (
+            instructor_override_criterion_grade_version_uuid
+        )
+        self.criterion_grade_version_uuids = criterion_grade_version_uuids
 
 
 class InstructorSubmissionGradeApprovalEvent(ProtoPowerGraderEvent):

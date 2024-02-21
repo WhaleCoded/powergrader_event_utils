@@ -1,0 +1,35 @@
+syntax = "proto3";
+package course;
+
+message AssignmentArtifact {
+    string version_uuid = 1;
+    string assignment_version_uuid = 2;
+    string artifact = 3;
+    uint64 version_timestamp = 4;
+}
+
+message SubmissionArtifact {
+    string version_uuid = 1;
+    string submission_version_uuid = 2;
+    string artifact = 3;
+    uint64 version_timestamp = 4;
+}
+
+message CriterionArtifact {
+    string version_uuid = 1;
+    string criteria_version_uuid = 2;
+    string artifact = 3;
+    uint64 version_timestamp = 4;
+}
+
+message CriterionGradeArtifact {
+    string version_uuid = 1;
+    string ai_grading_started_version_uuid = 2;
+    string artifact = 3;
+    uint64 version_timestamp = 4;
+}
+
+message ArtifactLog {
+    string artifact_version_uuid = 1;
+    string log = 2;
+}

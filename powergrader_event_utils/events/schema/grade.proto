@@ -53,11 +53,9 @@ message InstructorOverrideCriterionGrade {
     Grade grade = 6;
 }
 
-message CriterionGradeEmbedding {
-    string version_uuid = 1;
-    string criterion_grade_version_uuid = 2;
-    string embedder_uuid = 3;
-    repeated float embedding = 4;
+message RegradingSelectionComplete {
+    string instructor_override_criterion_grade_version_uuid = 1;
+    repeated string criterion_grade_version_uuids = 2;
 }
 
 message InstructorSubmissionGradeApproval {
