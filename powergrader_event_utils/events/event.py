@@ -327,10 +327,10 @@ def deserialize_powergrader_event(
         powergrader_event_classes[event_class.__name__] = event_class
 
     if str_event_type in powergrader_event_classes:
-        deserialized_event = powergrader_event_classes[str_event_type].deserialize(
-            event
-        )
-        event_type = powergrader_event_classes[str_event_type].event_type
+        deserialized_event: ProtoPowerGraderEvent = powergrader_event_classes[
+            str_event_type
+        ].deserialize(event)
+        event_type = deserialized_event.event_type
 
         return deserialized_event, event_type
 
