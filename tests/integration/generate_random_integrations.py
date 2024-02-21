@@ -3,8 +3,6 @@ import random
 from powergrader_event_utils.events import OrganizationEvent
 from tests.integration.utils import generate_random_timestamp, generate_random_uuid
 
- "UVU",
-]
 
 INSTRUCTOR_NAMES = [
     "John Doe",
@@ -42,13 +40,6 @@ EMAILS = [
     "email@example.co.jp",
     "firstname-lastname@example.com",
 ]
-
-
-
-
-
-
-
 
 
 def create_random_instructor(

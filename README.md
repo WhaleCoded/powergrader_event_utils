@@ -19,8 +19,9 @@ TODO!
 # Developing
 
 ## Running the tests
+The test dependencies can be installed with pip install -e .[dev]. To run the tests, run the following command:
 ```
-pytest tests/
+pytest tests
 ```
 
 ## Updating the protobuf

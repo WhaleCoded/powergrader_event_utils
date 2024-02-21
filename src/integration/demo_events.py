@@ -65,7 +65,9 @@ def create_demo_events() -> list:
     events.extend(submission_events)
 
     ai_grading_events, override_criterion_grading_started_uuid = (
-        create_ai_grading_events(criteria_ids, submission_version_uuid)
+        create_ai_grading_events(
+            criteria_ids, submission_version_uuid, instructor_public_id
+        )
     )
     events.extend(ai_grading_events)
 
@@ -109,6 +111,7 @@ def create_ai_inference_events(
 def create_ai_grading_events(
     criterion_uuids: List[str],
     submission_version_uuid: str,
+    instructor_public_id: str,
 ) -> Tuple[List[Union[AICriterionGradingStartedEvent, AICriterionGradeEvent]], str]:
     override_criterion_grading_started_uuid = None
     events = []
