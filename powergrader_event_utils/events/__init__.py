@@ -9,6 +9,7 @@ from powergrader_event_utils.events.event import (
     get_kafka_topic_name_for_event_type,
     get_kafka_topic_names_for_event_types,
     get_event_type_from_uuid,
+    deserialize_powergrader_event,
 )
 
 from powergrader_event_utils.events.assignment import *
