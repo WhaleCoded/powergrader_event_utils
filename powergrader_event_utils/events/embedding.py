@@ -5,7 +5,7 @@ from powergrader_event_utils.events.event import (
     generate_event_uuid,
     generate_event_timestamp,
 )
-from powergrader_event_utils.events.proto_events.grade_pb2 import (
+from powergrader_event_utils.events.proto_events.embedding_pb2 import (
     AssignmentEmbedding,
     CriterionGradeEmbedding,
     SubmissionEmbedding,

@@ -5,11 +5,11 @@ from powergrader_event_utils.events.event import (
     generate_event_uuid,
     generate_event_timestamp,
 )
-from powergrader_event_utils.events.proto_events.artifacts_pb2 import (
+from powergrader_event_utils.events.proto_events.artifact_pb2 import (
     AssignmentArtifact,
     SubmissionArtifact,
     CriterionArtifact,
-    GradeArtifact,
+    CriterionGradeArtifact,
     ArtifactLog,
 )
 
@@ -86,24 +86,24 @@ class CriterionArtifactEvent(ProtoPowerGraderEvent):
         self.version_timestamp = version_timestamp
 
 
-class GradeArtifactEvent(ProtoPowerGraderEvent):
+class CriterionGradeArtifactEvent(ProtoPowerGraderEvent):
     key_field_name: str = "version_uuid"
-    proto_type = GradeArtifact
+    proto_type = CriterionGradeArtifact
 
     version_uuid: str
-    grade_version_uuid: str
+    ai_grading_started_version_uuid: str
     artifact: str
     version_timestamp: int
 
     def __init__(
         self,
-        grade_version_uuid: str,
+        ai_grading_started_version_uuid: str,
         artifact: str,
         version_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
         self.version_uuid = generate_event_uuid(self.__class__.__name__)
-        self.grade_version_uuid = grade_version_uuid
+        self.ai_grading_started_version_uuid = ai_grading_started_version_uuid
         self.artifact = artifact
         if version_timestamp is None:
             version_timestamp = generate_event_timestamp()

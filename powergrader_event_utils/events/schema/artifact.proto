@@ -1,5 +1,5 @@
 syntax = "proto3";
-package artifacts;
+package artifact;
 
 message AssignmentArtifact {
     string version_uuid = 1;
@@ -17,7 +17,7 @@ message SubmissionArtifact {
 
 message CriterionArtifact {
     string version_uuid = 1;
-    string criteria_version_uuid = 2;
+    string criterion_version_uuid = 2;
     string artifact = 3;
     uint64 version_timestamp = 4;
 }

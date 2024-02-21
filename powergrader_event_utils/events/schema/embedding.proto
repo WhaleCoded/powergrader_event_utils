@@ -6,7 +6,7 @@ message AssignmentEmbedding {
     string assignment_version_uuid = 2;
     string embedder_uuid = 3;
     repeated float embedding = 4;
-    string version_timestamp = 5;
+    uint64 version_timestamp = 5;
 }
 
 message CriterionEmbedding {
@@ -14,7 +14,7 @@ message CriterionEmbedding {
     string criterion_version_uuid = 2;
     string embedder_uuid = 3;
     repeated float embedding = 4;
-    string version_timestamp = 5;
+    uint64 version_timestamp = 5;
 }
 
 message CriterionGradeEmbedding {
@@ -22,7 +22,7 @@ message CriterionGradeEmbedding {
     string criterion_grade_version_uuid = 2;
     string embedder_uuid = 3;
     repeated float embedding = 4;
-    string version_timestamp = 5;
+    uint64 version_timestamp = 5;
 }
 
 message SubmissionEmbedding {
@@ -30,7 +30,7 @@ message SubmissionEmbedding {
     string submission_version_uuid = 2;
     string embedder_uuid = 3;
     repeated float embedding = 4;
-    string version_timestamp = 5;
+    uint64 version_timestamp = 5;
 }
 
 message ArtifactEmbedding {
@@ -38,5 +38,5 @@ message ArtifactEmbedding {
     string artifact_version_uuid = 2;
     string embedder_uuid = 3;
     repeated float embedding = 4;
-    string version_timestamp = 5;
+    uint64 version_timestamp = 5;
 }

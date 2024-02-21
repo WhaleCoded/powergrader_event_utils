@@ -1,5 +1,5 @@
 syntax = "proto3";
-package event_wrapper;
+package retry;
 
 import "assignment.proto";
 import "course.proto";
@@ -9,17 +9,17 @@ import "relationship.proto";
 import "submission.proto";
 import "user.proto";
 import "embedding.proto";
-import "artifacts.proto";
+import "artifact.proto";
 
 message Retry {
     uint32 retry_number = 1;
     string retry_reason = 2;
     oneof event {
-        artifacts.AssignmentArtifact assignment_artifact = 3;
-        artifacts.SubmissionArtifact submission_artifact = 4;
-        artifacts.CriterionArtifact criterion_artifact = 5;
-        artifacts.CriterionGradeArtifact criterion_grade_artifact = 6;
-        artifacts.ArtifactLog artifact_log = 7;
+        artifact.AssignmentArtifact assignment_artifact = 3;
+        artifact.SubmissionArtifact submission_artifact = 4;
+        artifact.CriterionArtifact criterion_artifact = 5;
+        artifact.CriterionGradeArtifact criterion_grade_artifact = 6;
+        artifact.ArtifactLog artifact_log = 7;
         assignment.Assignment assignment = 8;
         assignment.Rubric rubric = 9;
         course.Course course = 10;
@@ -64,11 +64,11 @@ message DeadLetter {
     string dead_letter_reason = 1;
     string instance_name = 2;
     oneof event {
-        artifacts.AssignmentArtifact assignment_artifact = 3;
-        artifacts.SubmissionArtifact submission_artifact = 4;
-        artifacts.CriterionArtifact criterion_artifact = 5;
-        artifacts.CriterionGradeArtifact criterion_grade_artifact = 6;
-        artifacts.ArtifactLog artifact_log = 7;
+        artifact.AssignmentArtifact assignment_artifact = 3;
+        artifact.SubmissionArtifact submission_artifact = 4;
+        artifact.CriterionArtifact criterion_artifact = 5;
+        artifact.CriterionGradeArtifact criterion_grade_artifact = 6;
+        artifact.ArtifactLog artifact_log = 7;
         assignment.Assignment assignment = 8;
         assignment.Rubric rubric = 9;
         course.Course course = 10;
