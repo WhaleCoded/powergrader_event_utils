@@ -1,4 +1,4 @@
-from typing import Self, List, Optional, Sequence
+from typing import Self, List, Optional, Sequence, Union, Tuple
 
 import time
 from uuid import uuid4
@@ -315,3 +315,23 @@ class Producer:
         raise NotImplementedError(
             "This class is purely for type hinting and should not be instantiated."
         )
+
+
+def deserialize_powergrader_event(
+    event_type: bytes, event: bytes
+) -> Union[Tuple[ProtoPowerGraderEvent, EventType], None]:
+    str_event_type = event_type.decode("utf-8")
+
+    powergrader_event_classes = {}
+    for event_class in ProtoPowerGraderEvent.__subclasses__():
+        powergrader_event_classes[event_class.__name__] = event_class
+
+    if str_event_type in powergrader_event_classes:
+        deserialized_event = powergrader_event_classes[str_event_type].deserialize(
+            event
+        )
+        event_type = powergrader_event_classes[str_event_type].get_event_type()
+
+        return deserialized_event, event_type
+
+    return None

@@ -403,6 +403,8 @@ def create_demo_assignment(
 
     return (
         [
+            register_rubric,
+            rubric,
             register_assignment,
             assignment,
             add_assignment_to_course,
