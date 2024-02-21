@@ -235,3 +235,5 @@ def test_instructor_criterion_grade_event_type():
         grade=Grade(10, "10"),
     )
     assert event.event_type == EventType.INSTRUCTOR_CRITERION_GRADE
+    deserialized = InstructorCriterionGradeEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.INSTRUCTOR_CRITERION_GRADE

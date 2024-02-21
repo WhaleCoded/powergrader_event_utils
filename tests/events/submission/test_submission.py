@@ -281,3 +281,5 @@ def test_submission_event_type():
         version_timestamp=123,
     )
     assert event.event_type == EventType.SUBMISSION
+    deserialized = SubmissionEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.SUBMISSION

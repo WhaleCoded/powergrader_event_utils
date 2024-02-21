@@ -178,3 +178,5 @@ def test_submission_file_group_event_type():
         file_contents=[FileContent("file_name", "file_type", "content")],
     )
     assert event.event_type == EventType.SUBMISSION_FILE_GROUP
+    deserialized = SubmissionFileGroupEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.SUBMISSION_FILE_GROUP

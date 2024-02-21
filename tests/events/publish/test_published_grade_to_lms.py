@@ -199,3 +199,5 @@ def test_publish_grade_to_lms_event_type():
         publish_timestamp=1615766400,
     )
     assert event.event_type == EventType.PUBLISHED_GRADE_TO_LMS
+    deserialize = PublishedGradeToLMSEvent.deserialize(event.serialize())
+    assert deserialize.event_type == EventType.PUBLISHED_GRADE_TO_LMS

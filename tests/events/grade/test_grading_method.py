@@ -168,3 +168,5 @@ def test_grading_method_event_type():
         git_hash="git_hash",
     )
     assert event.event_type == EventType.GRADING_METHOD
+    deserialized = GradingMethodEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.GRADING_METHOD

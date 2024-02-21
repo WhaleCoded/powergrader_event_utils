@@ -293,3 +293,5 @@ def test_instructor_override_criterion_event_type():
         grade=Grade(10, "10"),
     )
     assert event.event_type == EventType.INSTRUCTOR_OVERRIDE_CRITERION_GRADE
+    deserialized = InstructorOverrideCriterionGradeEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.INSTRUCTOR_OVERRIDE_CRITERION_GRADE

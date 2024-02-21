@@ -209,3 +209,5 @@ def test_register_instructor_public_uuid_event_type():
         organization_public_uuid="organization_public_uuid",
     )
     assert event.event_type == EventType.REGISTER_INSTRUCTOR_PUBLIC_UUID
+    deserialized = RegisterInstructorPublicUUIDEvent.deserialize(event.serialize())
+    assert deserialized.event_type == EventType.REGISTER_INSTRUCTOR_PUBLIC_UUID
