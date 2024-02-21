@@ -190,15 +190,7 @@ def create_ai_grading_events(
 def create_demo_submission(
     student_public_uuid: str,
     assignment_version_uuid: str,
-) -> (
-    List[
-        Union[
-            RegisterSubmissionPublicUUIDEvent,
-            SubmissionEvent,
-        ]
-    ],
-    str,
-):
+) -> Tuple[List[Union[RegisterSubmissionPublicUUIDEvent, SubmissionEvent]], str]:
     submission_file_group = SubmissionFileGroupEvent(
         student_public_uuid=student_public_uuid,
         file_contents=[
