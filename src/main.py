@@ -1,6 +1,5 @@
 from confluent_kafka import Producer
 from tqdm import tqdm
-from integration.demo_events import create_demo_events
 import argparse
 import socket
 import yaml
@@ -9,6 +8,7 @@ import logging
 import sys
 from typing import List
 from powergrader_event_utils.events import PowerGraderEvent
+from powergrader_event_utils.testing import create_demo_events
 
 
 def setup_logger(logger_name):
@@ -38,15 +38,26 @@ def slow_publish(events: List[PowerGraderEvent], producer: Producer):
         producer.flush()
 
 
+def duplicate_publish(events: List[PowerGraderEvent], producer: Producer):
+    event_to_duplicate = events[4]
+
+    print(f"Publishing {event_to_duplicate.event_type} event multiple times")
+    for _ in tqdm(range(1000)):
+        event_to_duplicate.publish(producer)
+    producer.flush()
+
+
 if __name__ == "__main__":
     logger = setup_logger("publish_test")
 
     # SETUP COMMAND ARGUMENTS
     parser = argparse.ArgumentParser(description="Example script with a boolean flag.")
     parser.add_argument("-s", action="store_true", help="Send events one at a time")
+    parser.add_argument("-d", action="store_true", help="Send duplicate events")
     args = parser.parse_args()
 
     SLOW = args.s
+    DUPLICATE = args.d
 
     MAIN_CFG_PATH = os.getenv("CLUSTER_CFG_FILE", "/srv/config.yaml")
     config_valid = True
@@ -73,10 +84,8 @@ if __name__ == "__main__":
     events_to_send = create_demo_events()
 
     if SLOW:
-        for event in tqdm(events_to_send):
-            event.publish(producer)
-            producer.flush()
+        slow_publish(events_to_send, producer)
+    elif DUPLICATE:
+        duplicate_publish(events_to_send, producer)
     else:
-        for event in tqdm(events_to_send):
-            event.publish(producer)
-        producer.flush()
+        bulk_publish(events_to_send, producer)

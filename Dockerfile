@@ -30,9 +30,6 @@ RUN --mount=type=cache,target=/root/.cache/ \
 
 RUN pip3 install /custom_pip
 
-ARG CACHEBUST=1
-ARG GITHUB_AUTH_TOKEN
-
 # RUN python3 -m pip install git+https://oauth2:$GITHUB_AUTH_TOKEN@github.com/WhaleCoded/powergrader_event_utils.git
 
 

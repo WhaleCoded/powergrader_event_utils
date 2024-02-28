@@ -474,7 +474,21 @@ def create_demo_course(
         instructor_public_uuid=instructor_public_id,
         timestamp=get_miliseconds_since_epoch(),
     )
-    return [register_course, course, instructor_added_to_course], course.public_uuid
+
+    time.sleep(0.1)
+    updated_course = CourseEvent(
+        public_uuid=register_course.public_uuid,
+        instructor_public_uuid=instructor_public_id,
+        name="Introduction to Computer Science",
+        description="This description was updated. This course is an introduction to computer science.",
+        version_timestamp=get_miliseconds_since_epoch(),
+    )
+    return [
+        register_course,
+        course,
+        instructor_added_to_course,
+        updated_course,
+    ], course.public_uuid
 
 
 def create_demo_instructor() -> (
