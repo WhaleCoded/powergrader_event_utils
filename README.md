@@ -14,6 +14,8 @@ pip install .[dev]
 
 # Events
 TODO!
+* Add embedder confirmation event that does not contain the final embeddings but just the id of the document embedded, the model, and the embedder. This can then later be used to re-embed everything that does not use the current embedder process.
+* Embedder should be part of the grader micro service
 
 
 # Developing
