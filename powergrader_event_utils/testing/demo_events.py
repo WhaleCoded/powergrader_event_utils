@@ -1,5 +1,6 @@
 from typing import List, Union, Tuple
-
+from uuid import uuid4
+from random import randint
 import time
 
 from powergrader_event_utils.events import (
@@ -42,25 +43,39 @@ def create_demo_events() -> list:
     organization = create_demo_organization()
     events.append(organization)
 
-    instructor_events, instructor_public_id = create_demo_instructor()
+    instructor_events, instructor_public_id = create_demo_instructor(
+        organization.public_uuid
+    )
     events.extend(instructor_events)
 
-    course_events, course_public_id = create_demo_course(instructor_public_id)
+    course_events, course_public_id = create_demo_course(
+        instructor_public_id, organization.public_uuid
+    )
     events.extend(course_events)
 
-    section_events, section_public_id = create_demo_section(course_public_id)
+    section_events, section_public_id = create_demo_section(
+        course_public_id, organization.public_uuid
+    )
     events.extend(section_events)
 
-    student_events, student_public_id = create_demo_student(section_public_id)
+    student_events, student_public_id, student_lms_id = create_demo_student(
+        section_public_id, organization.public_uuid
+    )
     events.extend(student_events)
 
-    assignment_events, assignment_version_id, criteria_ids = create_demo_assignment(
-        instructor_public_id, course_public_id
+    assignment_events, assignment_version_id, criteria_ids, assignmnet_lms_id = (
+        create_demo_assignment(
+            instructor_public_id, course_public_id, organization.public_uuid
+        )
     )
     events.extend(assignment_events)
 
     submission_events, submission_version_uuid = create_demo_submission(
-        student_public_id, assignment_version_id
+        student_public_id,
+        assignment_version_id,
+        organization.public_uuid,
+        student_lms_id,
+        assignmnet_lms_id,
     )
     events.extend(submission_events)
 
@@ -198,6 +213,9 @@ def create_ai_grading_events(
 def create_demo_submission(
     student_public_uuid: str,
     assignment_version_uuid: str,
+    org_public_uuid: str,
+    student_lms_id: str,
+    assignment_lms_id: str,
 ) -> Tuple[List[Union[RegisterSubmissionPublicUUIDEvent, SubmissionEvent]], str]:
     submission_file_group = SubmissionFileGroupEvent(
         student_public_uuid=student_public_uuid,
@@ -247,9 +265,9 @@ def create_demo_submission(
     )
 
     register_submission = RegisterSubmissionPublicUUIDEvent(
-        lms_assignment_id="7",
-        lms_student_id="8",
-        organization_public_uuid="ORGANIZATION-Apporto",
+        lms_assignment_id=assignment_lms_id,
+        lms_student_id=student_lms_id,
+        organization_public_uuid=org_public_uuid,
     )
     submission = SubmissionEvent(
         public_uuid=register_submission.public_uuid,
@@ -267,12 +285,13 @@ def create_demo_submission(
 def create_demo_assignment(
     instructor_public_uuid: str,
     course_public_uuid: str,
+    org_public_uuid: str,
 ) -> Tuple[
-    List[Union[RegisterAssignmentPublicUUIDEvent, AssignmentEvent]], str, List[str]
+    List[Union[RegisterAssignmentPublicUUIDEvent, AssignmentEvent]], str, List[str], str
 ]:
     register_rubric = RegisterRubricPublicUUIDEvent(
-        lms_id="117",
-        organization_public_uuid="ORGANIZATION-Apporto",
+        lms_id=str(randint(1, 1_000_000)),
+        organization_public_uuid=org_public_uuid,
     )
     rubric = RubricEvent(
         public_uuid=register_rubric.public_uuid,
@@ -372,8 +391,8 @@ def create_demo_assignment(
     )
 
     register_assignment = RegisterAssignmentPublicUUIDEvent(
-        lms_id="6",
-        organization_public_uuid="ORGANIZATION-Apporto",
+        lms_id=str(randint(1, 1_000_000)),
+        organization_public_uuid=org_public_uuid,
     )
     assignment = AssignmentEvent(
         public_uuid=register_assignment.public_uuid,
@@ -411,15 +430,17 @@ def create_demo_assignment(
         ],
         assignment.version_uuid,
         criteria_uuids,
+        register_assignment.lms_id,
     )
 
 
 def create_demo_student(
     section_public_uuid: str,
-) -> Tuple[List[Union[RegisterStudentPublicUUIDEvent, StudentEvent]], str]:
+    org_public_uuid: str,
+) -> Tuple[List[Union[RegisterStudentPublicUUIDEvent, StudentEvent]], str, str]:
     register_student = RegisterStudentPublicUUIDEvent(
-        lms_id="8",
-        organization_public_uuid="ORGANIZATION-Apporto",
+        lms_id=str(randint(1, 1_000_000)),
+        organization_public_uuid=org_public_uuid,
     )
     student = StudentEvent(
         public_uuid=register_student.public_uuid,
@@ -435,15 +456,17 @@ def create_demo_student(
     return (
         [register_student, student, register_student_for_section],
         student.public_uuid,
+        register_student.lms_id,
     )
 
 
 def create_demo_section(
     course_public_uuid: str,
+    org_public_uuid: str,
 ) -> Tuple[List[Union[RegisterSectionPublicUUIDEvent, SectionEvent]], str]:
     register_section = RegisterSectionPublicUUIDEvent(
-        lms_id="3",
-        organization_public_uuid="ORGANIZATION-Apporto",
+        lms_id=str(randint(1, 1_000_000)),
+        organization_public_uuid=org_public_uuid,
     )
     section = SectionEvent(
         public_uuid=register_section.public_uuid,
@@ -457,10 +480,11 @@ def create_demo_section(
 
 def create_demo_course(
     instructor_public_id: str,
+    org_public_uuid: str,
 ) -> Tuple[List[Union[RegisterCoursePublicUUIDEvent, CourseEvent]], str]:
     register_course = RegisterCoursePublicUUIDEvent(
-        lms_id="2",
-        organization_public_uuid="ORGANIZATION-Apporto",
+        lms_id=str(randint(1, 1_000_000)),
+        organization_public_uuid=org_public_uuid,
     )
     course = CourseEvent(
         public_uuid=register_course.public_uuid,
@@ -491,13 +515,13 @@ def create_demo_course(
     ], course.public_uuid
 
 
-def create_demo_instructor() -> (
-    Tuple[List[Union[RegisterInstructorPublicUUIDEvent, InstructorEvent]], str]
-):
+def create_demo_instructor(
+    org_public_uuid,
+) -> Tuple[List[Union[RegisterInstructorPublicUUIDEvent, InstructorEvent]], str]:
     register_instructor = RegisterInstructorPublicUUIDEvent(
-        lms_id="1",
+        lms_id=str(randint(1, 1_000_000)),
         user_type=LMSInstructorType.FACULTY,
-        organization_public_uuid="ORGANIZATION-Apporto",
+        organization_public_uuid=org_public_uuid,
     )
     instructor = InstructorEvent(
         public_uuid=register_instructor.public_uuid,
@@ -510,7 +534,7 @@ def create_demo_instructor() -> (
 
 def create_demo_organization() -> OrganizationEvent:
     return OrganizationEvent(
-        public_uuid="ORGANIZATION-Apporto",
+        public_uuid=str(uuid4()),
         name="Apporto",
         version_timestamp=get_miliseconds_since_epoch(),
     )
