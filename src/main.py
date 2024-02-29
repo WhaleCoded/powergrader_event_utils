@@ -8,7 +8,13 @@ import logging
 import sys
 from typing import List
 from powergrader_event_utils.events import PowerGraderEvent
-from powergrader_event_utils.testing import create_demo_events
+from powergrader_event_utils.testing import (
+    create_demo_events,
+    create_realistic_events_from_jsonl_test_output,
+)
+import time
+
+JSONL_FILE_PATH = "./data/30_median_smart_benchmark/trial_reports.jsonl"
 
 
 def setup_logger(logger_name):
@@ -36,6 +42,7 @@ def slow_publish(events: List[PowerGraderEvent], producer: Producer):
     for event in tqdm(events):
         event.publish(producer)
         producer.flush()
+        time.sleep(0.1)
 
 
 def duplicate_publish(events: List[PowerGraderEvent], producer: Producer):
@@ -54,10 +61,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Example script with a boolean flag.")
     parser.add_argument("-s", action="store_true", help="Send events one at a time")
     parser.add_argument("-d", action="store_true", help="Send duplicate events")
+    parser.add_argument(
+        "--realistic", action="store_true", help="Send realistic events from JSONL file"
+    )
     args = parser.parse_args()
 
     SLOW = args.s
     DUPLICATE = args.d
+    REALISTIC = args.realistic
 
     MAIN_CFG_PATH = os.getenv("CLUSTER_CFG_FILE", "/srv/config.yaml")
     config_valid = True
@@ -83,9 +94,16 @@ if __name__ == "__main__":
 
     events_to_send = create_demo_events()
 
+    if REALISTIC:
+        print(f"Sending realistic events from {JSONL_FILE_PATH}")
+        events_to_send = create_realistic_events_from_jsonl_test_output(JSONL_FILE_PATH)
+
     if SLOW:
+        print("Sending events one at a time")
         slow_publish(events_to_send, producer)
     elif DUPLICATE:
+        print("Sending duplicate events")
         duplicate_publish(events_to_send, producer)
     else:
+        print("Sending events in bulk")
         bulk_publish(events_to_send, producer)
