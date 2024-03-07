@@ -205,6 +205,9 @@ class ProtoWrapper(metaclass=ProtoWrapperMeta):
                     f"{self.__class__.__name__} proto does not have a field named {__name}."
                 )
 
+            if __value is None:
+                return
+
             if __name in self.__one_of_names and hasattr(__value, "proto_type"):
                 __name = self.__one_of_type_map[__value.proto_type.DESCRIPTOR.full_name]
 
@@ -372,6 +375,19 @@ class ProtoWrapper(metaclass=ProtoWrapperMeta):
                 if proto_wrapper_type is not None:
                     field = proto_wrapper_type(field)
 
+            # Check to see if the field is optional, if not, return Nones as None
+            one_of_descriptor = self.proto_type.DESCRIPTOR.oneofs_by_name.get(
+                "_" + __name
+            )
+            if one_of_descriptor:
+                for field_descriptor in one_of_descriptor.fields:
+                    if field_descriptor.name == __name:
+                        return field
+
+            if (isinstance(field, str) and field == "") or (
+                isinstance(field, int) and field == 0
+            ):
+                return None
             return field
 
         if __name in [

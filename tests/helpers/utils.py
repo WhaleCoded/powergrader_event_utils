@@ -4,7 +4,7 @@ import itertools
 
 VALID_UUIDS = [
     "123",
-    "",
+    None,
     "this is a really long super annoying string which is still a valid uuid for our particular use case",
 ]
 INVALID_UUIDS = [
@@ -15,18 +15,18 @@ INVALID_UUIDS = [
 ]
 
 VALID_STRS = [
+    None,
     "0",
     "this is a really long super annoying string which is still a valid uuid for our particular use case",
-    "",
     "\n",
 ]
-INVALID_STRS = [None, 1, -1.0, [1, 2, 3], {"a": "b"}]
+INVALID_STRS = [1, -1.0, [1, 2, 3], {"a": "b"}]
 
-VALID_TIMESTAMPS = [0, 1, 1234567890, 9876543210]
+VALID_TIMESTAMPS = [1, 1234567890, 9876543210]
 INVALID_TIMESTAMPS = [-1, -1.0, [1, 2, 3], b"123", {"a": "b"}, "10"]
 
-VALID_INTS = [0, 1, 1234567890, 4294967295]
-INVALID_INTS = [None, -1, -1.0, [1, 2, 3], b"123", {"a": "b"}, "10"]
+VALID_INTS = [None, 1, 1234567890, 4294967295]
+INVALID_INTS = [-1, -1.0, [1, 2, 3], b"123", {"a": "b"}, "10"]
 
 
 def generate_all_permutations(*lists) -> List[Tuple[Any]]:

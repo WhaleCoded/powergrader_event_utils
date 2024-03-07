@@ -24,8 +24,8 @@ class StudentEvent(ProtoPowerGraderEvent):
     def __init__(
         self,
         public_uuid: str,
-        name: str,
-        email: str,
+        name: Optional[str] = None,
+        email: Optional[str] = None,
         version_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
@@ -51,8 +51,8 @@ class InstructorEvent(ProtoPowerGraderEvent):
     def __init__(
         self,
         public_uuid: str,
-        name: str,
-        email: str,
+        name: Optional[str] = None,
+        email: Optional[str] = None,
         version_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
@@ -63,3 +63,8 @@ class InstructorEvent(ProtoPowerGraderEvent):
         if version_timestamp == None:
             version_timestamp = generate_event_timestamp()
         self.version_timestamp = version_timestamp
+
+
+if __name__ == "__main__":
+    student = StudentEvent("123")
+    print(student)
