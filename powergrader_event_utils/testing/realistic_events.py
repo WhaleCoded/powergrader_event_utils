@@ -95,11 +95,18 @@ def create_realistic_events_from_jsonl_test_output(
     instructor_event = InstructorEvent(
         public_uuid=register_instructor_event.public_uuid,
         name="Dallin Hutchison",
-        email="d.hutchison@apporto.com",
+        email="temp@apporto.com",
         version_timestamp=get_miliseconds_since_epoch(),
+    )
+    updated_instructor_event = InstructorEvent(
+        public_uuid=register_instructor_event.public_uuid,
+        name="Dallin Hutchison",
+        email="d.hutchison@apporto.com",
+        version_timestamp=get_miliseconds_since_epoch() + 1,
     )
     events.append(register_instructor_event)
     events.append(instructor_event)
+    events.append(updated_instructor_event)
     print("1 Instructor Event Created")
 
     # Create a course for each assignment difficulty
@@ -120,6 +127,13 @@ def create_realistic_events_from_jsonl_test_output(
             description=f"A course to teach {difficulty.upper()} Python concepts.",
             version_timestamp=get_miliseconds_since_epoch(),
         )
+        updated_course_event = CourseEvent(
+            public_uuid=register_course_event.public_uuid,
+            name=f"{difficulty.upper()} Python",
+            instructor_public_uuid=instructor_event.public_uuid,
+            description=f"Updated: A course to teach {difficulty.upper()} Python concepts.",
+            version_timestamp=get_miliseconds_since_epoch() + 1,
+        )
         instructor_added_to_course_event = InstructorAddedToCourseEvent(
             instructor_public_uuid=instructor_event.public_uuid,
             course_public_uuid=course_event.public_uuid,
@@ -127,8 +141,9 @@ def create_realistic_events_from_jsonl_test_output(
         )
         events.append(register_course_event)
         events.append(course_event)
+        events.append(updated_course_event)
         events.append(instructor_added_to_course_event)
-        course_events[difficulty] = course_event
+        course_events[difficulty] = updated_course_event
 
         # Create sections for each student level
         for level in student_levels:
@@ -142,15 +157,23 @@ def create_realistic_events_from_jsonl_test_output(
                 public_uuid=register_section_event.public_uuid,
                 name=f"Section {level.upper()}",
                 course_public_uuid=course_event.public_uuid,
-                closed=False,
+                closed=True,
                 version_timestamp=get_miliseconds_since_epoch(),
+            )
+            updated_section_event = SectionEvent(
+                public_uuid=register_section_event.public_uuid,
+                name=f"Section {level.upper()}",
+                course_public_uuid=course_event.public_uuid,
+                closed=False,
+                version_timestamp=get_miliseconds_since_epoch() + 1,
             )
             events.append(register_section_event)
             events.append(section_event)
+            events.append(updated_section_event)
 
             if difficulty not in section_events:
                 section_events[difficulty] = {}
-            section_events[difficulty][level] = section_event
+            section_events[difficulty][level] = updated_section_event
             num_sections += 1
     print(f"{len(course_events.keys())} Course Events Created")
     print(f"{num_sections} Section Events Created")
@@ -169,11 +192,18 @@ def create_realistic_events_from_jsonl_test_output(
         student_event = StudentEvent(
             public_uuid=register_student_event.public_uuid,
             name=f"{first_name} {last_name}",
-            email=f"{first_name.lower()}.{last_name.lower()}@apporto.com",
+            email=f"temp@{first_name.lower()}.{last_name.lower()}.com",
             version_timestamp=get_miliseconds_since_epoch(),
+        )
+        updated_student_event = StudentEvent(
+            public_uuid=register_student_event.public_uuid,
+            name=f"{first_name} {last_name}",
+            email=f"{first_name.lower()}.{last_name.lower()}@apporto.com",
+            version_timestamp=get_miliseconds_since_epoch() + 1,
         )
         events.append(register_student_event)
         events.append(student_event)
+        events.append(updated_student_event)
         student_events[student_id] = student_event
         register_student_events[student_id] = register_student_event
 
@@ -237,14 +267,23 @@ def create_realistic_events_from_jsonl_test_output(
         assignment_event = AssignmentEvent(
             public_uuid=register_assignment_event.public_uuid,
             instructor_public_uuid=instructor_event.public_uuid,
-            rubric_version_uuid=rubric_event.version_uuid,
+            rubric_version_uuid=None,
             name=assignment_name,
             description=description,
             version_timestamp=get_miliseconds_since_epoch(),
         )
+        updated_assignment_event = AssignmentEvent(
+            public_uuid=register_assignment_event.public_uuid,
+            instructor_public_uuid=instructor_event.public_uuid,
+            rubric_version_uuid=rubric_event.version_uuid,
+            name=assignment_name,
+            description=description,
+            version_timestamp=get_miliseconds_since_epoch() + 1,
+        )
         events.append(register_assignment_event)
         events.append(assignment_event)
-        assignment_events[assignment_name] = assignment_event
+        events.append(updated_assignment_event)
+        assignment_events[assignment_name] = updated_assignment_event
         register_assignment_events[assignment_name] = register_assignment_event
         rubric_events[assignment_name] = rubric_event
 
@@ -306,9 +345,17 @@ def create_realistic_events_from_jsonl_test_output(
                 submission_file_group_uuid=submission_file_group_event.uuid,
                 version_timestamp=get_miliseconds_since_epoch(),
             )
+            revised_submission_event = SubmissionEvent(
+                public_uuid=register_submission_event.public_uuid,
+                student_public_uuid=register_student_event.public_uuid,
+                assignment_version_uuid=assignment_event.version_uuid,
+                submission_file_group_uuid=submission_file_group_event.uuid,
+                version_timestamp=get_miliseconds_since_epoch() + 1,
+            )
             events.append(register_submission_event)
             events.append(submission_file_group_event)
             events.append(submission_event)
+            events.append(revised_submission_event)
             submission_handled_markers.add(example_id)
 
             # Create the corresponding grade events for AI and Instructor
@@ -355,7 +402,7 @@ def create_realistic_events_from_jsonl_test_output(
 
                 ai_grading_started_event = AICriterionGradingStartedEvent(
                     criterion_uuid=criterion.uuid,
-                    submission_version_uuid=submission_event.version_uuid,
+                    submission_version_uuid=revised_submission_event.version_uuid,
                     time_started=get_miliseconds_since_epoch(),
                 )
                 ai_criterion_grade_event = AICriterionGradeEvent(
@@ -373,7 +420,7 @@ def create_realistic_events_from_jsonl_test_output(
                 if instructor_grade_score != model_grade_score:
                     instructor_grade_event = InstructorCriterionGradeEvent(
                         criterion_uuid=criterion.uuid,
-                        submission_version_uuid=submission_event.version_uuid,
+                        submission_version_uuid=revised_submission_event.version_uuid,
                         instructor_public_uuid=instructor_event.public_uuid,
                         grade=Grade(
                             score=instructor_grade_score,

@@ -30,8 +30,8 @@ class AICriterionGradingStartedEvent(ProtoPowerGraderEvent):
 
     def __init__(
         self,
-        criterion_uuid: str,
-        submission_version_uuid: str,
+        criterion_uuid: Optional[str] = None,
+        submission_version_uuid: Optional[str] = None,
         time_started: Optional[int] = None,
     ) -> None:
         super().__init__()
@@ -54,9 +54,9 @@ class GradingMethodEvent(ProtoPowerGraderEvent):
 
     def __init__(
         self,
-        model_name: str,
-        method_name: str,
-        git_hash: str,
+        model_name: Optional[str] = None,
+        method_name: Optional[str] = None,
+        git_hash: Optional[str] = None,
     ) -> None:
         super().__init__()
         self.uuid = generate_event_uuid(self.__class__.__name__)
@@ -92,9 +92,9 @@ class AICriterionGradeEvent(ProtoPowerGraderEvent):
 
     def __init__(
         self,
-        grading_started_version_uuid: str,
-        grading_method_uuid: str,
-        grade: Grade,
+        grading_started_version_uuid: Optional[str] = None,
+        grading_method_uuid: Optional[str] = None,
+        grade: Optional[Grade] = None,
         time_finished: Optional[int] = None,
     ) -> None:
         if not isinstance(grade, Grade):
@@ -123,11 +123,11 @@ class AIInferredCriterionGradeEvent(ProtoPowerGraderEvent):
 
     def __init__(
         self,
-        grading_started_version_uuid: str,
-        grading_method_uuid: str,
-        previous_criterion_grade_version_uuid: str,
-        faculty_override_criterion_grade_version_uuid: str,
-        grade: Grade,
+        grading_started_version_uuid: Optional[str] = None,
+        grading_method_uuid: Optional[str] = None,
+        previous_criterion_grade_version_uuid: Optional[str] = None,
+        faculty_override_criterion_grade_version_uuid: Optional[str] = None,
+        grade: Optional[Grade] = None,
         time_finished: Optional[int] = None,
     ) -> None:
         if not isinstance(grade, Grade):
@@ -161,10 +161,10 @@ class InstructorCriterionGradeEvent(ProtoPowerGraderEvent):
 
     def __init__(
         self,
-        criterion_uuid: str,
-        submission_version_uuid: str,
-        instructor_public_uuid: str,
-        grade: Grade,
+        criterion_uuid: Optional[str] = None,
+        submission_version_uuid: Optional[str] = None,
+        instructor_public_uuid: Optional[str] = None,
+        grade: Optional[Grade] = None,
     ) -> None:
         if not isinstance(grade, Grade):
             raise TypeError(
@@ -191,11 +191,11 @@ class InstructorOverrideCriterionGradeEvent(ProtoPowerGraderEvent):
 
     def __init__(
         self,
-        criterion_uuid: str,
-        submission_version_uuid: str,
-        previous_criterion_grade_version_uuid: str,
-        instructor_public_uuid: str,
-        grade: Grade,
+        criterion_uuid: Optional[str] = None,
+        submission_version_uuid: Optional[str] = None,
+        previous_criterion_grade_version_uuid: Optional[str] = None,
+        instructor_public_uuid: Optional[str] = None,
+        grade: Optional[Grade] = None,
     ) -> None:
         if not isinstance(grade, Grade):
             raise TypeError(
@@ -223,9 +223,9 @@ class CriterionGradeEmbeddingEvent(ProtoPowerGraderEvent):
 
     def __init__(
         self,
-        criterion_grade_version_uuid: str,
-        embedder_uuid: str,
-        embedding: List[float],
+        criterion_grade_version_uuid: Optional[str] = None,
+        embedder_uuid: Optional[str] = None,
+        embedding: Optional[List[float]] = None,
     ) -> None:
         if len(embedding) == 0:
             raise ValueError(
@@ -250,9 +250,9 @@ class InstructorSubmissionGradeApprovalEvent(ProtoPowerGraderEvent):
 
     def __init__(
         self,
-        submission_version_uuid: str,
-        instructor_public_uuid: str,
-        criterion_grade_version_uuids: List[str],
+        submission_version_uuid: Optional[str] = None,
+        instructor_public_uuid: Optional[str] = None,
+        criterion_grade_version_uuids: Optional[List[str]] = None,
         version_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()

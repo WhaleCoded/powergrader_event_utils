@@ -146,8 +146,8 @@ class InstructorRemovedFromCourseEvent(ProtoPowerGraderEvent):
 
     def __init__(
         self,
-        instructor_public_uuid: str,
-        course_public_uuid: str,
+        instructor_public_uuid: Optional[str] = None,
+        course_public_uuid: Optional[str] = None,
         timestamp: Optional[int] = None,
     ):
         super().__init__()

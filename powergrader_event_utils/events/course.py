@@ -26,9 +26,9 @@ class CourseEvent(ProtoPowerGraderEvent):
     def __init__(
         self,
         public_uuid: str,
-        instructor_public_uuid: str,
-        name: str,
-        description: str,
+        instructor_public_uuid: Optional[str] = None,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
         version_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
@@ -56,9 +56,9 @@ class SectionEvent(ProtoPowerGraderEvent):
     def __init__(
         self,
         public_uuid: str,
-        course_public_uuid: str,
-        name: str,
-        closed: bool,
+        course_public_uuid: Optional[str] = None,
+        name: Optional[str] = None,
+        closed: Optional[bool] = None,
         version_timestamp: Optional[int] = None,
     ) -> None:
         if not isinstance(closed, bool):
@@ -86,7 +86,10 @@ class OrganizationEvent(ProtoPowerGraderEvent):
     version_timestamp: int
 
     def __init__(
-        self, public_uuid: str, name: str, version_timestamp: Optional[int] = None
+        self,
+        public_uuid: str,
+        name: Optional[str] = None,
+        version_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
         self.public_uuid = public_uuid

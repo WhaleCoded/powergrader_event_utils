@@ -30,10 +30,10 @@ class AssignmentEvent(ProtoPowerGraderEvent):
     def __init__(
         self,
         public_uuid: str,
-        instructor_public_uuid: str,
-        rubric_version_uuid: str,
-        name: str,
-        description: str,
+        instructor_public_uuid: Optional[str] = None,
+        rubric_version_uuid: Optional[str] = None,
+        name: Optional[str] = None,
+        description: Optional[str] = None,
         version_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
@@ -67,7 +67,9 @@ class RubricCriterion(ProtoWrapper):
     name: str
     levels: List[CriterionLevel]
 
-    def __init__(self, name: str, levels: List[CriterionLevel]) -> None:
+    def __init__(
+        self, name: Optional[str] = None, levels: Optional[List[CriterionLevel]] = None
+    ) -> None:
         if len(levels) < 2:
             raise ValueError("RubricCriterion must have at least two levels")
         if not all(isinstance(level, CriterionLevel) for level in levels):
@@ -93,9 +95,11 @@ class RubricEvent(ProtoPowerGraderEvent):
     def __init__(
         self,
         public_uuid: str,
-        instructor_public_uuid: str,
-        name: str,
-        rubric_criteria: Union[Dict[str, RubricCriterion], Sequence[RubricCriterion]],
+        instructor_public_uuid: Optional[str] = None,
+        name: Optional[str] = None,
+        rubric_criteria: Optional[
+            Union[Dict[str, RubricCriterion], Sequence[RubricCriterion]]
+        ] = None,
         version_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()

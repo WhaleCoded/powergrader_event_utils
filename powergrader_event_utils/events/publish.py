@@ -68,7 +68,10 @@ class RegisterInstructorPublicUUIDEvent(ProtoPowerGraderEvent):
     organization_public_uuid: str
 
     def __init__(
-        self, lms_id: str, user_type: LMSInstructorType, organization_public_uuid: str
+        self,
+        lms_id: Optional[str] = None,
+        user_type: Optional[LMSInstructorType] = None,
+        organization_public_uuid: Optional[str] = None,
     ) -> None:
         super().__init__()
         if not isinstance(user_type, LMSInstructorType):
@@ -97,7 +100,11 @@ class RegisterStudentPublicUUIDEvent(ProtoPowerGraderEvent):
     lms_id: str
     organization_public_uuid: str
 
-    def __init__(self, lms_id: str, organization_public_uuid: str) -> None:
+    def __init__(
+        self,
+        lms_id: Optional[str] = None,
+        organization_public_uuid: Optional[str] = None,
+    ) -> None:
         super().__init__()
         self.public_uuid = generate_event_uuid(self.__class__.__name__)
         self.lms_id = lms_id
@@ -112,7 +119,11 @@ class RegisterAssignmentPublicUUIDEvent(ProtoPowerGraderEvent):
     lms_id: str
     organization_public_uuid: str
 
-    def __init__(self, lms_id: str, organization_public_uuid: str) -> None:
+    def __init__(
+        self,
+        lms_id: Optional[str] = None,
+        organization_public_uuid: Optional[str] = None,
+    ) -> None:
         super().__init__()
         self.public_uuid = generate_event_uuid(self.__class__.__name__)
         self.lms_id = lms_id
@@ -127,7 +138,11 @@ class RegisterRubricPublicUUIDEvent(ProtoPowerGraderEvent):
     lms_id: str
     organization_public_uuid: str
 
-    def __init__(self, lms_id: str, organization_public_uuid: str) -> None:
+    def __init__(
+        self,
+        lms_id: Optional[str] = None,
+        organization_public_uuid: Optional[str] = None,
+    ) -> None:
         super().__init__()
         self.public_uuid = generate_event_uuid(self.__class__.__name__)
         self.lms_id = lms_id
@@ -145,9 +160,9 @@ class RegisterSubmissionPublicUUIDEvent(ProtoPowerGraderEvent):
 
     def __init__(
         self,
-        lms_assignment_id: str,
-        lms_student_id: str,
-        organization_public_uuid: str,
+        lms_assignment_id: Optional[str] = None,
+        lms_student_id: Optional[str] = None,
+        organization_public_uuid: Optional[str] = None,
     ) -> None:
         super().__init__()
         self.public_uuid = generate_event_uuid(self.__class__.__name__)
@@ -165,7 +180,7 @@ class PublishedToLMSEvent(ProtoPowerGraderEvent):
 
     def __init__(
         self,
-        published_entity_version_uuid: str,
+        published_entity_version_uuid: Optional[str] = None,
         publish_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
@@ -184,7 +199,7 @@ class PublishedGradeToLMSEvent(ProtoPowerGraderEvent):
 
     def __init__(
         self,
-        instructor_grade_approval_version_uuid: str,
+        instructor_grade_approval_version_uuid: Optional[str] = None,
         publish_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()

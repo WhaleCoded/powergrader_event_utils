@@ -48,7 +48,9 @@ class SubmissionFileGroupEvent(ProtoPowerGraderEvent):
     file_contents: List[FileContent]
 
     def __init__(
-        self, student_public_uuid: str, file_contents: List[FileContent]
+        self,
+        student_public_uuid: Optional[str] = None,
+        file_contents: Optional[List[FileContent]] = None,
     ) -> None:
         super().__init__()
         self.uuid = generate_event_uuid(self.__class__.__name__)
@@ -70,9 +72,9 @@ class SubmissionEvent(ProtoPowerGraderEvent):
     def __init__(
         self,
         public_uuid: str,
-        student_public_uuid: str,
-        assignment_version_uuid: str,
-        submission_file_group_uuid: str,
+        student_public_uuid: Optional[str] = None,
+        assignment_version_uuid: Optional[str] = None,
+        submission_file_group_uuid: Optional[str] = None,
         version_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
