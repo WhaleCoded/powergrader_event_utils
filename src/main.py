@@ -45,13 +45,13 @@ def slow_publish(events: List[PowerGraderEvent], producer: Producer):
         time.sleep(0.1)
 
 
-def duplicate_publish(events: List[PowerGraderEvent], producer: Producer):
-    event_to_duplicate = events[4]
+def duplicate_events(events: List[PowerGraderEvent], num_duplications: int = 10):
+    duplicated_events = []
+    for event in events:
+        for _ in range(num_duplications):
+            duplicated_events.append(event)
 
-    print(f"Publishing {event_to_duplicate.event_type} event multiple times")
-    for _ in tqdm(range(1000)):
-        event_to_duplicate.publish(producer)
-    producer.flush()
+    return duplicated_events
 
 
 def stratified_publish(events: List[PowerGraderEvent], producer: Producer, slow=False):
@@ -150,6 +150,10 @@ if __name__ == "__main__":
         print(f"Sending realistic events from {JSONL_FILE_PATH}")
         events_to_send = create_realistic_events_from_jsonl_test_output(JSONL_FILE_PATH)
 
+    if DUPLICATE:
+        print("Sending duplicate events")
+        events_to_send = duplicate_events(events_to_send)
+
     if RANDOM:
         print("Sending events in random order")
         import random
@@ -166,9 +170,6 @@ if __name__ == "__main__":
     if SLOW:
         print("Sending events one at a time")
         slow_publish(events_to_send, producer)
-    elif DUPLICATE:
-        print("Sending duplicate events")
-        duplicate_publish(events_to_send, producer)
     else:
         print("Sending events in bulk")
         bulk_publish(events_to_send, producer)
