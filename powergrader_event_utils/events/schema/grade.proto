@@ -1,11 +1,18 @@
 syntax = "proto3";
 package grade;
 
+
+message InstructionInfo {
+    repeated string assignment_instruction_version_uuids = 1;
+    repeated string criterion_instruction_version_uuids = 2;
+}
+
 message AICriterionGradingStarted {
     string version_uuid = 1;
     string criterion_uuid = 2;
     string submission_version_uuid = 3;
-    uint64 time_started = 4;
+    InstructionInfo instruction_info = 4;
+    uint64 time_started = 5;
 }
 
 message GradingMethod {
@@ -16,7 +23,7 @@ message GradingMethod {
 }
 
 message Grade {
-    optional uint32 score = 1;
+    optional float score = 1;
     string assessment = 2;
 }
 

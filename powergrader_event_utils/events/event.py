@@ -14,7 +14,7 @@ MAIN_TOPIC = "main-record"
 # However, this would mean that there would be no type hints for the enum.
 class EventType(StrEnum):
     """
-    An enum for the different types of events that can be published or recieved.
+    An enum for the different types of events that can be published or received.
     The value will be the name of the corresponding event class.
     """
 
@@ -51,6 +51,22 @@ class EventType(StrEnum):
     REGISTER_SUBMISSION_PUBLIC_UUID = "RegisterSubmissionPublicUUIDEvent"
     PUBLISHED_TO_LMS = "PublishedToLMSEvent"
     PUBLISHED_GRADE_TO_LMS = "PublishedGradeToLMSEvent"
+
+    # RAG events
+    DOCUMENT_SOURCE = "DocumentSourceEvent"
+    DOCUMENT = "DocumentEvent"
+    RAG_DIVISION_STARTED = "RAGDivisionStartedEvent"
+    DIVIDED_DOCUMENT = "DividedDocumentEvent"
+    DOCUMENT_SUMMARIZATION_EVENT = "DocumentSummarizationEvent"
+    SUMMARIZED_DOCUMENT = "SummarizedDocumentEvent"
+    DOCUMENT_EMBEDDING_STARTED = "DocumentEmbeddingStartedEvent"
+    EMBEDDED_DOCUMENT = "EmbeddedDocumentEvent"
+    REGISTER_ASSIGNMENT_INSTRUCTION = "RegisterAssignmentInstructionEvent"
+    REGISTER_CRITERION_INSTRUCTION = "RegisterCriterionInstructionEvent"
+    ASSIGNMENT_INSTRUCTION = "AssignmentInstructionEvent"
+    CRITERION_INSTRUCTION = "CriterionInstructionEvent"
+    INVALIDATE_INSTRUCTION = "InvalidateInstructionEvent"
+    FLOW_LOG = "FlowLogEvent"
 
     # Relationship events
     ASSIGNMENT_ADDED_TO_COURSE = "AssignmentAddedToCourseEvent"

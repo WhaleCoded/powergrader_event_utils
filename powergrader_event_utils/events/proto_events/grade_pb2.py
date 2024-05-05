@@ -14,29 +14,31 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bgrade.proto\x12\x05grade\"\x80\x01\n\x19\x41ICriterionGradingStarted\x12\x14\n\x0cversion_uuid\x18\x01 \x01(\t\x12\x16\n\x0e\x63riterion_uuid\x18\x02 \x01(\t\x12\x1f\n\x17submission_version_uuid\x18\x03 \x01(\t\x12\x14\n\x0ctime_started\x18\x04 \x01(\x04\"X\n\rGradingMethod\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x12\n\nmodel_name\x18\x02 \x01(\t\x12\x13\n\x0bmethod_name\x18\x03 \x01(\t\x12\x10\n\x08git_hash\x18\x04 \x01(\t\"9\n\x05Grade\x12\x12\n\x05score\x18\x01 \x01(\rH\x00\x88\x01\x01\x12\x12\n\nassessment\x18\x02 \x01(\tB\x08\n\x06_score\"\x89\x01\n\x10\x41ICriterionGrade\x12$\n\x1cgrading_started_version_uuid\x18\x01 \x01(\t\x12\x1b\n\x13grading_method_uuid\x18\x04 \x01(\t\x12\x1b\n\x05grade\x18\x05 \x01(\x0b\x32\x0c.grade.Grade\x12\x15\n\rtime_finished\x18\x06 \x01(\x04\"\xf7\x01\n\x18\x41IInferredCriterionGrade\x12$\n\x1cgrading_started_version_uuid\x18\x01 \x01(\t\x12\x1b\n\x13grading_method_uuid\x18\x04 \x01(\t\x12-\n%previous_criterion_grade_version_uuid\x18\x05 \x01(\t\x12\x35\n-faculty_override_criterion_grade_version_uuid\x18\x06 \x01(\t\x12\x1b\n\x05grade\x18\x07 \x01(\x0b\x32\x0c.grade.Grade\x12\x15\n\rtime_finished\x18\x08 \x01(\x04\"\xa6\x01\n\x18InstructorCriterionGrade\x12\x14\n\x0cversion_uuid\x18\x01 \x01(\t\x12\x16\n\x0e\x63riterion_uuid\x18\x02 \x01(\t\x12\x1f\n\x17submission_version_uuid\x18\x03 \x01(\t\x12\x1e\n\x16instructor_public_uuid\x18\x04 \x01(\t\x12\x1b\n\x05grade\x18\x05 \x01(\x0b\x32\x0c.grade.Grade\"\xdd\x01\n InstructorOverrideCriterionGrade\x12\x14\n\x0cversion_uuid\x18\x01 \x01(\t\x12\x16\n\x0e\x63riterion_uuid\x18\x02 \x01(\t\x12\x1f\n\x17submission_version_uuid\x18\x03 \x01(\t\x12-\n%previous_criterion_grade_version_uuid\x18\x04 \x01(\t\x12\x1e\n\x16instructor_public_uuid\x18\x05 \x01(\t\x12\x1b\n\x05grade\x18\x06 \x01(\x0b\x32\x0c.grade.Grade\"\x7f\n\x17\x43riterionGradeEmbedding\x12\x14\n\x0cversion_uuid\x18\x01 \x01(\t\x12$\n\x1c\x63riterion_grade_version_uuid\x18\x02 \x01(\t\x12\x15\n\rembedder_uuid\x18\x03 \x01(\t\x12\x11\n\tembedding\x18\x04 \x03(\x02\"\xbc\x01\n!InstructorSubmissionGradeApproval\x12\x14\n\x0cversion_uuid\x18\x01 \x01(\t\x12\x1f\n\x17submission_version_uuid\x18\x02 \x01(\t\x12\x1e\n\x16instructor_public_uuid\x18\x03 \x01(\t\x12%\n\x1d\x63riterion_grade_version_uuids\x18\x04 \x03(\t\x12\x19\n\x11version_timestamp\x18\x05 \x01(\x04\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0bgrade.proto\x12\x05grade\"l\n\x0fInstructionInfo\x12,\n$assignment_instruction_version_uuids\x18\x01 \x03(\t\x12+\n#criterion_instruction_version_uuids\x18\x02 \x03(\t\"\xb2\x01\n\x19\x41ICriterionGradingStarted\x12\x14\n\x0cversion_uuid\x18\x01 \x01(\t\x12\x16\n\x0e\x63riterion_uuid\x18\x02 \x01(\t\x12\x1f\n\x17submission_version_uuid\x18\x03 \x01(\t\x12\x30\n\x10instruction_info\x18\x04 \x01(\x0b\x32\x16.grade.InstructionInfo\x12\x14\n\x0ctime_started\x18\x05 \x01(\x04\"X\n\rGradingMethod\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x12\n\nmodel_name\x18\x02 \x01(\t\x12\x13\n\x0bmethod_name\x18\x03 \x01(\t\x12\x10\n\x08git_hash\x18\x04 \x01(\t\"9\n\x05Grade\x12\x12\n\x05score\x18\x01 \x01(\x02H\x00\x88\x01\x01\x12\x12\n\nassessment\x18\x02 \x01(\tB\x08\n\x06_score\"\x89\x01\n\x10\x41ICriterionGrade\x12$\n\x1cgrading_started_version_uuid\x18\x01 \x01(\t\x12\x1b\n\x13grading_method_uuid\x18\x04 \x01(\t\x12\x1b\n\x05grade\x18\x05 \x01(\x0b\x32\x0c.grade.Grade\x12\x15\n\rtime_finished\x18\x06 \x01(\x04\"\xf7\x01\n\x18\x41IInferredCriterionGrade\x12$\n\x1cgrading_started_version_uuid\x18\x01 \x01(\t\x12\x1b\n\x13grading_method_uuid\x18\x04 \x01(\t\x12-\n%previous_criterion_grade_version_uuid\x18\x05 \x01(\t\x12\x35\n-faculty_override_criterion_grade_version_uuid\x18\x06 \x01(\t\x12\x1b\n\x05grade\x18\x07 \x01(\x0b\x32\x0c.grade.Grade\x12\x15\n\rtime_finished\x18\x08 \x01(\x04\"\xa6\x01\n\x18InstructorCriterionGrade\x12\x14\n\x0cversion_uuid\x18\x01 \x01(\t\x12\x16\n\x0e\x63riterion_uuid\x18\x02 \x01(\t\x12\x1f\n\x17submission_version_uuid\x18\x03 \x01(\t\x12\x1e\n\x16instructor_public_uuid\x18\x04 \x01(\t\x12\x1b\n\x05grade\x18\x05 \x01(\x0b\x32\x0c.grade.Grade\"\xdd\x01\n InstructorOverrideCriterionGrade\x12\x14\n\x0cversion_uuid\x18\x01 \x01(\t\x12\x16\n\x0e\x63riterion_uuid\x18\x02 \x01(\t\x12\x1f\n\x17submission_version_uuid\x18\x03 \x01(\t\x12-\n%previous_criterion_grade_version_uuid\x18\x04 \x01(\t\x12\x1e\n\x16instructor_public_uuid\x18\x05 \x01(\t\x12\x1b\n\x05grade\x18\x06 \x01(\x0b\x32\x0c.grade.Grade\"\x7f\n\x17\x43riterionGradeEmbedding\x12\x14\n\x0cversion_uuid\x18\x01 \x01(\t\x12$\n\x1c\x63riterion_grade_version_uuid\x18\x02 \x01(\t\x12\x15\n\rembedder_uuid\x18\x03 \x01(\t\x12\x11\n\tembedding\x18\x04 \x03(\x02\"\xbc\x01\n!InstructorSubmissionGradeApproval\x12\x14\n\x0cversion_uuid\x18\x01 \x01(\t\x12\x1f\n\x17submission_version_uuid\x18\x02 \x01(\t\x12\x1e\n\x16instructor_public_uuid\x18\x03 \x01(\t\x12%\n\x1d\x63riterion_grade_version_uuids\x18\x04 \x03(\t\x12\x19\n\x11version_timestamp\x18\x05 \x01(\x04\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'grade_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
-  _globals['_AICRITERIONGRADINGSTARTED']._serialized_start=23
-  _globals['_AICRITERIONGRADINGSTARTED']._serialized_end=151
-  _globals['_GRADINGMETHOD']._serialized_start=153
-  _globals['_GRADINGMETHOD']._serialized_end=241
-  _globals['_GRADE']._serialized_start=243
-  _globals['_GRADE']._serialized_end=300
-  _globals['_AICRITERIONGRADE']._serialized_start=303
-  _globals['_AICRITERIONGRADE']._serialized_end=440
-  _globals['_AIINFERREDCRITERIONGRADE']._serialized_start=443
-  _globals['_AIINFERREDCRITERIONGRADE']._serialized_end=690
-  _globals['_INSTRUCTORCRITERIONGRADE']._serialized_start=693
-  _globals['_INSTRUCTORCRITERIONGRADE']._serialized_end=859
-  _globals['_INSTRUCTOROVERRIDECRITERIONGRADE']._serialized_start=862
-  _globals['_INSTRUCTOROVERRIDECRITERIONGRADE']._serialized_end=1083
-  _globals['_CRITERIONGRADEEMBEDDING']._serialized_start=1085
-  _globals['_CRITERIONGRADEEMBEDDING']._serialized_end=1212
-  _globals['_INSTRUCTORSUBMISSIONGRADEAPPROVAL']._serialized_start=1215
-  _globals['_INSTRUCTORSUBMISSIONGRADEAPPROVAL']._serialized_end=1403
+  _globals['_INSTRUCTIONINFO']._serialized_start=22
+  _globals['_INSTRUCTIONINFO']._serialized_end=130
+  _globals['_AICRITERIONGRADINGSTARTED']._serialized_start=133
+  _globals['_AICRITERIONGRADINGSTARTED']._serialized_end=311
+  _globals['_GRADINGMETHOD']._serialized_start=313
+  _globals['_GRADINGMETHOD']._serialized_end=401
+  _globals['_GRADE']._serialized_start=403
+  _globals['_GRADE']._serialized_end=460
+  _globals['_AICRITERIONGRADE']._serialized_start=463
+  _globals['_AICRITERIONGRADE']._serialized_end=600
+  _globals['_AIINFERREDCRITERIONGRADE']._serialized_start=603
+  _globals['_AIINFERREDCRITERIONGRADE']._serialized_end=850
+  _globals['_INSTRUCTORCRITERIONGRADE']._serialized_start=853
+  _globals['_INSTRUCTORCRITERIONGRADE']._serialized_end=1019
+  _globals['_INSTRUCTOROVERRIDECRITERIONGRADE']._serialized_start=1022
+  _globals['_INSTRUCTOROVERRIDECRITERIONGRADE']._serialized_end=1243
+  _globals['_CRITERIONGRADEEMBEDDING']._serialized_start=1245
+  _globals['_CRITERIONGRADEEMBEDDING']._serialized_end=1372
+  _globals['_INSTRUCTORSUBMISSIONGRADEAPPROVAL']._serialized_start=1375
+  _globals['_INSTRUCTORSUBMISSIONGRADEAPPROVAL']._serialized_end=1563
 # @@protoc_insertion_point(module_scope)

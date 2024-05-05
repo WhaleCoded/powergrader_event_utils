@@ -70,8 +70,6 @@ class RubricCriterion(ProtoWrapper):
     def __init__(
         self, name: Optional[str] = None, levels: Optional[List[CriterionLevel]] = None
     ) -> None:
-        if len(levels) < 2:
-            raise ValueError("RubricCriterion must have at least two levels")
         if not all(isinstance(level, CriterionLevel) for level in levels):
             raise ValueError("RubricCriterion levels must be CriterionLevel")
 

@@ -8,6 +8,7 @@ import "publish.proto";
 import "relationship.proto";
 import "submission.proto";
 import "user.proto";
+import "rag.proto";
 
 message Retry {
     uint32 retry_number = 1;
@@ -35,18 +36,32 @@ message Retry {
         publish.RegisterSubmissionPublicUUID register_submission_public_uuid = 22;
         publish.PublishedToLMS published_to_lms = 23;
         publish.PublishedGradeToLMS published_grade_to_lms = 24;
-        relationship.AssignmentAddedToCourse assignment_added_to_course = 25;
-        relationship.AssignmentRemovedFromCourse assignment_removed_from_course = 26;
-        relationship.StudentAddedToSection student_added_to_section = 27;
-        relationship.StudentRemovedFromSection student_removed_from_section = 28;
-        relationship.InstructorAddedToCourse instructor_added_to_course = 29;
-        relationship.InstructorRemovedFromCourse instructor_removed_from_course = 30;
-        submission.Submission submission = 31;
-        submission.SubmissionFileGroup submission_file_group = 32;
-        user.Student student = 33;
-        user.Instructor instructor = 34;
+        rag.DocumentSource document_source = 25;
+        rag.Document document = 26;
+        rag.RAGDivisionStarted rag_division_started = 27;
+        rag.DividedDocument divided_document = 28;
+        rag.DocumentSummarizationStarted document_summarization_started = 29;
+        rag.SummarizedDocument summarized_document = 30;
+        rag.DocumentEmbeddingStarted document_embedding_started = 31;
+        rag.EmbeddedDocument embedded_document = 32;
+        rag.RegisterAssignmentInstruction register_assignment_instruction = 33;
+        rag.AssignmentInstruction assignment_instruction = 34;
+        rag.RegisterCriterionInstruction register_criterion_instruction = 35;
+        rag.CriterionInstruction criterion_instruction = 36;
+        rag.InvalidateInstruction invalidate_instruction = 37;
+        rag.FlowLog flow_log = 38;
+        relationship.AssignmentAddedToCourse assignment_added_to_course = 39;
+        relationship.AssignmentRemovedFromCourse assignment_removed_from_course = 40;
+        relationship.StudentAddedToSection student_added_to_section = 41;
+        relationship.StudentRemovedFromSection student_removed_from_section = 42;
+        relationship.InstructorAddedToCourse instructor_added_to_course = 43;
+        relationship.InstructorRemovedFromCourse instructor_removed_from_course = 44;
+        submission.Submission submission = 45;
+        submission.SubmissionFileGroup submission_file_group = 46;
+        user.Student student = 47;
+        user.Instructor instructor = 48;
     }
-    string instance_name = 35;
+    string instance_name = 49;
 }
 
 message DeadLetter {
@@ -75,15 +90,29 @@ message DeadLetter {
         publish.RegisterSubmissionPublicUUID register_submission_public_uuid = 22;
         publish.PublishedToLMS published_to_lms = 23;
         publish.PublishedGradeToLMS published_grade_to_lms = 24;
-        relationship.AssignmentAddedToCourse assignment_added_to_course = 25;
-        relationship.AssignmentRemovedFromCourse assignment_removed_from_course = 26;
-        relationship.StudentAddedToSection student_added_to_section = 27;
-        relationship.StudentRemovedFromSection student_removed_from_section = 28;
-        relationship.InstructorAddedToCourse instructor_added_to_course = 29;
-        relationship.InstructorRemovedFromCourse instructor_removed_from_course = 30;
-        submission.Submission submission = 31;
-        submission.SubmissionFileGroup submission_file_group = 32;
-        user.Student student = 33;
-        user.Instructor instructor = 34;
+        rag.DocumentSource document_source = 25;
+        rag.Document document = 26;
+        rag.RAGDivisionStarted rag_division_started = 27;
+        rag.DividedDocument divided_document = 28;
+        rag.DocumentSummarizationStarted document_summarization_started = 29;
+        rag.SummarizedDocument summarized_document = 30;
+        rag.DocumentEmbeddingStarted document_embedding_started = 31;
+        rag.EmbeddedDocument embedded_document = 32;
+        rag.RegisterAssignmentInstruction register_assignment_instruction = 33;
+        rag.AssignmentInstruction assignment_instruction = 34;
+        rag.RegisterCriterionInstruction register_criterion_instruction = 35;
+        rag.CriterionInstruction criterion_instruction = 36;
+        rag.InvalidateInstruction invalidate_instruction = 37;
+        rag.FlowLog flow_log = 38;
+        relationship.AssignmentAddedToCourse assignment_added_to_course = 39;
+        relationship.AssignmentRemovedFromCourse assignment_removed_from_course = 40;
+        relationship.StudentAddedToSection student_added_to_section = 41;
+        relationship.StudentRemovedFromSection student_removed_from_section = 42;
+        relationship.InstructorAddedToCourse instructor_added_to_course = 43;
+        relationship.InstructorRemovedFromCourse instructor_removed_from_course = 44;
+        submission.Submission submission = 45;
+        submission.SubmissionFileGroup submission_file_group = 46;
+        user.Student student = 47;
+        user.Instructor instructor = 48;
     }
 }

@@ -6,6 +6,7 @@ from powergrader_event_utils.events.event import (
     generate_event_timestamp,
 )
 from powergrader_event_utils.events.proto_events.grade_pb2 import (
+    InstructionInfo as InstructionInfoProto,
     AICriterionGradingStarted,
     GradingMethod as GradingMethodProto,
     Grade as GradeProto,
@@ -17,6 +18,22 @@ from powergrader_event_utils.events.proto_events.grade_pb2 import (
     InstructorSubmissionGradeApproval,
 )
 from powergrader_event_utils.events.proto import ProtoWrapper
+
+
+class InstructionInfo(ProtoWrapper):
+    proto_type = InstructionInfoProto
+
+    assignment_instruction_version_uuids: List[str]
+    criterion_instruction_version_uuids: List[str]
+
+    def __init__(
+        self,
+        assignment_instruction_version_uuids: List[str],
+        criterion_instruction_version_uuids: List[str],
+    ) -> None:
+        super().__init__()
+        self.assignment_instruction_version_uuids = assignment_instruction_version_uuids
+        self.criterion_instruction_version_uuids = criterion_instruction_version_uuids
 
 
 class AICriterionGradingStartedEvent(ProtoPowerGraderEvent):
@@ -32,6 +49,7 @@ class AICriterionGradingStartedEvent(ProtoPowerGraderEvent):
         self,
         criterion_uuid: Optional[str] = None,
         submission_version_uuid: Optional[str] = None,
+        instruction_info: Optional[InstructionInfo] = None,
         time_started: Optional[int] = None,
     ) -> None:
         super().__init__()
@@ -41,6 +59,7 @@ class AICriterionGradingStartedEvent(ProtoPowerGraderEvent):
         if time_started is None:
             time_started = generate_event_timestamp()
         self.time_started = time_started
+        self.instruction_info = instruction_info
 
 
 class GradingMethodEvent(ProtoPowerGraderEvent):
@@ -68,12 +87,12 @@ class GradingMethodEvent(ProtoPowerGraderEvent):
 class Grade(ProtoWrapper):
     proto_type = GradeProto
 
-    score: int
+    score: float
     assessment: str
 
     def __init__(
         self,
-        score: int,
+        score: float,
         assessment: str,
     ) -> None:
         super().__init__()
