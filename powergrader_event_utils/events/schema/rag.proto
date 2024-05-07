@@ -78,7 +78,7 @@ message DividedDocument {
 message Code {
     string uuid = 1;
     string parent_uuid = 2;
-    repeated string child_uuids = 3;
+    
 }
 
 message CodeBlock {
@@ -90,39 +90,39 @@ message CodeBlock {
 message List {
     string uuid = 1;
     string parent_uuid = 2;
-    repeated string child_uuids = 3;
+    
 }
 
 message Markdown {
     string uuid = 1;
     string parent_uuid = 2;
-    repeated string child_uuids = 3;
+    
 }
 
 message MarkdownSection {
     string uuid = 1;
     string parent_uuid = 2;
-    repeated string child_uuids = 3;
+    
     string header = 4;
 }
 
 message PythonCode {
     string uuid = 1;
     string parent_uuid = 2;
-    repeated string child_uuids = 3;
+    
 }
 
 message PythonFunction {
     string uuid = 1;
     string parent_uuid = 2;
-    repeated string child_uuids = 3;
+    
     string function_definition = 4;
 }
 
 message PythonClass {
     string uuid = 1;
     string parent_uuid = 2;
-    repeated string child_uuids = 3;
+    
     string class_definition = 4;
 }
 
@@ -135,13 +135,13 @@ message PythonCodePassage {
 message Text {
     string uuid = 1;
     string parent_uuid = 2;
-    repeated string child_uuids = 3;
+    
 }
 
 message Paragraph {
     string uuid = 1;
     string parent_uuid = 2;
-    repeated string child_uuids = 3;
+    
 }
 
 message TextPassage {
@@ -210,14 +210,14 @@ message AssignmentInstruction {
     string public_uuid = 1;
     string version_uuid = 2;
     string content = 3;
-    string version_timestamp = 4;
+    uint64 version_timestamp = 4;
 }
 
 message CriterionInstruction {
     string public_uuid = 1;
     string version_uuid = 2;
     string content = 3;
-    string version_timestamp = 4;
+    uint64 version_timestamp = 4;
 }
 
 
@@ -242,12 +242,12 @@ message InvalidateInstruction {
 message FlowNode {
     string uuid = 1;
     string name = 2;
-    repeated FlowNode child_nodes = 3;
+    string content = 3;
 }
 
 message FlowLog {
     string uuid = 1;
     string name = 2;
     string ai_grading_started_uuid = 3;
-    FlowNode root_node = 4;
+    repeated FlowNode nodes = 4;
 }

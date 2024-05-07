@@ -57,7 +57,7 @@ class EventType(StrEnum):
     DOCUMENT = "DocumentEvent"
     RAG_DIVISION_STARTED = "RAGDivisionStartedEvent"
     DIVIDED_DOCUMENT = "DividedDocumentEvent"
-    DOCUMENT_SUMMARIZATION_EVENT = "DocumentSummarizationEvent"
+    DOCUMENT_SUMMARIZATION_STARTED = "DocumentSummarizationStartedEvent"
     SUMMARIZED_DOCUMENT = "SummarizedDocumentEvent"
     DOCUMENT_EMBEDDING_STARTED = "DocumentEmbeddingStartedEvent"
     EMBEDDED_DOCUMENT = "EmbeddedDocumentEvent"

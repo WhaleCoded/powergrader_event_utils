@@ -5,10 +5,10 @@ import "assignment.proto";
 import "course.proto";
 import "grade.proto";
 import "publish.proto";
+import "rag.proto";
 import "relationship.proto";
 import "submission.proto";
 import "user.proto";
-import "rag.proto";
 
 message Retry {
     uint32 retry_number = 1;

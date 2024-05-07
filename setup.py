@@ -13,7 +13,7 @@ if __name__ == "__main__":
         long_description_content_type="text/markdown",
         author="WhaleCoded",
         author_email="d.hutchison@apporto.com",
-        python_requires=">=3.12",
+        python_requires=">=3.11",
         packages=find_packages(),
         install_requires=["kafka-python", "protobuf", "strenum", "confluent-kafka"],
         extras_require={"dev": ["pytest", "black"]},

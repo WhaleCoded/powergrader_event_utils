@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:experimental
 # vim: set ft=dockerfile expandtab ts=4 sw=4:
 
-FROM python:3.12 AS base
+FROM python:3.11 AS base
 
 
 RUN export DEBIAN_FRONTEND=noninteractive

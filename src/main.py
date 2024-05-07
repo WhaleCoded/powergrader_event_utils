@@ -14,6 +14,8 @@ from powergrader_event_utils.testing import (
 )
 import time
 
+import rag_validation
+
 JSONL_FILE_PATH = "./data/30_median_smart_benchmark/trial_reports.jsonl"
 
 
@@ -109,6 +111,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Example script with a boolean flag.")
     parser.add_argument("-s", action="store_true", help="Send events one at a time")
     parser.add_argument("-d", action="store_true", help="Send duplicate events")
+    parser.add_argument("--rag", action="store_true", help="Test rag event creation")
     parser.add_argument(
         "--realistic", action="store_true", help="Send realistic events from JSONL file"
     )
@@ -131,6 +134,12 @@ if __name__ == "__main__":
     RANDOM = args.random
     STRATIFIED = args.stratified
     REVERSE = args.reverse
+    RAG = args.rag
+
+    if RAG:
+        print("Creating the RAG events")
+        rag_validation.create_all_rag_events()
+        sys.exit(0)
 
     MAIN_CFG_PATH = os.getenv("CLUSTER_CFG_FILE", "/srv/config.yaml")
     config_valid = True

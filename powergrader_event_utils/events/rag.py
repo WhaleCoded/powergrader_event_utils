@@ -64,7 +64,7 @@ class FileType(ProtoEnumWrapper):
     PYTHON = 3
 
 
-class DocumentStoreEvent(ProtoPowerGraderEvent):
+class DocumentSourceEvent(ProtoPowerGraderEvent):
     key_field_name: str = "public_uuid"
     proto_type = DocumentSource
 
@@ -192,18 +192,14 @@ class Code(ProtoWrapper, Section):
 
     uuid: str
     parent_uuid: str
-    child_uuids: List[str]
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
         parent_uuid: Optional[str] = None,
-        child_uuids: Optional[List[str]] = None,
     ) -> None:
         super().__init__()
-        self.uuid = uuid
+        self.uuid = generate_event_uuid(self.__class__.__name__)
         self.parent_uuid = parent_uuid
-        self.child_uuids = child_uuids
 
 
 class CodeBlock(ProtoWrapper, Passage):
@@ -215,12 +211,11 @@ class CodeBlock(ProtoWrapper, Passage):
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
         parent_uuid: Optional[str] = None,
         content: Optional[str] = None,
     ) -> None:
         super().__init__()
-        self.uuid = uuid
+        self.uuid = generate_event_uuid(self.__class__.__name__)
         self.parent_uuid = parent_uuid
         self.content = content
 
@@ -230,18 +225,14 @@ class ListDivision(ProtoWrapper, Section):
 
     uuid: str
     parent_uuid: str
-    child_uuids: List[str]
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
         parent_uuid: Optional[str] = None,
-        child_uuids: Optional[List[str]] = None,
     ) -> None:
         super().__init__()
-        self.uuid = uuid
+        self.uuid = generate_event_uuid(self.__class__.__name__)
         self.parent_uuid = parent_uuid
-        self.child_uuids = child_uuids
 
 
 class Markdown(ProtoWrapper, Section):
@@ -249,18 +240,14 @@ class Markdown(ProtoWrapper, Section):
 
     uuid: str
     parent_uuid: str
-    child_uuids: List[str]
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
         parent_uuid: Optional[str] = None,
-        child_uuids: Optional[List[str]] = None,
     ) -> None:
         super().__init__()
-        self.uuid = uuid
+        self.uuid = generate_event_uuid(self.__class__.__name__)
         self.parent_uuid = parent_uuid
-        self.child_uuids = child_uuids
 
 
 class MarkdownSection(ProtoWrapper, Section):
@@ -268,20 +255,16 @@ class MarkdownSection(ProtoWrapper, Section):
 
     uuid: str
     parent_uuid: str
-    child_uuids: List[str]
     header: str
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
-        parent_uuid: Optional[str] = None,
-        child_uuids: Optional[List[str]] = None,
         header: Optional[str] = None,
+        parent_uuid: Optional[str] = None,
     ) -> None:
         super().__init__()
-        self.uuid = uuid
+        self.uuid = generate_event_uuid(self.__class__.__name__)
         self.parent_uuid = parent_uuid
-        self.child_uuids = child_uuids
         self.header = header
 
 
@@ -290,18 +273,14 @@ class PythonCode(ProtoWrapper, Section):
 
     uuid: str
     parent_uuid: str
-    child_uuids: List[str]
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
         parent_uuid: Optional[str] = None,
-        child_uuids: Optional[List[str]] = None,
     ) -> None:
         super().__init__()
-        self.uuid = uuid
+        self.uuid = generate_event_uuid(self.__class__.__name__)
         self.parent_uuid = parent_uuid
-        self.child_uuids = child_uuids
 
 
 class PythonFunction(ProtoWrapper, Section):
@@ -309,20 +288,16 @@ class PythonFunction(ProtoWrapper, Section):
 
     uuid: str
     parent_uuid: str
-    child_uuids: List[str]
     function_definition: str
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
-        parent_uuid: Optional[str] = None,
-        child_uuids: Optional[List[str]] = None,
         function_definition: Optional[str] = None,
+        parent_uuid: Optional[str] = None,
     ) -> None:
         super().__init__()
-        self.uuid = uuid
+        self.uuid = generate_event_uuid(self.__class__.__name__)
         self.parent_uuid = parent_uuid
-        self.child_uuids = child_uuids
         self.function_definition = function_definition
 
 
@@ -331,20 +306,16 @@ class PythonClass(ProtoWrapper, Section):
 
     uuid: str
     parent_uuid: str
-    child_uuids: List[str]
     class_definition: str
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
-        parent_uuid: Optional[str] = None,
-        child_uuids: Optional[List[str]] = None,
         class_definition: Optional[str] = None,
+        parent_uuid: Optional[str] = None,
     ) -> None:
         super().__init__()
-        self.uuid = uuid
+        self.uuid = generate_event_uuid(self.__class__.__name__)
         self.parent_uuid = parent_uuid
-        self.child_uuids = child_uuids
         self.class_definition = class_definition
 
 
@@ -357,12 +328,11 @@ class PythonCodePassage(ProtoWrapper, Passage):
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
-        parent_uuid: Optional[str] = None,
         content: Optional[str] = None,
+        parent_uuid: Optional[str] = None,
     ) -> None:
         super().__init__()
-        self.uuid = uuid
+        self.uuid = generate_event_uuid(self.__class__.__name__)
         self.parent_uuid = parent_uuid
         self.content = content
 
@@ -372,18 +342,14 @@ class Text(ProtoWrapper, Section):
 
     uuid: str
     parent_uuid: str
-    child_uuids: List[str]
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
         parent_uuid: Optional[str] = None,
-        child_uuids: Optional[List[str]] = None,
     ) -> None:
         super().__init__()
-        self.uuid = uuid
+        self.uuid = generate_event_uuid(self.__class__.__name__)
         self.parent_uuid = parent_uuid
-        self.child_uuids = child_uuids
 
 
 class Paragraph(ProtoWrapper, Section):
@@ -395,12 +361,11 @@ class Paragraph(ProtoWrapper, Section):
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
-        parent_uuid: Optional[str] = None,
         child_uuids: Optional[List[str]] = None,
+        parent_uuid: Optional[str] = None,
     ) -> None:
         super().__init__()
-        self.uuid = uuid
+        self.uuid = generate_event_uuid(self.__class__.__name__)
         self.parent_uuid = parent_uuid
         self.child_uuids = child_uuids
 
@@ -414,12 +379,11 @@ class TextPassage(ProtoWrapper, Passage):
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
-        parent_uuid: Optional[str] = None,
         content: Optional[str] = None,
+        parent_uuid: Optional[str] = None,
     ) -> None:
         super().__init__()
-        self.uuid = uuid
+        self.uuid = generate_event_uuid(self.__class__.__name__)
         self.parent_uuid = parent_uuid
         self.content = content
 
@@ -526,12 +490,11 @@ class DivisionSummary(ProtoWrapper):
     def __init__(
         self,
         division_uuid: Optional[str] = None,
-        version_uuid: Optional[str] = None,
         summary: Optional[str] = None,
     ) -> None:
         super().__init__()
         self.division_uuid = division_uuid
-        self.version_uuid = version_uuid
+        self.version_uuid = generate_event_uuid(self.__class__.__name__)
         self.summary = summary
 
 
@@ -769,18 +732,21 @@ class FlowNode(ProtoWrapper):
 
     uuid: str
     parent_uuid: str
+    content: str
     child_nodes: List[Self]
 
     def __init__(
         self,
-        uuid: Optional[str] = None,
+        content: Optional[str] = None,
         parent_uuid: Optional[str] = None,
-        child_nodes: Optional[List[Self]] = None,
+        uuid: Optional[str] = None,
     ) -> None:
         super().__init__()
+        if uuid is None:
+            uuid = generate_event_uuid(self.__class__.__name__)
         self.uuid = uuid
         self.parent_uuid = parent_uuid
-        self.child_nodes = child_nodes
+        self.content = content
 
 
 class FlowLogEvent(ProtoPowerGraderEvent):
@@ -790,13 +756,13 @@ class FlowLogEvent(ProtoPowerGraderEvent):
     uuid: str
     name: str
     ai_grading_started_uuid: str
-    root_node: FlowNode
+    nodes: List[FlowNode]
 
     def __init__(
         self,
         name: Optional[str] = None,
         ai_grading_started_uuid: Optional[str] = None,
-        root_node: Optional[FlowNode] = None,
+        nodes: Optional[List[FlowNode]] = None,
         uuid: Optional[str] = None,
     ) -> None:
         super().__init__()
@@ -806,4 +772,4 @@ class FlowLogEvent(ProtoPowerGraderEvent):
         self.uuid = uuid
         self.name = name
         self.ai_grading_started_uuid = ai_grading_started_uuid
-        self.root_node = root_node
+        self.nodes = nodes
