@@ -31,7 +31,7 @@ message Document {
     string source_public_uuid = 3;
     string name = 4;
     string content = 5;
-    FileType type = 6;
+    FileType file_type = 6;
     uint64 version_timestamp = 7;
 }
 

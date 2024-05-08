@@ -1,3 +1,5 @@
+import time
+
 from powergrader_event_utils.events.rag import *
 
 
@@ -61,3 +63,27 @@ def create_all_rag_events():
     )
     assert isinstance(flow_log, FlowLogEvent)
     assert len(flow_log.nodes) == 3
+
+
+def create_and_send_rag_events() -> List[ProtoPowerGraderEvent]:
+    events_to_send = []
+
+    doc_source_event = DocumentSourceEvent(name="temp", scope_type=ScopeType.ORG_SCOPE)
+    events_to_send.append(doc_source_event)
+    time.sleep(0.1)
+    doc_source_v_2 = DocumentSourceEvent(
+        name="python std",
+        scope_type=ScopeType.ALL_SCOPE,
+        public_uuid=doc_source_event.public_uuid,
+    )
+    events_to_send.append(doc_source_v_2)
+
+    doc_event = DocumentEvent(
+        doc_source_event.public_uuid,
+        "test.py",
+        FileType.PYTHON,
+        "print('hello world')\n",
+    )
+    events_to_send.append(doc_event)
+
+    return events_to_send

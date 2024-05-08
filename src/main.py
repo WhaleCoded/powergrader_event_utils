@@ -136,11 +136,6 @@ if __name__ == "__main__":
     REVERSE = args.reverse
     RAG = args.rag
 
-    if RAG:
-        print("Creating the RAG events")
-        rag_validation.create_all_rag_events()
-        sys.exit(0)
-
     MAIN_CFG_PATH = os.getenv("CLUSTER_CFG_FILE", "/srv/config.yaml")
     config_valid = True
     with open(MAIN_CFG_PATH, "r") as f:
@@ -158,6 +153,9 @@ if __name__ == "__main__":
     if REALISTIC:
         print(f"Sending realistic events from {JSONL_FILE_PATH}")
         events_to_send = create_realistic_events_from_jsonl_test_output(JSONL_FILE_PATH)
+    elif RAG:
+        print("Sending RAG events")
+        events_to_send = rag_validation.create_and_send_rag_events()
 
     if DUPLICATE:
         print("Sending duplicate events")
