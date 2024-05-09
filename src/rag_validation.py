@@ -1,4 +1,5 @@
 import time
+from uuid import uuid4
 
 from powergrader_event_utils.events.rag import *
 
@@ -85,5 +86,65 @@ def create_and_send_rag_events() -> List[ProtoPowerGraderEvent]:
         "print('hello world')\n",
     )
     events_to_send.append(doc_event)
+
+    rag_div_started = RAGDivisionStartedEvent(
+        doc_event.version_uuid, "tanners best", ContentType.DOCUMENT
+    )
+    events_to_send.append(rag_div_started)
+
+    python_sec = PythonClass("class doThing:\n    def __init__(self):\n        pass\n")
+    python_c = PythonCodePassage("def doThing():\n    pass\n", python_sec.uuid)
+    assert isinstance(python_sec, Section)
+    assert isinstance(python_c, Passage)
+
+    doc_divided = DividedDocumentEvent(
+        rag_div_started.uuid, [RAGDivision(python_sec), RAGDivision(python_c)]
+    )
+    events_to_send.append(doc_divided)
+
+    summ_started = DocumentSummarizationStartedEvent(
+        doc_divided.rag_division_started_uuid, "tanners best summary"
+    )
+    events_to_send.append(summ_started)
+
+    div_sum = DivisionSummary(python_sec.uuid, "This is about doing nothing")
+    sum_doc = SummarizedDocumentEvent(doc_divided.rag_division_started_uuid, [div_sum])
+    events_to_send.append(sum_doc)
+
+    embed_started = DocumentEmbeddingStartedEvent(
+        doc_divided.rag_division_started_uuid, "tanners best embedding"
+    )
+    events_to_send.append(embed_started)
+
+    embed = Embedding([0.0 for _ in range(100)])
+
+    pass_embed = PassageEmbedding(python_c.uuid, [embed])
+    embed_doc = EmbeddedDocumentEvent(embed_started.uuid, [pass_embed])
+    events_to_send.append(embed_doc)
+
+    reg_assign_inst = RegisterAssignmentInstructionEvent(str(uuid4()), str(uuid4()))
+    events_to_send.append(reg_assign_inst)
+
+    reg_crit_inst = RegisterCriterionInstructionEvent(
+        str(uuid4()), str(uuid4()), str(uuid4())
+    )
+    events_to_send.append(reg_crit_inst)
+
+    assign_inst = AssignmentInstructionEvent(
+        "do the ting good", reg_assign_inst.public_uuid
+    )
+    events_to_send.append(assign_inst)
+
+    crit_inst = CriterionInstructionEvent("do the ting good", reg_crit_inst.public_uuid)
+    events_to_send.append(crit_inst)
+
+    invalid_inst = InvalidateInstructionEvent(False, str(uuid4()))
+    events_to_send.append(invalid_inst)
+
+    root_node = FlowNode("root")
+    child_1 = FlowNode("child 1", root_node.uuid)
+
+    flow_log = FlowLogEvent("main flow log", str(uuid4()), [root_node, child_1])
+    events_to_send.append(flow_log)
 
     return events_to_send

@@ -44,6 +44,8 @@ from powergrader_event_utils.events.proto_events.rag_pb2 import (
 
 from powergrader_event_utils.events.proto import ProtoWrapper, ProtoEnumWrapper
 
+EMBEDDING_SIZE = 250
+
 
 class ScopeType(ProtoEnumWrapper):
     proto_type = ScopeTypeProto
