@@ -56,15 +56,17 @@ class Section:
     parent_uuid: str
     child_uuids: List[str]
 
-    def add_child(self, child_uuid: str) -> None:
+    def add_child(self, child: Union["Section", "Passage"]) -> None:
+        if not isinstance(child, Passage) and not isinstance(child, Section):
+            raise ValueError("Child must be a passage or section.")
         if isinstance(self, ProtoWrapper):
             self._ProtoWrapper__frozen = False
             current_child_uuids = self.child_uuids
-            current_child_uuids.append(child_uuid)
+            current_child_uuids.append(child.uuid)
             self.child_uuids = current_child_uuids
             self._ProtoWrapper__frozen = True
         else:
-            self.child_uuids.append(child_uuid)
+            self.child_uuids.append(child.uuid)
 
 
 class Passage:
@@ -332,5 +334,5 @@ if __name__ == "__main__":
     python_function = PythonCodePassage(
         content="def function():\n    pass", parent_uuid=python_code.uuid
     )
-    python_code.add_child(python_function.uuid)
+    python_code.add_child(python_function)
     print(python_code)
