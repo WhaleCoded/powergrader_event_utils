@@ -54,18 +54,22 @@ class EventType(StrEnum):
 
     # RAG events
     DOCUMENT_SOURCE = "DocumentSourceEvent"
-    DOCUMENT = "DocumentEvent"
-    RAG_DIVISION_STARTED = "RAGDivisionStartedEvent"
-    DIVIDED_DOCUMENT = "DividedDocumentEvent"
-    DOCUMENT_SUMMARIZATION_STARTED = "DocumentSummarizationStartedEvent"
-    SUMMARIZED_DOCUMENT = "SummarizedDocumentEvent"
-    DOCUMENT_EMBEDDING_STARTED = "DocumentEmbeddingStartedEvent"
-    EMBEDDED_DOCUMENT = "EmbeddedDocumentEvent"
+    SUPPORTING_DOCUMENT = "SupportingDocumentEvent"
+    RAG_CHUNKING_STARTED = "RAGChunkingStartedEvent"
+    DOCUMENT_CHUNKS = "DocumentChunksEvent"
+    DOCUMENT_CHUNK_SUMMARIZATION_STARTED = "DocumentChunkSummarizationStartedEvent"
+    DOCUMENT_CHUNK_SUMMARIES = "DocumentChunkSummariesEvent"
+    DOCUMENT_PASSAGE_EMBEDDING_STARTED = "DocumentPassageEmbeddingStartedEvent"
+    DOCUMENT_PASSAGE_EMBEDDINGS = "DocumentPassageEmbeddingsEvent"
+
+    # Instruction events
     REGISTER_ASSIGNMENT_INSTRUCTION = "RegisterAssignmentInstructionEvent"
     REGISTER_CRITERION_INSTRUCTION = "RegisterCriterionInstructionEvent"
     ASSIGNMENT_INSTRUCTION = "AssignmentInstructionEvent"
     CRITERION_INSTRUCTION = "CriterionInstructionEvent"
     INVALIDATE_INSTRUCTION = "InvalidateInstructionEvent"
+
+    # Flow logging events
     FLOW_LOG = "FlowLogEvent"
 
     # Relationship events
@@ -120,6 +124,8 @@ def get_kafka_topic_names_for_event_types(
     ]
 
 
+# TODO: Change this function name to reflect that it provides UUIDs for
+# things that are not events, as well.
 def generate_event_uuid(class_name: str) -> str:
     """
     Generates a unique event uuid for a given class name.

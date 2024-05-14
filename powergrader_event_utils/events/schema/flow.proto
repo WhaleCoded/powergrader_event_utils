@@ -1,0 +1,16 @@
+syntax = "proto3";
+package flow;
+
+// look at autograder logging flow.py
+message FlowNode {
+    string uuid = 1;
+    string name = 2;
+    string content = 3;
+}
+
+message FlowLog {
+    string uuid = 1;
+    string name = 2;
+    string ai_grading_started_uuid = 3;
+    repeated FlowNode nodes = 4;
+}

@@ -9,42 +9,21 @@ from powergrader_event_utils.events.proto_events.rag_pb2 import (
     DocumentSource,
     FileType as FileTypeProto,
     ScopeType as ScopeTypeProto,
-    Document,
+    SupportingDocument,
     ContentType as ContentTypeProto,
-    RAGDivisionStarted,
-    RAGDivision as RAGDivisionProto,
-    DividedDocument,
-    Code as CodeProto,
-    CodeBlock as CodeBlockProto,
-    List as ListProto,
-    Markdown as MarkdownProto,
-    MarkdownSection as MarkdownSectionProto,
-    PythonCode as PythonCodeProto,
-    PythonFunction as PythonFunctionProto,
-    PythonClass as PythonClassProto,
-    PythonCodePassage as PythonCodePassageProto,
-    Text as TextProto,
-    Paragraph as ParagraphProto,
-    TextPassage as TextPassageProto,
-    DocumentSummarizationStarted,
-    DivisionSummary as DivisionSummaryProto,
-    SummarizedDocument,
-    DocumentEmbeddingStarted,
+    RAGChunkingStarted,
+    DocumentChunkSummarizationStarted,
+    ChunkSummary as ChunkSummaryProto,
+    DocumentChunkSummaries,
+    DocumentPassageEmbeddingStarted,
     Embedding as EmbeddingProto,
+    DocumentChunks,
     PassageEmbedding as PassageEmbeddingProto,
-    EmbeddedDocument,
-    RegisterAssignmentInstruction,
-    RegisterCriterionInstruction,
-    AssignmentInstruction,
-    CriterionInstruction,
-    InvalidateInstruction,
-    FlowNode as FlowNodeProto,
-    FlowLog,
+    DocumentPassageEmbeddings,
 )
+import powergrader_event_utils.events.rag_chunks as rag_chunks
 
 from powergrader_event_utils.events.proto import ProtoWrapper, ProtoEnumWrapper
-
-EMBEDDING_SIZE = 250
 
 
 class ScopeType(ProtoEnumWrapper):
@@ -101,9 +80,11 @@ class DocumentSourceEvent(ProtoPowerGraderEvent):
         self.scope_type = scope_type
 
 
-class DocumentEvent(ProtoPowerGraderEvent):
+# TODO: Eventually, we need to have some way of specifying the scope of the document
+# e.g. is this global, or specific to a course or assignment?
+class SupportingDocumentEvent(ProtoPowerGraderEvent):
     key_field_name: str = "public_uuid"
-    proto_type = Document
+    proto_type = SupportingDocument
 
     public_uuid: str
     version_uuid: str
@@ -148,9 +129,9 @@ class ContentType(ProtoEnumWrapper):
     SUBMISSION = 3
 
 
-class RAGDivisionStartedEvent(ProtoPowerGraderEvent):
+class RAGChunkingStartedEvent(ProtoPowerGraderEvent):
     key_field_name: str = "uuid"
-    proto_type = RAGDivisionStarted
+    proto_type = RAGChunkingStarted
 
     uuid: str
     document_version_uuid: str
@@ -177,304 +158,49 @@ class RAGDivisionStartedEvent(ProtoPowerGraderEvent):
         self.start_timestamp = start_timestamp
 
 
-# Wrapper Classes for the different types of Document Divisions
-# Section and Passage are abstract classes that are not directly used
-class Section:
-    def __init__(self):
-        pass
-
-
-class Passage:
-    def __init__(self) -> None:
-        pass
-
-
-class Code(ProtoWrapper, Section):
-    proto_type = CodeProto
-
-    uuid: str
-    parent_uuid: str
-
-    def __init__(
-        self,
-        parent_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.parent_uuid = parent_uuid
-
-
-class CodeBlock(ProtoWrapper, Passage):
-    proto_type = CodeBlockProto
-
-    uuid: str
-    parent_uuid: str
-    content: str
-
-    def __init__(
-        self,
-        parent_uuid: Optional[str] = None,
-        content: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.parent_uuid = parent_uuid
-        self.content = content
-
-
-class ListDivision(ProtoWrapper, Section):
-    proto_type = ListProto
-
-    uuid: str
-    parent_uuid: str
-
-    def __init__(
-        self,
-        parent_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.parent_uuid = parent_uuid
-
-
-class Markdown(ProtoWrapper, Section):
-    proto_type = MarkdownProto
-
-    uuid: str
-    parent_uuid: str
-
-    def __init__(
-        self,
-        parent_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.parent_uuid = parent_uuid
-
-
-class MarkdownSection(ProtoWrapper, Section):
-    proto_type = MarkdownSectionProto
-
-    uuid: str
-    parent_uuid: str
-    header: str
-
-    def __init__(
-        self,
-        header: Optional[str] = None,
-        parent_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.parent_uuid = parent_uuid
-        self.header = header
-
-
-class PythonCode(ProtoWrapper, Section):
-    proto_type = PythonCodeProto
-
-    uuid: str
-    parent_uuid: str
-
-    def __init__(
-        self,
-        parent_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.parent_uuid = parent_uuid
-
-
-class PythonFunction(ProtoWrapper, Section):
-    proto_type = PythonFunctionProto
-
-    uuid: str
-    parent_uuid: str
-    function_definition: str
-
-    def __init__(
-        self,
-        function_definition: Optional[str] = None,
-        parent_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.parent_uuid = parent_uuid
-        self.function_definition = function_definition
-
-
-class PythonClass(ProtoWrapper, Section):
-    proto_type = PythonClassProto
-
-    uuid: str
-    parent_uuid: str
-    class_definition: str
-
-    def __init__(
-        self,
-        class_definition: Optional[str] = None,
-        parent_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.parent_uuid = parent_uuid
-        self.class_definition = class_definition
-
-
-class PythonCodePassage(ProtoWrapper, Passage):
-    proto_type = PythonCodePassageProto
-
-    uuid: str
-    parent_uuid: str
-    content: str
-
-    def __init__(
-        self,
-        content: Optional[str] = None,
-        parent_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.parent_uuid = parent_uuid
-        self.content = content
-
-
-class Text(ProtoWrapper, Section):
-    proto_type = TextProto
-
-    uuid: str
-    parent_uuid: str
-
-    def __init__(
-        self,
-        parent_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.parent_uuid = parent_uuid
-
-
-class Paragraph(ProtoWrapper, Section):
-    proto_type = ParagraphProto
-
-    uuid: str
-    parent_uuid: str
-    child_uuids: List[str]
-
-    def __init__(
-        self,
-        child_uuids: Optional[List[str]] = None,
-        parent_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.parent_uuid = parent_uuid
-        self.child_uuids = child_uuids
-
-
-class TextPassage(ProtoWrapper, Passage):
-    proto_type = TextPassageProto
-
-    uuid: str
-    parent_uuid: str
-    content: str
-
-    def __init__(
-        self,
-        content: Optional[str] = None,
-        parent_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.parent_uuid = parent_uuid
-        self.content = content
-
-
-class RAGDivision(ProtoWrapper):
-    proto_type = RAGDivisionProto
-
-    division: Union[
-        Code,
-        CodeBlock,
-        ListDivision,
-        Markdown,
-        MarkdownSection,
-        PythonCode,
-        PythonFunction,
-        PythonClass,
-        PythonCodePassage,
-        Text,
-        Paragraph,
-        TextPassage,
-    ]
-
-    def __init__(
-        self,
-        division: Optional[
-            Union[
-                Code,
-                CodeBlock,
-                ListDivision,
-                Markdown,
-                MarkdownSection,
-                PythonCode,
-                PythonFunction,
-                PythonClass,
-                PythonCodePassage,
-                Text,
-                Paragraph,
-                TextPassage,
-            ]
-        ] = None,
-    ) -> None:
-        super().__init__()
-        self.division = division
-
-
-class DividedDocumentEvent(ProtoPowerGraderEvent):
+class DocumentChunksEvent(ProtoPowerGraderEvent):
     key_field_name: str = "rag_division_started_uuid"
-    proto_type = DividedDocument
+    proto_type = DocumentChunks
 
-    rag_division_started_uuid: str
-    divisions: List[RAGDivision]
+    rag_chunking_started_uuid: str
+    document_root: rag_chunks.DocumentRoot
+    chunks: List[rag_chunks.Chunk]
     end_timestamp: int
 
     def __init__(
         self,
-        rag_division_started_uuid: Optional[str] = None,
-        divisions: Optional[List[RAGDivision]] = None,
+        rag_chunking_started_uuid: Optional[str] = None,
+        chunks: Optional[List[rag_chunks.Chunk]] = None,
         end_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
-
-        self.rag_division_started_uuid = rag_division_started_uuid
-        self.divisions = divisions
+        self.rag_chunking_started_uuid = rag_chunking_started_uuid
+        self.chunks = chunks
 
         if end_timestamp is None:
             end_timestamp = generate_event_timestamp()
         self.end_timestamp = end_timestamp
 
 
-# Summarization and Embedding Events
-class DocumentSummarizationStartedEvent(ProtoPowerGraderEvent):
+class DocumentChunkSummarizationStartedEvent(ProtoPowerGraderEvent):
     key_field_name: str = "divided_document_uuid"
-    proto_type = DocumentSummarizationStarted
+    proto_type = DocumentChunkSummarizationStarted
 
     uuid: str
-    divided_document_uuid: str
+    document_chunks_uuid: str
     summarization_method_info: str
     start_timestamp: int
 
     def __init__(
         self,
-        divided_document_uuid: Optional[str] = None,
+        document_chunks_uuid: Optional[str] = None,
         summarization_method_info: Optional[str] = None,
         start_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
 
         self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.divided_document_uuid = divided_document_uuid
+        self.document_chunks_uuid = document_chunks_uuid
         self.summarization_method_info = summarization_method_info
 
         if start_timestamp is None:
@@ -482,10 +208,10 @@ class DocumentSummarizationStartedEvent(ProtoPowerGraderEvent):
         self.start_timestamp = start_timestamp
 
 
-class DivisionSummary(ProtoWrapper):
-    proto_type = DivisionSummaryProto
+class ChunkSummary(ProtoWrapper):
+    proto_type = ChunkSummaryProto
 
-    division_uuid: str
+    chunk_uuid: str
     version_uuid: str
     summary: str
 
@@ -500,23 +226,25 @@ class DivisionSummary(ProtoWrapper):
         self.summary = summary
 
 
-class SummarizedDocumentEvent(ProtoPowerGraderEvent):
+class DocumentChunkSummariesEvent(ProtoPowerGraderEvent):
     key_field_name: str = "document_summarization_started_uuid"
-    proto_type = SummarizedDocument
+    proto_type = DocumentChunkSummaries
 
-    document_summarization_started_uuid: str
-    summaries: List[DivisionSummary]
+    document_chunk_summarization_started_uuid: str
+    summaries: List[ChunkSummary]
     end_timestamp: int
 
     def __init__(
         self,
-        document_summarization_started_uuid: Optional[str] = None,
-        summaries: Optional[List[DivisionSummary]] = None,
+        document_chunk_summarization_started_uuid: Optional[str] = None,
+        summaries: Optional[List[ChunkSummary]] = None,
         end_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
 
-        self.document_summarization_started_uuid = document_summarization_started_uuid
+        self.document_chunk_summarization_started_uuid = (
+            document_chunk_summarization_started_uuid
+        )
         self.summaries = summaries
 
         if end_timestamp is None:
@@ -524,25 +252,28 @@ class SummarizedDocumentEvent(ProtoPowerGraderEvent):
         self.end_timestamp = end_timestamp
 
 
-class DocumentEmbeddingStartedEvent(ProtoPowerGraderEvent):
+class DocumentPassageEmbeddingStartedEvent(ProtoPowerGraderEvent):
     key_field_name: str = "divided_document_uuid"
-    proto_type = DocumentEmbeddingStarted
+    proto_type = DocumentPassageEmbeddingStarted
 
     uuid: str
-    divided_document_uuid: str
+    document_chunks_uuid: str
+    document_chunk_summaries_uuid: str
     embedding_method_info: str
     start_timestamp: int
 
     def __init__(
         self,
-        divided_document_uuid: Optional[str] = None,
+        document_chunks_uuid: Optional[str] = None,
+        document_chunk_summaries_uuid: Optional[str] = None,
         embedding_method_info: Optional[str] = None,
         start_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
 
         self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.divided_document_uuid = divided_document_uuid
+        self.document_chunks_uuid = document_chunks_uuid
+        self.document_chunk_summaries_uuid = document_chunk_summaries_uuid
         self.embedding_method_info = embedding_method_info
 
         if start_timestamp is None:
@@ -572,206 +303,48 @@ class PassageEmbedding(ProtoWrapper):
     def __init__(
         self,
         passage_uuid: Optional[str] = None,
-        embedding: Optional[List[Embedding]] = None,
+        embeddings: Optional[List[Embedding]] = None,
     ) -> None:
         super().__init__()
         self.passage_uuid = passage_uuid
-        self.embedding = embedding
+        self.embeddings = embeddings
 
 
-class EmbeddedDocumentEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "document_embedding_started_uuid"
-    proto_type = EmbeddedDocument
+class DocumentPassageEmbeddingsEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "document_passage_embedding_started_uuid"
+    proto_type = DocumentPassageEmbeddings
 
-    document_embedding_started_uuid: str
-    embeddings: List[PassageEmbedding]
+    document_passage_embedding_started_uuid: str
+    passage_embeddings: List[PassageEmbedding]
     end_timestamp: int
 
     def __init__(
         self,
-        document_embedding_started_uuid: Optional[str] = None,
-        embeddings: Optional[List[PassageEmbedding]] = None,
+        document_passage_embedding_started_uuid: Optional[str] = None,
+        passage_embeddings: Optional[List[PassageEmbedding]] = None,
         end_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
 
-        self.document_embedding_started_uuid = document_embedding_started_uuid
-        self.embeddings = embeddings
+        self.document_passage_embedding_started_uuid = (
+            document_passage_embedding_started_uuid
+        )
+        self.passage_embeddings = passage_embeddings
 
         if end_timestamp is None:
             end_timestamp = generate_event_timestamp()
         self.end_timestamp = end_timestamp
 
 
-# Instruction Events
-class RegisterAssignmentInstructionEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "public_uuid"
-    proto_type = RegisterAssignmentInstruction
-
-    public_uuid: str
-    course_public_uuid: str
-    assignment_version_uuid: str
-
-    def __init__(
-        self,
-        course_public_uuid: Optional[str] = None,
-        assignment_version_uuid: Optional[str] = None,
-        public_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-
-        if public_uuid is None:
-            public_uuid = generate_event_uuid(self.__class__.__name__)
-        self.public_uuid = public_uuid
-
-        self.course_public_uuid = course_public_uuid
-        self.assignment_version_uuid = assignment_version_uuid
-
-
-class RegisterCriterionInstructionEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "public_uuid"
-    proto_type = RegisterCriterionInstruction
-
-    public_uuid: str
-    course_public_uuid: str
-    assignment_version_uuid: str
-    criterion_uuid: str
-
-    def __init__(
-        self,
-        course_public_uuid: Optional[str] = None,
-        assignment_version_uuid: Optional[str] = None,
-        criterion_uuid: Optional[str] = None,
-        public_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-
-        if public_uuid is None:
-            public_uuid = generate_event_uuid(self.__class__.__name__)
-        self.public_uuid = public_uuid
-
-        self.course_public_uuid = course_public_uuid
-        self.assignment_version_uuid = assignment_version_uuid
-        self.criterion_uuid = criterion_uuid
-
-
-class AssignmentInstructionEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "public_uuid"
-    proto_type = AssignmentInstruction
-
-    public_uuid: str
-    version_uuid: str
-    content: str
-    version_timestamp: int
-
-    def __init__(
-        self,
-        content: Optional[str] = None,
-        public_uuid: Optional[str] = None,
-        version_timestamp: Optional[int] = None,
-    ) -> None:
-        super().__init__()
-
-        if public_uuid is None:
-            public_uuid = generate_event_uuid(self.__class__.__name__)
-        self.public_uuid = public_uuid
-        self.version_uuid = generate_event_uuid(self.__class__.__name__)
-
-        if version_timestamp is None:
-            version_timestamp = generate_event_timestamp()
-        self.version_timestamp = version_timestamp
-        self.content = content
-
-
-class CriterionInstructionEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "public_uuid"
-    proto_type = CriterionInstruction
-
-    public_uuid: str
-    version_uuid: str
-    content: str
-    version_timestamp: int
-
-    def __init__(
-        self,
-        content: Optional[str] = None,
-        public_uuid: Optional[str] = None,
-        version_timestamp: Optional[int] = None,
-    ) -> None:
-        super().__init__()
-
-        if public_uuid is None:
-            public_uuid = generate_event_uuid(self.__class__.__name__)
-        self.public_uuid = public_uuid
-        self.version_uuid = generate_event_uuid(self.__class__.__name__)
-
-        if version_timestamp is None:
-            version_timestamp = generate_event_timestamp()
-        self.version_timestamp = version_timestamp
-        self.content = content
-
-
-class InvalidateInstructionEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "instruction_version_uuid"
-    proto_type = InvalidateInstruction
-
-    instruction_version_uuid: str
-    is_assignment_instruction: bool
-
-    def __init__(
-        self,
-        is_assignment_instruction: Optional[bool] = None,
-        instruction_version_uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-
-        self.instruction_version_uuid = instruction_version_uuid
-        self.is_assignment_instruction = is_assignment_instruction
-
-
-class FlowNode(ProtoWrapper):
-    proto_type = FlowNodeProto
-
-    uuid: str
-    parent_uuid: str
-    content: str
-    child_nodes: List[Self]
-
-    def __init__(
-        self,
-        content: Optional[str] = None,
-        parent_uuid: Optional[str] = None,
-        uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-        if uuid is None:
-            uuid = generate_event_uuid(self.__class__.__name__)
-        self.uuid = uuid
-        self.parent_uuid = parent_uuid
-        self.content = content
-
-
-class FlowLogEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "uuid"
-    proto_type = FlowLog
-
-    uuid: str
-    name: str
-    ai_grading_started_uuid: str
-    nodes: List[FlowNode]
-
-    def __init__(
-        self,
-        name: Optional[str] = None,
-        ai_grading_started_uuid: Optional[str] = None,
-        nodes: Optional[List[FlowNode]] = None,
-        uuid: Optional[str] = None,
-    ) -> None:
-        super().__init__()
-
-        if uuid is None:
-            uuid = generate_event_uuid(self.__class__.__name__)
-        self.uuid = uuid
-        self.name = name
-        self.ai_grading_started_uuid = ai_grading_started_uuid
-        self.nodes = nodes
+if __name__ == "__main__":
+    example_embedding = Embedding(embedding=[1.0, 2.0, 3.0])
+    document_embeddings = DocumentPassageEmbeddingsEvent(
+        document_passage_embedding_started_uuid="123",
+        passage_embeddings=[
+            PassageEmbedding(passage_uuid="456", embeddings=[example_embedding])
+        ],
+    )
+    print(document_embeddings)
+    serialized = document_embeddings.serialize()
+    print(serialized)
+    print(DocumentPassageEmbeddingsEvent.deserialize(serialized))

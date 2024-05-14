@@ -1,17 +1,13 @@
 syntax = "proto3";
 package grade;
 
-
-message InstructionInfo {
-    repeated string assignment_instruction_version_uuids = 1;
-    repeated string criterion_instruction_version_uuids = 2;
-}
+import "instructions.proto";
 
 message AICriterionGradingStarted {
     string version_uuid = 1;
     string criterion_uuid = 2;
     string submission_version_uuid = 3;
-    InstructionInfo instruction_info = 4;
+    instructions.InstructionInfo instruction_info = 4;
     uint64 time_started = 5;
 }
 

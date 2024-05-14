@@ -6,7 +6,6 @@ from powergrader_event_utils.events.event import (
     generate_event_timestamp,
 )
 from powergrader_event_utils.events.proto_events.grade_pb2 import (
-    InstructionInfo as InstructionInfoProto,
     AICriterionGradingStarted,
     GradingMethod as GradingMethodProto,
     Grade as GradeProto,
@@ -18,22 +17,7 @@ from powergrader_event_utils.events.proto_events.grade_pb2 import (
     InstructorSubmissionGradeApproval,
 )
 from powergrader_event_utils.events.proto import ProtoWrapper
-
-
-class InstructionInfo(ProtoWrapper):
-    proto_type = InstructionInfoProto
-
-    assignment_instruction_version_uuids: List[str]
-    criterion_instruction_version_uuids: List[str]
-
-    def __init__(
-        self,
-        assignment_instruction_version_uuids: List[str],
-        criterion_instruction_version_uuids: List[str],
-    ) -> None:
-        super().__init__()
-        self.assignment_instruction_version_uuids = assignment_instruction_version_uuids
-        self.criterion_instruction_version_uuids = criterion_instruction_version_uuids
+from powergrader_event_utils.events.instructions import InstructionInfo
 
 
 class AICriterionGradingStartedEvent(ProtoPowerGraderEvent):

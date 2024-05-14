@@ -1,0 +1,101 @@
+syntax = "proto3";
+package rag_chunks;
+
+message Chunk {
+    oneof chunk {
+        Code code = 1;
+        CodeBlock code_block = 2;
+        List list = 3;
+        Markdown markdown = 4;
+        MarkdownSection markdown_section = 5;
+        PythonCode python_code = 6;
+        PythonFunction python_function = 7;
+        PythonClass python_class = 8;
+        PythonCodePassage python_code_passage = 9;
+        Text text = 10;
+        Paragraph paragraph = 11;
+        TextPassage text_passage = 12;
+    }
+}
+
+message DocumentRoot {
+    string uuid = 1;
+    string name = 3;
+    string source_public_uuid = 4;
+    string content_uuid = 5;
+}
+
+message Code {
+    string uuid = 1;
+    string parent_uuid = 2;
+    repeated string child_uuids = 3;
+}
+
+message CodeBlock {
+    string uuid = 1;
+    string parent_uuid = 2;
+    string content = 3;
+}
+
+message List {
+    string uuid = 1;
+    string parent_uuid = 2;
+    repeated string child_uuids = 3;
+}
+
+message Markdown {
+    string uuid = 1;
+    string parent_uuid = 2;
+    repeated string child_uuids = 3;
+}
+
+message MarkdownSection {
+    string uuid = 1;
+    string parent_uuid = 2;
+    repeated string child_uuids = 3;
+    string header = 4;
+}
+
+message PythonCode {
+    string uuid = 1;
+    string parent_uuid = 2;
+    repeated string child_uuids = 3;
+}
+
+message PythonFunction {
+    string uuid = 1;
+    string parent_uuid = 2;
+    repeated string child_uuids = 3;
+    string function_definition = 4;
+}
+
+message PythonClass {
+    string uuid = 1;
+    string parent_uuid = 2;
+    repeated string child_uuids = 3;
+    string class_definition = 4;
+}
+
+message PythonCodePassage {
+    string uuid = 1;
+    string parent_uuid = 2;
+    string content = 3;
+}
+
+message Text {
+    string uuid = 1;
+    string parent_uuid = 2;
+    repeated string child_uuids = 3;
+}
+
+message Paragraph {
+    string uuid = 1;
+    string parent_uuid = 2;
+    repeated string child_uuids = 3;
+}
+
+message TextPassage {
+    string uuid = 1;
+    string parent_uuid = 2;
+    string content = 3;
+}

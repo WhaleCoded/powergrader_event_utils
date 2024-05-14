@@ -7,86 +7,50 @@ from google.protobuf import descriptor as _descriptor
 from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import symbol_database as _symbol_database
 from google.protobuf.internal import builder as _builder
+
 # @@protoc_insertion_point(imports)
 
 _sym_db = _symbol_database.Default()
 
 
+import proto_events.rag_chunks_pb2 as rag__chunks__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\trag.proto\x12\x03rag\"\x9c\x01\n\x0e\x44ocumentSource\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x12\n\nscope_uuid\x18\x04 \x01(\t\x12\"\n\nscope_type\x18\x05 \x01(\x0e\x32\x0e.rag.ScopeType\x12\x19\n\x11version_timestamp\x18\x08 \x01(\x04\"\xad\x01\n\x08\x44ocument\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x1a\n\x12source_public_uuid\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x05 \x01(\t\x12 \n\tfile_type\x18\x06 \x01(\x0e\x32\r.rag.FileType\x12\x19\n\x11version_timestamp\x18\x07 \x01(\x04\"\x9b\x01\n\x12RAGDivisionStarted\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x1d\n\x15\x64ocument_version_uuid\x18\x02 \x01(\t\x12\x17\n\x0frag_method_info\x18\x03 \x01(\t\x12&\n\x0c\x63ontent_type\x18\x04 \x01(\x0e\x32\x10.rag.ContentType\x12\x17\n\x0fstart_timestamp\x18\x05 \x01(\x04\"\xed\x03\n\x0bRAGDivision\x12\x19\n\x04\x63ode\x18\x01 \x01(\x0b\x32\t.rag.CodeH\x00\x12$\n\ncode_block\x18\x02 \x01(\x0b\x32\x0e.rag.CodeBlockH\x00\x12\x19\n\x04list\x18\x03 \x01(\x0b\x32\t.rag.ListH\x00\x12!\n\x08markdown\x18\x04 \x01(\x0b\x32\r.rag.MarkdownH\x00\x12\x30\n\x10markdown_section\x18\x05 \x01(\x0b\x32\x14.rag.MarkdownSectionH\x00\x12&\n\x0bpython_code\x18\x06 \x01(\x0b\x32\x0f.rag.PythonCodeH\x00\x12.\n\x0fpython_function\x18\x07 \x01(\x0b\x32\x13.rag.PythonFunctionH\x00\x12(\n\x0cpython_class\x18\x08 \x01(\x0b\x32\x10.rag.PythonClassH\x00\x12\x35\n\x13python_code_passage\x18\t \x01(\x0b\x32\x16.rag.PythonCodePassageH\x00\x12\x19\n\x04text\x18\n \x01(\x0b\x32\t.rag.TextH\x00\x12#\n\tparagraph\x18\x0b \x01(\x0b\x32\x0e.rag.ParagraphH\x00\x12(\n\x0ctext_passage\x18\x0c \x01(\x0b\x32\x10.rag.TextPassageH\x00\x42\n\n\x08\x64ivision\"p\n\x0f\x44ividedDocument\x12!\n\x19rag_division_started_uuid\x18\x01 \x01(\t\x12#\n\tdivisions\x18\x02 \x03(\x0b\x32\x10.rag.RAGDivision\x12\x15\n\rend_timestamp\x18\x03 \x01(\x04\")\n\x04\x43ode\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\"?\n\tCodeBlock\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\")\n\x04List\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\"-\n\x08Markdown\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\"D\n\x0fMarkdownSection\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x0e\n\x06header\x18\x04 \x01(\t\"/\n\nPythonCode\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\"P\n\x0ePythonFunction\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x1b\n\x13\x66unction_definition\x18\x04 \x01(\t\"J\n\x0bPythonClass\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x18\n\x10\x63lass_definition\x18\x04 \x01(\t\"G\n\x11PythonCodePassage\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\")\n\x04Text\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\".\n\tParagraph\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\"A\n\x0bTextPassage\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\"\x87\x01\n\x1c\x44ocumentSummarizationStarted\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x1d\n\x15\x64ivided_document_uuid\x18\x02 \x01(\t\x12!\n\x19summarization_method_info\x18\x03 \x01(\t\x12\x17\n\x0fstart_timestamp\x18\x04 \x01(\x04\"N\n\x0f\x44ivisionSummary\x12\x14\n\x0c\x64ivison_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x0f\n\x07summary\x18\x03 \x01(\t\"\x81\x01\n\x12SummarizedDocument\x12+\n#document_summarization_started_uuid\x18\x01 \x01(\t\x12\'\n\tsummaries\x18\x02 \x03(\x0b\x32\x14.rag.DivisionSummary\x12\x15\n\rend_timestamp\x18\x03 \x01(\x04\"\x7f\n\x18\x44ocumentEmbeddingStarted\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x1d\n\x15\x64ivided_document_uuid\x18\x02 \x01(\t\x12\x1d\n\x15\x65mbedding_method_info\x18\x03 \x01(\t\x12\x17\n\x0fstart_timestamp\x18\x04 \x01(\x04\"\x1e\n\tEmbedding\x12\x11\n\tembedding\x18\x01 \x03(\x02\"L\n\x10PassageEmbedding\x12\x14\n\x0cpassage_uuid\x18\x01 \x01(\t\x12\"\n\nembeddings\x18\x03 \x03(\x0b\x32\x0e.rag.Embedding\"}\n\x10\x45mbeddedDocument\x12\'\n\x1f\x64ocument_embedding_started_uuid\x18\x01 \x01(\t\x12)\n\nembeddings\x18\x02 \x03(\x0b\x32\x15.rag.PassageEmbedding\x12\x15\n\rend_timestamp\x18\x03 \x01(\x04\"q\n\x1dRegisterAssignmentInstruction\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x1a\n\x12\x63ourse_public_uuid\x18\x02 \x01(\t\x12\x1f\n\x17\x61ssignment_version_uuid\x18\x03 \x01(\t\"\x88\x01\n\x1cRegisterCriterionInstruction\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x1a\n\x12\x63ourse_public_uuid\x18\x02 \x01(\t\x12\x1f\n\x17\x61ssignment_version_uuid\x18\x03 \x01(\t\x12\x16\n\x0e\x63riterion_uuid\x18\x04 \x01(\t\"n\n\x15\x41ssignmentInstruction\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\x12\x19\n\x11version_timestamp\x18\x04 \x01(\x04\"m\n\x14\x43riterionInstruction\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\x12\x19\n\x11version_timestamp\x18\x04 \x01(\x04\"\x7f\n\x15InvalidateInstruction\x12 \n\x18instruction_version_uuid\x18\x01 \x01(\t\x12&\n\x19is_assignment_instruction\x18\x02 \x01(\x08H\x00\x88\x01\x01\x42\x1c\n\x1a_is_assignment_instruction\"7\n\x08\x46lowNode\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\"d\n\x07\x46lowLog\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x1f\n\x17\x61i_grading_started_uuid\x18\x03 \x01(\t\x12\x1c\n\x05nodes\x18\x04 \x03(\x0b\x32\r.rag.FlowNode*d\n\tScopeType\x12\x11\n\rUNKNOWN_SCOPE\x10\x00\x12\x14\n\x10\x41SSIGNMENT_SCOPE\x10\x01\x12\x10\n\x0c\x43OURSE_SCOPE\x10\x02\x12\r\n\tORG_SCOPE\x10\x03\x12\r\n\tALL_SCOPE\x10\x04*E\n\x08\x46ileType\x12\x15\n\x11UNKNOWN_FILE_TYPE\x10\x00\x12\x0c\n\x08MARKDOWN\x10\x01\x12\x08\n\x04TEXT\x10\x02\x12\n\n\x06PYTHON\x10\x03*O\n\x0b\x43ontentType\x12\x12\n\x0eUNKOWN_CONTENT\x10\x00\x12\x0c\n\x08\x44OCUMENT\x10\x01\x12\x0e\n\nASSIGNMENT\x10\x02\x12\x0e\n\nSUBMISSION\x10\x03\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
+    b'\n\trag.proto\x12\x03rag\x1a\x10rag_chunks.proto"\x9c\x01\n\x0e\x44ocumentSource\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x12\n\nscope_uuid\x18\x04 \x01(\t\x12"\n\nscope_type\x18\x05 \x01(\x0e\x32\x0e.rag.ScopeType\x12\x19\n\x11version_timestamp\x18\x08 \x01(\x04"\xb7\x01\n\x12SupportingDocument\x12\x13\n\x0bpublic_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x1a\n\x12source_public_uuid\x18\x03 \x01(\t\x12\x0c\n\x04name\x18\x04 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x05 \x01(\t\x12 \n\tfile_type\x18\x06 \x01(\x0e\x32\r.rag.FileType\x12\x19\n\x11version_timestamp\x18\x07 \x01(\x04"\x9b\x01\n\x12RAGChunkingStarted\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x1d\n\x15\x64ocument_version_uuid\x18\x02 \x01(\t\x12\x17\n\x0frag_method_info\x18\x03 \x01(\t\x12&\n\x0c\x63ontent_type\x18\x04 \x01(\x0e\x32\x10.rag.ContentType\x12\x17\n\x0fstart_timestamp\x18\x05 \x01(\x04"\x9e\x01\n\x0e\x44ocumentChunks\x12!\n\x19rag_chunking_started_uuid\x18\x01 \x01(\t\x12/\n\rdocument_root\x18\x02 \x01(\x0b\x32\x18.rag_chunks.DocumentRoot\x12!\n\x06\x63hunks\x18\x03 \x03(\x0b\x32\x11.rag_chunks.Chunk\x12\x15\n\rend_timestamp\x18\x04 \x01(\x04"\x8b\x01\n!DocumentChunkSummarizationStarted\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x1c\n\x14\x64ocument_chunks_uuid\x18\x02 \x01(\t\x12!\n\x19summarization_method_info\x18\x03 \x01(\t\x12\x17\n\x0fstart_timestamp\x18\x04 \x01(\x04"I\n\x0c\x43hunkSummary\x12\x12\n\nchunk_uuid\x18\x01 \x01(\t\x12\x14\n\x0cversion_uuid\x18\x02 \x01(\t\x12\x0f\n\x07summary\x18\x03 \x01(\t"\x8e\x01\n\x16\x44ocumentChunkSummaries\x12\x31\n)document_chunk_summarization_started_uuid\x18\x01 \x01(\t\x12*\n\x0f\x63hunk_summaries\x18\x02 \x03(\x0b\x32\x11.rag.ChunkSummary\x12\x15\n\rend_timestamp\x18\x03 \x01(\x04"\xac\x01\n\x1f\x44ocumentPassageEmbeddingStarted\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x1c\n\x14\x64ocument_chunks_uuid\x18\x02 \x01(\t\x12%\n\x1d\x64ocument_chunk_summaries_uuid\x18\x03 \x01(\t\x12\x1d\n\x15\x65mbedding_method_info\x18\x04 \x01(\t\x12\x17\n\x0fstart_timestamp\x18\x05 \x01(\x04"\x1e\n\tEmbedding\x12\x11\n\tembedding\x18\x01 \x03(\x02"L\n\x10PassageEmbedding\x12\x14\n\x0cpassage_uuid\x18\x01 \x01(\t\x12"\n\nembeddings\x18\x03 \x03(\x0b\x32\x0e.rag.Embedding"\x96\x01\n\x19\x44ocumentPassageEmbeddings\x12/\n\'document_passage_embedding_started_uuid\x18\x01 \x01(\t\x12\x31\n\x12passage_embeddings\x18\x02 \x03(\x0b\x32\x15.rag.PassageEmbedding\x12\x15\n\rend_timestamp\x18\x03 \x01(\x04*d\n\tScopeType\x12\x11\n\rUNKNOWN_SCOPE\x10\x00\x12\x14\n\x10\x41SSIGNMENT_SCOPE\x10\x01\x12\x10\n\x0c\x43OURSE_SCOPE\x10\x02\x12\r\n\tORG_SCOPE\x10\x03\x12\r\n\tALL_SCOPE\x10\x04*E\n\x08\x46ileType\x12\x15\n\x11UNKNOWN_FILE_TYPE\x10\x00\x12\x0c\n\x08MARKDOWN\x10\x01\x12\x08\n\x04TEXT\x10\x02\x12\n\n\x06PYTHON\x10\x03*Q\n\x0b\x43ontentType\x12\x12\n\x0eUNKOWN_CONTENT\x10\x00\x12\x0e\n\nSUPPORTING\x10\x01\x12\x0e\n\nASSIGNMENT\x10\x02\x12\x0e\n\nSUBMISSION\x10\x03\x62\x06proto3'
+)
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
-_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'rag_pb2', _globals)
+_builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, "rag_pb2", _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
-  DESCRIPTOR._options = None
-  _globals['_SCOPETYPE']._serialized_start=3308
-  _globals['_SCOPETYPE']._serialized_end=3408
-  _globals['_FILETYPE']._serialized_start=3410
-  _globals['_FILETYPE']._serialized_end=3479
-  _globals['_CONTENTTYPE']._serialized_start=3481
-  _globals['_CONTENTTYPE']._serialized_end=3560
-  _globals['_DOCUMENTSOURCE']._serialized_start=19
-  _globals['_DOCUMENTSOURCE']._serialized_end=175
-  _globals['_DOCUMENT']._serialized_start=178
-  _globals['_DOCUMENT']._serialized_end=351
-  _globals['_RAGDIVISIONSTARTED']._serialized_start=354
-  _globals['_RAGDIVISIONSTARTED']._serialized_end=509
-  _globals['_RAGDIVISION']._serialized_start=512
-  _globals['_RAGDIVISION']._serialized_end=1005
-  _globals['_DIVIDEDDOCUMENT']._serialized_start=1007
-  _globals['_DIVIDEDDOCUMENT']._serialized_end=1119
-  _globals['_CODE']._serialized_start=1121
-  _globals['_CODE']._serialized_end=1162
-  _globals['_CODEBLOCK']._serialized_start=1164
-  _globals['_CODEBLOCK']._serialized_end=1227
-  _globals['_LIST']._serialized_start=1229
-  _globals['_LIST']._serialized_end=1270
-  _globals['_MARKDOWN']._serialized_start=1272
-  _globals['_MARKDOWN']._serialized_end=1317
-  _globals['_MARKDOWNSECTION']._serialized_start=1319
-  _globals['_MARKDOWNSECTION']._serialized_end=1387
-  _globals['_PYTHONCODE']._serialized_start=1389
-  _globals['_PYTHONCODE']._serialized_end=1436
-  _globals['_PYTHONFUNCTION']._serialized_start=1438
-  _globals['_PYTHONFUNCTION']._serialized_end=1518
-  _globals['_PYTHONCLASS']._serialized_start=1520
-  _globals['_PYTHONCLASS']._serialized_end=1594
-  _globals['_PYTHONCODEPASSAGE']._serialized_start=1596
-  _globals['_PYTHONCODEPASSAGE']._serialized_end=1667
-  _globals['_TEXT']._serialized_start=1669
-  _globals['_TEXT']._serialized_end=1710
-  _globals['_PARAGRAPH']._serialized_start=1712
-  _globals['_PARAGRAPH']._serialized_end=1758
-  _globals['_TEXTPASSAGE']._serialized_start=1760
-  _globals['_TEXTPASSAGE']._serialized_end=1825
-  _globals['_DOCUMENTSUMMARIZATIONSTARTED']._serialized_start=1828
-  _globals['_DOCUMENTSUMMARIZATIONSTARTED']._serialized_end=1963
-  _globals['_DIVISIONSUMMARY']._serialized_start=1965
-  _globals['_DIVISIONSUMMARY']._serialized_end=2043
-  _globals['_SUMMARIZEDDOCUMENT']._serialized_start=2046
-  _globals['_SUMMARIZEDDOCUMENT']._serialized_end=2175
-  _globals['_DOCUMENTEMBEDDINGSTARTED']._serialized_start=2177
-  _globals['_DOCUMENTEMBEDDINGSTARTED']._serialized_end=2304
-  _globals['_EMBEDDING']._serialized_start=2306
-  _globals['_EMBEDDING']._serialized_end=2336
-  _globals['_PASSAGEEMBEDDING']._serialized_start=2338
-  _globals['_PASSAGEEMBEDDING']._serialized_end=2414
-  _globals['_EMBEDDEDDOCUMENT']._serialized_start=2416
-  _globals['_EMBEDDEDDOCUMENT']._serialized_end=2541
-  _globals['_REGISTERASSIGNMENTINSTRUCTION']._serialized_start=2543
-  _globals['_REGISTERASSIGNMENTINSTRUCTION']._serialized_end=2656
-  _globals['_REGISTERCRITERIONINSTRUCTION']._serialized_start=2659
-  _globals['_REGISTERCRITERIONINSTRUCTION']._serialized_end=2795
-  _globals['_ASSIGNMENTINSTRUCTION']._serialized_start=2797
-  _globals['_ASSIGNMENTINSTRUCTION']._serialized_end=2907
-  _globals['_CRITERIONINSTRUCTION']._serialized_start=2909
-  _globals['_CRITERIONINSTRUCTION']._serialized_end=3018
-  _globals['_INVALIDATEINSTRUCTION']._serialized_start=3020
-  _globals['_INVALIDATEINSTRUCTION']._serialized_end=3147
-  _globals['_FLOWNODE']._serialized_start=3149
-  _globals['_FLOWNODE']._serialized_end=3204
-  _globals['_FLOWLOG']._serialized_start=3206
-  _globals['_FLOWLOG']._serialized_end=3306
+    DESCRIPTOR._options = None
+    _globals["_SCOPETYPE"]._serialized_start = 1500
+    _globals["_SCOPETYPE"]._serialized_end = 1600
+    _globals["_FILETYPE"]._serialized_start = 1602
+    _globals["_FILETYPE"]._serialized_end = 1671
+    _globals["_CONTENTTYPE"]._serialized_start = 1673
+    _globals["_CONTENTTYPE"]._serialized_end = 1754
+    _globals["_DOCUMENTSOURCE"]._serialized_start = 37
+    _globals["_DOCUMENTSOURCE"]._serialized_end = 193
+    _globals["_SUPPORTINGDOCUMENT"]._serialized_start = 196
+    _globals["_SUPPORTINGDOCUMENT"]._serialized_end = 379
+    _globals["_RAGCHUNKINGSTARTED"]._serialized_start = 382
+    _globals["_RAGCHUNKINGSTARTED"]._serialized_end = 537
+    _globals["_DOCUMENTCHUNKS"]._serialized_start = 540
+    _globals["_DOCUMENTCHUNKS"]._serialized_end = 698
+    _globals["_DOCUMENTCHUNKSUMMARIZATIONSTARTED"]._serialized_start = 701
+    _globals["_DOCUMENTCHUNKSUMMARIZATIONSTARTED"]._serialized_end = 840
+    _globals["_CHUNKSUMMARY"]._serialized_start = 842
+    _globals["_CHUNKSUMMARY"]._serialized_end = 915
+    _globals["_DOCUMENTCHUNKSUMMARIES"]._serialized_start = 918
+    _globals["_DOCUMENTCHUNKSUMMARIES"]._serialized_end = 1060
+    _globals["_DOCUMENTPASSAGEEMBEDDINGSTARTED"]._serialized_start = 1063
+    _globals["_DOCUMENTPASSAGEEMBEDDINGSTARTED"]._serialized_end = 1235
+    _globals["_EMBEDDING"]._serialized_start = 1237
+    _globals["_EMBEDDING"]._serialized_end = 1267
+    _globals["_PASSAGEEMBEDDING"]._serialized_start = 1269
+    _globals["_PASSAGEEMBEDDING"]._serialized_end = 1345
+    _globals["_DOCUMENTPASSAGEEMBEDDINGS"]._serialized_start = 1348
+    _globals["_DOCUMENTPASSAGEEMBEDDINGS"]._serialized_end = 1498
 # @@protoc_insertion_point(module_scope)

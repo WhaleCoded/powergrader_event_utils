@@ -39,15 +39,15 @@ class ProtoWrapperMeta(type):
         PROTO_TO_PROTO_WRAPPER_MAP[proto_type] = cls
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:
-        try:
-            new_proto_wrapper_instance = super().__call__(*args, **kwds)
+        # try:
+        new_proto_wrapper_instance = super().__call__(*args, **kwds)
         # Remove some of the unnecessary stack trace by raising a new exception
-        except TypeError as e:
-            raise TypeError(f"{e}") from None
-        except ValueError as e:
-            raise ValueError(f"{e}") from None
-        except AttributeError as e:
-            raise AttributeError(f"{e}") from None
+        # except TypeError as e:
+        #     raise TypeError(f"{e}") from None
+        # except ValueError as e:
+        #     raise ValueError(f"{e}") from None
+        # except AttributeError as e:
+        #     raise AttributeError(f"{e}") from None
 
         new_proto_wrapper_instance._ProtoWrapper__frozen = True
         return new_proto_wrapper_instance
