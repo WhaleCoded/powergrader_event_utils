@@ -509,6 +509,9 @@ class ProtoWrapper(metaclass=ProtoWrapperMeta):
     def __hash__(self) -> int:
         return hash(self.proto.SerializeToString())
 
+    def serialize(self) -> bytes:
+        return self.proto.SerializeToString()
+
 
 def _get_proto_type_for_error_messages(
     proto_type: Any,
