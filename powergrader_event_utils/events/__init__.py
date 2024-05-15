@@ -111,6 +111,8 @@ from powergrader_event_utils.events.submission import (
     SubmissionEvent,
 )
 
+EMBEDDING_SIZE = 3072
+
 
 def convert_event_type_to_event_class_type(
     event_type: EventType,

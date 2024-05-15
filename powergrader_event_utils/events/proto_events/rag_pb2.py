@@ -13,7 +13,7 @@ from google.protobuf.internal import builder as _builder
 _sym_db = _symbol_database.Default()
 
 
-import proto_events.rag_chunks_pb2 as rag__chunks__pb2
+import powergrader_event_utils.events.proto_events.rag_chunks_pb2 as rag__chunks__pb2
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(

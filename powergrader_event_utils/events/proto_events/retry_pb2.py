@@ -13,16 +13,16 @@ from google.protobuf.internal import builder as _builder
 _sym_db = _symbol_database.Default()
 
 
-import proto_events.assignment_pb2 as assignment__pb2
-import proto_events.course_pb2 as course__pb2
-import proto_events.grade_pb2 as grade__pb2
-import proto_events.publish_pb2 as publish__pb2
-import proto_events.rag_pb2 as rag__pb2
-import proto_events.relationship_pb2 as relationship__pb2
-import proto_events.submission_pb2 as submission__pb2
-import proto_events.user_pb2 as user__pb2
-import proto_events.instructions_pb2 as instructions__pb2
-import proto_events.flow_pb2 as flow__pb2
+import powergrader_event_utils.events.proto_events.assignment_pb2 as assignment__pb2
+import powergrader_event_utils.events.proto_events.course_pb2 as course__pb2
+import powergrader_event_utils.events.proto_events.grade_pb2 as grade__pb2
+import powergrader_event_utils.events.proto_events.publish_pb2 as publish__pb2
+import powergrader_event_utils.events.proto_events.rag_pb2 as rag__pb2
+import powergrader_event_utils.events.proto_events.relationship_pb2 as relationship__pb2
+import powergrader_event_utils.events.proto_events.submission_pb2 as submission__pb2
+import powergrader_event_utils.events.proto_events.user_pb2 as user__pb2
+import powergrader_event_utils.events.proto_events.instructions_pb2 as instructions__pb2
+import powergrader_event_utils.events.proto_events.flow_pb2 as flow__pb2
 
 
 DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
