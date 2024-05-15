@@ -44,7 +44,7 @@ enum ContentType {
     SUBMISSION = 3;
 }
 
-message RAGChunkingStarted {
+message DocumentChunkingStarted {
     string uuid = 1;
     string document_version_uuid = 2;
     string rag_method_info = 3;
@@ -54,7 +54,7 @@ message RAGChunkingStarted {
 
 
 message DocumentChunks {
-    string rag_chunking_started_uuid = 1;
+    string document_chunking_started_uuid = 1;
     rag_chunks.DocumentRoot document_root = 2;
     repeated rag_chunks.Chunk chunks = 3;
     uint64 end_timestamp = 4;

@@ -79,6 +79,9 @@ class Passage:
     parent_uuid: str
 
 
+Chunk = Union[Section, Passage]
+
+
 class Code(ProtoWrapper, Section):
     proto_type = CodeProto
 
@@ -113,7 +116,7 @@ class CodeBlock(ProtoWrapper, Passage):
         self.content = content
 
 
-class ListDivision(ProtoWrapper, Section):
+class ListSection(ProtoWrapper, Section):
     proto_type = ListProto
 
     uuid: str
@@ -288,13 +291,13 @@ class TextPassage(ProtoWrapper, Passage):
         self.content = content
 
 
-class Chunk(ProtoWrapper):
+class ChunkOneOf(ProtoWrapper):
     proto_type = ChunkProto
 
-    division: Union[
+    chunk: Union[
         Code,
         CodeBlock,
-        ListDivision,
+        ListSection,
         Markdown,
         MarkdownSection,
         PythonCode,
@@ -308,11 +311,11 @@ class Chunk(ProtoWrapper):
 
     def __init__(
         self,
-        division: Optional[
+        chunk: Optional[
             Union[
                 Code,
                 CodeBlock,
-                ListDivision,
+                ListSection,
                 Markdown,
                 MarkdownSection,
                 PythonCode,
@@ -326,7 +329,7 @@ class Chunk(ProtoWrapper):
         ] = None,
     ) -> None:
         super().__init__()
-        self.division = division
+        self.chunk = chunk
 
 
 if __name__ == "__main__":

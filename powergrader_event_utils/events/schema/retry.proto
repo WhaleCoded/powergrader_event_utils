@@ -40,7 +40,7 @@ message Retry {
         publish.PublishedGradeToLMS published_grade_to_lms = 24;
         rag.DocumentSource document_source = 25;
         rag.SupportingDocument supporting_document = 26;
-        rag.RAGChunkingStarted rag_chunking_started = 27;
+        rag.DocumentChunkingStarted document_chunking_started = 27;
         rag.DocumentChunks document_chunks = 28;
         rag.DocumentChunkSummarizationStarted document_chunk_summarization_started = 29;
         rag.DocumentChunkSummaries document_chunk_summaries = 30;
@@ -94,7 +94,7 @@ message DeadLetter {
         publish.PublishedGradeToLMS published_grade_to_lms = 24;
         rag.DocumentSource document_source = 25;
         rag.SupportingDocument supporting_document = 26;
-        rag.RAGChunkingStarted rag_chunking_started = 27;
+        rag.DocumentChunkingStarted document_chunking_started = 27;
         rag.DocumentChunks document_chunks = 28;
         rag.DocumentChunkSummarizationStarted document_chunk_summarization_started = 29;
         rag.DocumentChunkSummaries document_chunk_summaries = 30;

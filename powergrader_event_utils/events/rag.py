@@ -11,7 +11,7 @@ from powergrader_event_utils.events.proto_events.rag_pb2 import (
     ScopeType as ScopeTypeProto,
     SupportingDocument,
     ContentType as ContentTypeProto,
-    RAGChunkingStarted,
+    DocumentChunkingStarted,
     DocumentChunkSummarizationStarted,
     ChunkSummary as ChunkSummaryProto,
     DocumentChunkSummaries,
@@ -129,9 +129,9 @@ class ContentType(ProtoEnumWrapper):
     SUBMISSION = 3
 
 
-class RAGChunkingStartedEvent(ProtoPowerGraderEvent):
+class DocumentChunkingStartedEvent(ProtoPowerGraderEvent):
     key_field_name: str = "uuid"
-    proto_type = RAGChunkingStarted
+    proto_type = DocumentChunkingStarted
 
     uuid: str
     document_version_uuid: str
@@ -162,19 +162,29 @@ class DocumentChunksEvent(ProtoPowerGraderEvent):
     key_field_name: str = "rag_division_started_uuid"
     proto_type = DocumentChunks
 
-    rag_chunking_started_uuid: str
+    document_chunking_started_uuid: str
     document_root: rag_chunks.DocumentRoot
-    chunks: List[rag_chunks.Chunk]
+    chunks: List[rag_chunks.ChunkOneOf]
     end_timestamp: int
 
     def __init__(
         self,
-        rag_chunking_started_uuid: Optional[str] = None,
+        document_chunking_started_uuid: Optional[str] = None,
         chunks: Optional[List[rag_chunks.Chunk]] = None,
         end_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
-        self.rag_chunking_started_uuid = rag_chunking_started_uuid
+        self.document_chunking_started_uuid = document_chunking_started_uuid
+        chunks = []
+        for chunk in chunks:
+            if isinstance(chunk, rag_chunks.ChunkOneOf):
+                chunks.append(chunk)
+            elif isinstance(chunk, rag_chunks.Chunk):
+                chunks.append(rag_chunks.ChunkOneOf(chunk=chunk))
+            else:
+                raise ValueError(
+                    f"DocumentChunksEvent chunks must be of type Chunk or ChunkOneOf, not {type(chunk)}"
+                )
         self.chunks = chunks
 
         if end_timestamp is None:

@@ -55,7 +55,7 @@ class EventType(StrEnum):
     # RAG events
     DOCUMENT_SOURCE = "DocumentSourceEvent"
     SUPPORTING_DOCUMENT = "SupportingDocumentEvent"
-    RAG_CHUNKING_STARTED = "RAGChunkingStartedEvent"
+    DOCUMENT_CHUNKING_STARTED = "DocumentChunkingStartedEvent"
     DOCUMENT_CHUNKS = "DocumentChunksEvent"
     DOCUMENT_CHUNK_SUMMARIZATION_STARTED = "DocumentChunkSummarizationStartedEvent"
     DOCUMENT_CHUNK_SUMMARIES = "DocumentChunkSummariesEvent"
