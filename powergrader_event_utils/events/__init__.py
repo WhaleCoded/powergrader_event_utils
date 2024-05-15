@@ -110,6 +110,10 @@ from powergrader_event_utils.events.submission import (
     SubmissionFileGroupEvent,
     SubmissionEvent,
 )
+from powergrader_event_utils.events.user import (
+    StudentEvent,
+    InstructorEvent,
+)
 
 EMBEDDING_SIZE = 3072
 
