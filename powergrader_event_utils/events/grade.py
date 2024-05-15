@@ -27,6 +27,7 @@ class AICriterionGradingStartedEvent(ProtoPowerGraderEvent):
     version_uuid: str
     criterion_uuid: str
     submission_version_uuid: str
+    instruction_info: InstructionInfo
     time_started: int
 
     def __init__(
