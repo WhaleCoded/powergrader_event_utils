@@ -512,6 +512,25 @@ class ProtoWrapper(metaclass=ProtoWrapperMeta):
     def serialize(self) -> bytes:
         return self.proto.SerializeToString()
 
+    @classmethod
+    def deserialize(cls, event: bytes) -> Self:
+        """
+        Deserializes the event from a bytes object, using the protobuf deserialization.
+        Deserialization schema can be found in this objects proto_type attribute.
+
+        Args:
+            event (bytes): The serialized event.
+
+        Returns:
+            ProtoPowerGraderEvent: The deserialized event.
+        """
+        new_instance = cls.__new__(cls)
+        proto = cls.proto_type()
+        proto.ParseFromString(event)
+        ProtoWrapper.__init__(new_instance)
+        new_instance.proto = proto
+        return new_instance
+
 
 def _get_proto_type_for_error_messages(
     proto_type: Any,
