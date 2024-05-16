@@ -40,8 +40,6 @@ from powergrader_event_utils.events.grade import (
 )
 from powergrader_event_utils.events.instructions import (
     InstructionInfo,
-    RegisterAssignmentInstructionEvent,
-    RegisterCriterionInstructionEvent,
     AssignmentInstructionEvent,
     CriterionInstructionEvent,
     InvalidateInstructionEvent,
@@ -83,12 +81,9 @@ from powergrader_event_utils.events.rag import (
     DocumentSourceEvent,
     SupportingDocumentEvent,
     DocumentType,
-    DocumentChunkingStartedEvent,
     DocumentChunksEvent,
-    DocumentChunkSummarizationStartedEvent,
     ChunkSummary,
     DocumentChunkSummariesEvent,
-    DocumentPassageEmbeddingStartedEvent,
     Embedding,
     PassageEmbedding,
     DocumentPassageEmbeddingsEvent,
