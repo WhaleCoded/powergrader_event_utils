@@ -21,10 +21,11 @@ message DocumentSource {
 }
 
 enum FileType {
-    UNKNOWN_FILE_TYPE = 0;
+    UNKNOWN = 0;
     MARKDOWN = 1;
     TEXT = 2;
     PYTHON = 3;
+    CODE = 4;
 }
 
 message SupportingDocument {
@@ -37,7 +38,7 @@ message SupportingDocument {
     uint64 version_timestamp = 7;
 }
 
-enum ContentType {
+enum DocumentType {
     UNKOWN_CONTENT = 0;
     SUPPORTING = 1;
     ASSIGNMENT = 2;
@@ -48,7 +49,7 @@ message DocumentChunkingStarted {
     string uuid = 1;
     string document_version_uuid = 2;
     string rag_method_info = 3;
-    ContentType content_type = 4;
+    DocumentType document_type = 4;
     uint64 start_timestamp = 5;
 }
 

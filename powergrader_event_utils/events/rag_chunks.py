@@ -36,14 +36,22 @@ class DocumentRoot(ProtoWrapper):
     def __init__(
         self,
         source_public_uuid: str,
-        content_uuid: str,
         name: Optional[str] = None,
     ) -> None:
         super().__init__()
         self.uuid = generate_event_uuid(self.__class__.__name__)
         self.source_public_uuid = source_public_uuid
-        self.content_uuid = content_uuid
         self.name = name
+
+    def add_content(self, content: Union["Section", "Passage"]) -> None:
+        if not isinstance(content, Section) and not isinstance(content, Passage):
+            raise ValueError("Content must be a section or passage.")
+        if isinstance(self, ProtoWrapper):
+            self._ProtoWrapper__frozen = False
+            self.content_uuid = content.uuid
+            self._ProtoWrapper__frozen = True
+        else:
+            self.content_uuid = content.uuid
 
 
 class Section:

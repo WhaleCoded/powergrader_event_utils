@@ -10,7 +10,7 @@ from powergrader_event_utils.events.proto_events.rag_pb2 import (
     FileType as FileTypeProto,
     ScopeType as ScopeTypeProto,
     SupportingDocument,
-    ContentType as ContentTypeProto,
+    DocumentType as DocumentTypeProto,
     DocumentChunkingStarted,
     DocumentChunkSummarizationStarted,
     ChunkSummary as ChunkSummaryProto,
@@ -39,10 +39,11 @@ class ScopeType(ProtoEnumWrapper):
 class FileType(ProtoEnumWrapper):
     proto_type = FileTypeProto
 
-    UNKNOWN_FILE_TYPE = 0
+    UNKNOWN = 0
     MARKDOWN = 1
     TEXT = 2
     PYTHON = 3
+    CODE = 4
 
 
 class DocumentSourceEvent(ProtoPowerGraderEvent):
@@ -120,11 +121,11 @@ class SupportingDocumentEvent(ProtoPowerGraderEvent):
         self.source_public_uuid = source_public_uuid
 
 
-class ContentType(ProtoEnumWrapper):
-    proto_type = ContentTypeProto
+class DocumentType(ProtoEnumWrapper):
+    proto_type = DocumentTypeProto
 
     UNKOWN_CONTENT = 0
-    DOCUMENT = 1
+    SUPPORTING = 1
     ASSIGNMENT = 2
     SUBMISSION = 3
 
@@ -136,14 +137,14 @@ class DocumentChunkingStartedEvent(ProtoPowerGraderEvent):
     uuid: str
     document_version_uuid: str
     rag_method_info: str
-    content_type: ContentType
+    content_type: DocumentType
     start_timestamp: int
 
     def __init__(
         self,
         document_version_uuid: Optional[str] = None,
         rag_method_info: Optional[str] = None,
-        content_type: Optional[ContentType] = None,
+        content_type: Optional[DocumentType] = None,
         start_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
