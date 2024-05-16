@@ -20,13 +20,13 @@ from powergrader_event_utils.events.proto import ProtoWrapper
 class InstructionInfo(ProtoWrapper):
     proto_type = InstructionInfoProto
 
-    assignment_instruction_version_uuids: List[str]
-    criterion_instruction_version_uuids: List[str]
+    assignment_instruction_version_uuids: str
+    criterion_instruction_version_uuids: str
 
     def __init__(
         self,
-        assignment_instruction_version_uuids: List[str],
-        criterion_instruction_version_uuids: List[str],
+        assignment_instruction_version_uuids: str,
+        criterion_instruction_version_uuids: str,
     ) -> None:
         super().__init__()
         self.assignment_instruction_version_uuids = assignment_instruction_version_uuids

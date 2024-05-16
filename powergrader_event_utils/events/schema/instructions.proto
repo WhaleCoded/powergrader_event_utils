@@ -23,8 +23,8 @@ message InvalidateInstruction {
 }
 
 message InstructionInfo {
-    repeated string assignment_instruction_version_uuids = 1;
-    repeated string criterion_instruction_version_uuids = 2;
+    string assignment_instruction_version_uuids = 1;
+    string criterion_instruction_version_uuids = 2;
 }
 
 // use instruction versions
