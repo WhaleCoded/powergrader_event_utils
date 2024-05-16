@@ -82,7 +82,7 @@ from powergrader_event_utils.events.rag import (
     FileType,
     DocumentSourceEvent,
     SupportingDocumentEvent,
-    ContentType,
+    DocumentType,
     DocumentChunkingStartedEvent,
     DocumentChunksEvent,
     DocumentChunkSummarizationStartedEvent,
