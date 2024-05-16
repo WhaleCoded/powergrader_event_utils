@@ -46,9 +46,7 @@ message Retry {
         rag.DocumentChunkSummaries document_chunk_summaries = 30;
         rag.DocumentPassageEmbeddingStarted document_passage_embedding_started = 31;
         rag.DocumentPassageEmbeddings document_passage_embeddings = 32;
-        instructions.RegisterAssignmentInstruction register_assignment_instruction = 33;
         instructions.AssignmentInstruction assignment_instruction = 34;
-        instructions.RegisterCriterionInstruction register_criterion_instruction = 35;
         instructions.CriterionInstruction criterion_instruction = 36;
         instructions.InvalidateInstruction invalidate_instruction = 37;
         flow.FlowLog flow_log = 38;
@@ -100,9 +98,7 @@ message DeadLetter {
         rag.DocumentChunkSummaries document_chunk_summaries = 30;
         rag.DocumentPassageEmbeddingStarted document_passage_embedding_started = 31;
         rag.DocumentPassageEmbeddings document_passage_embeddings = 32;
-        instructions.RegisterAssignmentInstruction register_assignment_instruction = 33;
         instructions.AssignmentInstruction assignment_instruction = 34;
-        instructions.RegisterCriterionInstruction register_criterion_instruction = 35;
         instructions.CriterionInstruction criterion_instruction = 36;
         instructions.InvalidateInstruction invalidate_instruction = 37;
         flow.FlowLog flow_log = 38;
