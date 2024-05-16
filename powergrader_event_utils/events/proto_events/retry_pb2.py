@@ -12,7 +12,6 @@ from google.protobuf.internal import builder as _builder
 
 _sym_db = _symbol_database.Default()
 
-
 import powergrader_event_utils.events.proto_events.assignment_pb2 as assignment__pb2
 import powergrader_event_utils.events.proto_events.course_pb2 as course__pb2
 import powergrader_event_utils.events.proto_events.grade_pb2 as grade__pb2
