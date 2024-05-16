@@ -55,11 +55,8 @@ class EventType(StrEnum):
     # RAG events
     DOCUMENT_SOURCE = "DocumentSourceEvent"
     SUPPORTING_DOCUMENT = "SupportingDocumentEvent"
-    DOCUMENT_CHUNKING_STARTED = "DocumentChunkingStartedEvent"
     DOCUMENT_CHUNKS = "DocumentChunksEvent"
-    DOCUMENT_CHUNK_SUMMARIZATION_STARTED = "DocumentChunkSummarizationStartedEvent"
     DOCUMENT_CHUNK_SUMMARIES = "DocumentChunkSummariesEvent"
-    DOCUMENT_PASSAGE_EMBEDDING_STARTED = "DocumentPassageEmbeddingStartedEvent"
     DOCUMENT_PASSAGE_EMBEDDINGS = "DocumentPassageEmbeddingsEvent"
 
     # Instruction events

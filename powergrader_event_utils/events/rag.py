@@ -130,52 +130,30 @@ class DocumentType(ProtoEnumWrapper):
     SUBMISSION = 3
 
 
-class DocumentChunkingStartedEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "uuid"
-    proto_type = DocumentChunkingStarted
+class DocumentChunksEvent(ProtoPowerGraderEvent):
+    key_field_name: str = "document_version_uuid"
+    proto_type = DocumentChunks
 
-    uuid: str
     document_version_uuid: str
     rag_method_info: str
     content_type: DocumentType
-    start_timestamp: int
-
-    def __init__(
-        self,
-        document_version_uuid: Optional[str] = None,
-        rag_method_info: Optional[str] = None,
-        content_type: Optional[DocumentType] = None,
-        start_timestamp: Optional[int] = None,
-    ) -> None:
-        super().__init__()
-
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.document_version_uuid = document_version_uuid
-        self.rag_method_info = rag_method_info
-        self.content_type = content_type
-
-        if start_timestamp is None:
-            start_timestamp = generate_event_timestamp()
-        self.start_timestamp = start_timestamp
-
-
-class DocumentChunksEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "rag_division_started_uuid"
-    proto_type = DocumentChunks
-
-    document_chunking_started_uuid: str
     document_root: rag_chunks.DocumentRoot
     chunks: List[rag_chunks.ChunkOneOf]
     end_timestamp: int
 
     def __init__(
         self,
-        document_chunking_started_uuid: Optional[str] = None,
+        document_version_uuid: Optional[str] = None,
+        rag_method_info: Optional[str] = None,
+        content_type: Optional[DocumentType] = None,
         chunks: Optional[List[rag_chunks.Chunk]] = None,
         end_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
-        self.document_chunking_started_uuid = document_chunking_started_uuid
+
+        self.document_version_uuid = document_version_uuid
+        self.rag_method_info = rag_method_info
+        self.content_type = content_type
         chunks = []
         for chunk in chunks:
             if isinstance(chunk, rag_chunks.ChunkOneOf):
@@ -191,32 +169,6 @@ class DocumentChunksEvent(ProtoPowerGraderEvent):
         if end_timestamp is None:
             end_timestamp = generate_event_timestamp()
         self.end_timestamp = end_timestamp
-
-
-class DocumentChunkSummarizationStartedEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "divided_document_uuid"
-    proto_type = DocumentChunkSummarizationStarted
-
-    uuid: str
-    document_chunks_uuid: str
-    summarization_method_info: str
-    start_timestamp: int
-
-    def __init__(
-        self,
-        document_chunks_uuid: Optional[str] = None,
-        summarization_method_info: Optional[str] = None,
-        start_timestamp: Optional[int] = None,
-    ) -> None:
-        super().__init__()
-
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.document_chunks_uuid = document_chunks_uuid
-        self.summarization_method_info = summarization_method_info
-
-        if start_timestamp is None:
-            start_timestamp = generate_event_timestamp()
-        self.start_timestamp = start_timestamp
 
 
 class ChunkSummary(ProtoWrapper):
@@ -238,58 +190,30 @@ class ChunkSummary(ProtoWrapper):
 
 
 class DocumentChunkSummariesEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "document_summarization_started_uuid"
+    key_field_name: str = "document_version_uuid"
     proto_type = DocumentChunkSummaries
 
-    document_chunk_summarization_started_uuid: str
+    document_version_uuid: str
+    summarization_method_info: str
     summaries: List[ChunkSummary]
     end_timestamp: int
 
     def __init__(
         self,
-        document_chunk_summarization_started_uuid: Optional[str] = None,
+        document_version_uuid: str,
+        summarization_method_info: str,
         summaries: Optional[List[ChunkSummary]] = None,
         end_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
 
-        self.document_chunk_summarization_started_uuid = (
-            document_chunk_summarization_started_uuid
-        )
+        self.document_version_uuid = document_version_uuid
+        self.summarization_method_info = summarization_method_info
         self.summaries = summaries
 
         if end_timestamp is None:
             end_timestamp = generate_event_timestamp()
         self.end_timestamp = end_timestamp
-
-
-class DocumentPassageEmbeddingStartedEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "divided_document_uuid"
-    proto_type = DocumentPassageEmbeddingStarted
-
-    uuid: str
-    document_chunks_uuid: str
-    document_chunk_summaries_uuid: str
-    embedding_method_info: str
-    start_timestamp: int
-
-    def __init__(
-        self,
-        document_chunks_uuid: Optional[str] = None,
-        document_chunk_summaries_uuid: Optional[str] = None,
-        embedding_method_info: Optional[str] = None,
-        start_timestamp: Optional[int] = None,
-    ) -> None:
-        super().__init__()
-
-        self.uuid = generate_event_uuid(self.__class__.__name__)
-        self.document_chunks_uuid = document_chunks_uuid
-        self.document_chunk_summaries_uuid = document_chunk_summaries_uuid
-        self.embedding_method_info = embedding_method_info
-
-        if start_timestamp is None:
-            start_timestamp = generate_event_timestamp()
-        self.start_timestamp = start_timestamp
 
 
 class Embedding(ProtoWrapper):
@@ -322,24 +246,25 @@ class PassageEmbedding(ProtoWrapper):
 
 
 class DocumentPassageEmbeddingsEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "document_passage_embedding_started_uuid"
+    key_field_name: str = "document_version_uuid"
     proto_type = DocumentPassageEmbeddings
 
-    document_passage_embedding_started_uuid: str
+    document_version_uuid: str
+    embedding_method_info: str
     passage_embeddings: List[PassageEmbedding]
     end_timestamp: int
 
     def __init__(
         self,
-        document_passage_embedding_started_uuid: Optional[str] = None,
+        document_version_uuid: str,
+        embedding_method_info: str,
         passage_embeddings: Optional[List[PassageEmbedding]] = None,
         end_timestamp: Optional[int] = None,
     ) -> None:
         super().__init__()
 
-        self.document_passage_embedding_started_uuid = (
-            document_passage_embedding_started_uuid
-        )
+        self.document_version_uuid = document_version_uuid
+        self.embedding_method_info = embedding_method_info
         self.passage_embeddings = passage_embeddings
 
         if end_timestamp is None:
