@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10rag_chunks.proto\x12\nrag_chunks\"\xb8\x04\n\x05\x43hunk\x12 \n\x04\x63ode\x18\x01 \x01(\x0b\x32\x10.rag_chunks.CodeH\x00\x12+\n\ncode_block\x18\x02 \x01(\x0b\x32\x15.rag_chunks.CodeBlockH\x00\x12 \n\x04list\x18\x03 \x01(\x0b\x32\x10.rag_chunks.ListH\x00\x12(\n\x08markdown\x18\x04 \x01(\x0b\x32\x14.rag_chunks.MarkdownH\x00\x12\x37\n\x10markdown_section\x18\x05 \x01(\x0b\x32\x1b.rag_chunks.MarkdownSectionH\x00\x12-\n\x0bpython_code\x18\x06 \x01(\x0b\x32\x16.rag_chunks.PythonCodeH\x00\x12\x35\n\x0fpython_function\x18\x07 \x01(\x0b\x32\x1a.rag_chunks.PythonFunctionH\x00\x12/\n\x0cpython_class\x18\x08 \x01(\x0b\x32\x17.rag_chunks.PythonClassH\x00\x12<\n\x13python_code_passage\x18\t \x01(\x0b\x32\x1d.rag_chunks.PythonCodePassageH\x00\x12 \n\x04text\x18\n \x01(\x0b\x32\x10.rag_chunks.TextH\x00\x12*\n\tparagraph\x18\x0b \x01(\x0b\x32\x15.rag_chunks.ParagraphH\x00\x12/\n\x0ctext_passage\x18\x0c \x01(\x0b\x32\x17.rag_chunks.TextPassageH\x00\x42\x07\n\x05\x63hunk\"\\\n\x0c\x44ocumentRoot\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x1a\n\x12source_public_uuid\x18\x04 \x01(\t\x12\x14\n\x0c\x63ontent_uuid\x18\x05 \x01(\t\">\n\x04\x43ode\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\"?\n\tCodeBlock\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\">\n\x04List\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\"B\n\x08Markdown\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\"Y\n\x0fMarkdownSection\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\x12\x0e\n\x06header\x18\x04 \x01(\t\"D\n\nPythonCode\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\"e\n\x0ePythonFunction\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\x12\x1b\n\x13\x66unction_definition\x18\x04 \x01(\t\"_\n\x0bPythonClass\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\x12\x18\n\x10\x63lass_definition\x18\x04 \x01(\t\"G\n\x11PythonCodePassage\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\">\n\x04Text\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\"C\n\tParagraph\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\"A\n\x0bTextPassage\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\tb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10rag_chunks.proto\x12\nrag_chunks\"\xeb\x04\n\x05\x43hunk\x12 \n\x04\x63ode\x18\x01 \x01(\x0b\x32\x10.rag_chunks.CodeH\x00\x12+\n\ncode_block\x18\x02 \x01(\x0b\x32\x15.rag_chunks.CodeBlockH\x00\x12 \n\x04list\x18\x03 \x01(\x0b\x32\x10.rag_chunks.ListH\x00\x12(\n\x08markdown\x18\x04 \x01(\x0b\x32\x14.rag_chunks.MarkdownH\x00\x12\x37\n\x10markdown_section\x18\x05 \x01(\x0b\x32\x1b.rag_chunks.MarkdownSectionH\x00\x12-\n\x0bpython_code\x18\x06 \x01(\x0b\x32\x16.rag_chunks.PythonCodeH\x00\x12\x35\n\x0fpython_function\x18\x07 \x01(\x0b\x32\x1a.rag_chunks.PythonFunctionH\x00\x12/\n\x0cpython_class\x18\x08 \x01(\x0b\x32\x17.rag_chunks.PythonClassH\x00\x12<\n\x13python_code_passage\x18\t \x01(\x0b\x32\x1d.rag_chunks.PythonCodePassageH\x00\x12 \n\x04text\x18\n \x01(\x0b\x32\x10.rag_chunks.TextH\x00\x12*\n\tparagraph\x18\x0b \x01(\x0b\x32\x15.rag_chunks.ParagraphH\x00\x12/\n\x0ctext_passage\x18\x0c \x01(\x0b\x32\x17.rag_chunks.TextPassageH\x00\x12\x31\n\rdocument_root\x18\r \x01(\x0b\x32\x18.rag_chunks.DocumentRootH\x00\x42\x07\n\x05\x63hunk\"\\\n\x0c\x44ocumentRoot\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x1a\n\x12source_public_uuid\x18\x04 \x01(\t\x12\x14\n\x0c\x63ontent_uuid\x18\x05 \x01(\t\">\n\x04\x43ode\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\"?\n\tCodeBlock\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\">\n\x04List\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\"B\n\x08Markdown\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\"Y\n\x0fMarkdownSection\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\x12\x0e\n\x06header\x18\x04 \x01(\t\"D\n\nPythonCode\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\"e\n\x0ePythonFunction\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\x12\x1b\n\x13\x66unction_definition\x18\x04 \x01(\t\"_\n\x0bPythonClass\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\x12\x18\n\x10\x63lass_definition\x18\x04 \x01(\t\"G\n\x11PythonCodePassage\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\t\">\n\x04Text\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\"C\n\tParagraph\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x13\n\x0b\x63hild_uuids\x18\x03 \x03(\t\"A\n\x0bTextPassage\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\x13\n\x0bparent_uuid\x18\x02 \x01(\t\x12\x0f\n\x07\x63ontent\x18\x03 \x01(\tb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -22,31 +22,31 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'rag_chunks_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
   _globals['_CHUNK']._serialized_start=33
-  _globals['_CHUNK']._serialized_end=601
-  _globals['_DOCUMENTROOT']._serialized_start=603
-  _globals['_DOCUMENTROOT']._serialized_end=695
-  _globals['_CODE']._serialized_start=697
-  _globals['_CODE']._serialized_end=759
-  _globals['_CODEBLOCK']._serialized_start=761
-  _globals['_CODEBLOCK']._serialized_end=824
-  _globals['_LIST']._serialized_start=826
-  _globals['_LIST']._serialized_end=888
-  _globals['_MARKDOWN']._serialized_start=890
-  _globals['_MARKDOWN']._serialized_end=956
-  _globals['_MARKDOWNSECTION']._serialized_start=958
-  _globals['_MARKDOWNSECTION']._serialized_end=1047
-  _globals['_PYTHONCODE']._serialized_start=1049
-  _globals['_PYTHONCODE']._serialized_end=1117
-  _globals['_PYTHONFUNCTION']._serialized_start=1119
-  _globals['_PYTHONFUNCTION']._serialized_end=1220
-  _globals['_PYTHONCLASS']._serialized_start=1222
-  _globals['_PYTHONCLASS']._serialized_end=1317
-  _globals['_PYTHONCODEPASSAGE']._serialized_start=1319
-  _globals['_PYTHONCODEPASSAGE']._serialized_end=1390
-  _globals['_TEXT']._serialized_start=1392
-  _globals['_TEXT']._serialized_end=1454
-  _globals['_PARAGRAPH']._serialized_start=1456
-  _globals['_PARAGRAPH']._serialized_end=1523
-  _globals['_TEXTPASSAGE']._serialized_start=1525
-  _globals['_TEXTPASSAGE']._serialized_end=1590
+  _globals['_CHUNK']._serialized_end=652
+  _globals['_DOCUMENTROOT']._serialized_start=654
+  _globals['_DOCUMENTROOT']._serialized_end=746
+  _globals['_CODE']._serialized_start=748
+  _globals['_CODE']._serialized_end=810
+  _globals['_CODEBLOCK']._serialized_start=812
+  _globals['_CODEBLOCK']._serialized_end=875
+  _globals['_LIST']._serialized_start=877
+  _globals['_LIST']._serialized_end=939
+  _globals['_MARKDOWN']._serialized_start=941
+  _globals['_MARKDOWN']._serialized_end=1007
+  _globals['_MARKDOWNSECTION']._serialized_start=1009
+  _globals['_MARKDOWNSECTION']._serialized_end=1098
+  _globals['_PYTHONCODE']._serialized_start=1100
+  _globals['_PYTHONCODE']._serialized_end=1168
+  _globals['_PYTHONFUNCTION']._serialized_start=1170
+  _globals['_PYTHONFUNCTION']._serialized_end=1271
+  _globals['_PYTHONCLASS']._serialized_start=1273
+  _globals['_PYTHONCLASS']._serialized_end=1368
+  _globals['_PYTHONCODEPASSAGE']._serialized_start=1370
+  _globals['_PYTHONCODEPASSAGE']._serialized_end=1441
+  _globals['_TEXT']._serialized_start=1443
+  _globals['_TEXT']._serialized_end=1505
+  _globals['_PARAGRAPH']._serialized_start=1507
+  _globals['_PARAGRAPH']._serialized_end=1574
+  _globals['_TEXTPASSAGE']._serialized_start=1576
+  _globals['_TEXTPASSAGE']._serialized_end=1641
 # @@protoc_insertion_point(module_scope)

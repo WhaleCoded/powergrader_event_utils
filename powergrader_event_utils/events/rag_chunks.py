@@ -315,6 +315,7 @@ class ChunkOneOf(ProtoWrapper):
         Text,
         Paragraph,
         TextPassage,
+        DocumentRoot,
     ]
 
     def __init__(
@@ -333,6 +334,7 @@ class ChunkOneOf(ProtoWrapper):
                 Text,
                 Paragraph,
                 TextPassage,
+                DocumentRoot,
             ]
         ] = None,
     ) -> None:

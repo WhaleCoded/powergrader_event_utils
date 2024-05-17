@@ -15,6 +15,7 @@ message Chunk {
         Text text = 10;
         Paragraph paragraph = 11;
         TextPassage text_passage = 12;
+        DocumentRoot document_root = 13;
     }
 }
 

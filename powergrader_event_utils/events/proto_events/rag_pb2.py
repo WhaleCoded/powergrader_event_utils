@@ -12,7 +12,6 @@ from google.protobuf.internal import builder as _builder
 
 _sym_db = _symbol_database.Default()
 
-
 import powergrader_event_utils.events.proto_events.rag_chunks_pb2 as rag__chunks__pb2
 
 
