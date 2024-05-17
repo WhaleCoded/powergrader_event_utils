@@ -146,6 +146,7 @@ class DocumentChunksEvent(ProtoPowerGraderEvent):
         document_version_uuid: Optional[str] = None,
         rag_method_info: Optional[str] = None,
         content_type: Optional[DocumentType] = None,
+        document_root: Optional[rag_chunks.DocumentRoot] = None,
         chunks: Optional[List[rag_chunks.Chunk]] = None,
         end_timestamp: Optional[int] = None,
     ) -> None:
@@ -154,6 +155,7 @@ class DocumentChunksEvent(ProtoPowerGraderEvent):
         self.document_version_uuid = document_version_uuid
         self.rag_method_info = rag_method_info
         self.content_type = content_type
+        self.document_root = document_root
         chunks = []
         for chunk in chunks:
             if isinstance(chunk, rag_chunks.ChunkOneOf):
