@@ -6,8 +6,6 @@ from powergrader_event_utils.events.event import (
     generate_event_timestamp,
 )
 from powergrader_event_utils.events.proto_events.instructions_pb2 import (
-    RegisterAssignmentInstruction,
-    RegisterCriterionInstruction,
     AssignmentInstruction,
     CriterionInstruction,
     InvalidateInstruction,

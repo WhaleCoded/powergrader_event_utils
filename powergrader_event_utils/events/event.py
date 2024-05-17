@@ -60,8 +60,6 @@ class EventType(StrEnum):
     DOCUMENT_PASSAGE_EMBEDDINGS = "DocumentPassageEmbeddingsEvent"
 
     # Instruction events
-    REGISTER_ASSIGNMENT_INSTRUCTION = "RegisterAssignmentInstructionEvent"
-    REGISTER_CRITERION_INSTRUCTION = "RegisterCriterionInstructionEvent"
     ASSIGNMENT_INSTRUCTION = "AssignmentInstructionEvent"
     CRITERION_INSTRUCTION = "CriterionInstructionEvent"
     INVALIDATE_INSTRUCTION = "InvalidateInstructionEvent"
