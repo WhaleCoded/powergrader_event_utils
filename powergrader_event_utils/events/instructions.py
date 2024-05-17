@@ -33,7 +33,7 @@ class InstructionInfo(ProtoWrapper):
 
 # Instruction Events
 class AssignmentInstructionEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "public_uuid"
+    key_field_name: str = "assignment_version_uuid"
     proto_type = AssignmentInstruction
 
     assignment_version_uuid: str
@@ -59,7 +59,7 @@ class AssignmentInstructionEvent(ProtoPowerGraderEvent):
 
 
 class CriterionInstructionEvent(ProtoPowerGraderEvent):
-    key_field_name: str = "public_uuid"
+    key_field_name: str = "criterion_uuid"
     proto_type = CriterionInstruction
 
     assignment_version_uuid: str

@@ -280,9 +280,11 @@ def create_realistic_events_from_jsonl_test_output(
             description=description,
             version_timestamp=get_miliseconds_since_epoch() + 1,
         )
+        publish = PublishedToLMSEvent(updated_assignment_event.version_uuid)
         events.append(register_assignment_event)
         events.append(assignment_event)
         events.append(updated_assignment_event)
+        events.append(publish)
         assignment_events[assignment_name] = updated_assignment_event
         register_assignment_events[assignment_name] = register_assignment_event
         rubric_events[assignment_name] = rubric_event
