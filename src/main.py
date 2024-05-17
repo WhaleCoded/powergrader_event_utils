@@ -15,6 +15,7 @@ from powergrader_event_utils.testing import (
 import time
 
 import rag_validation
+from rag_demo import rag_demo_publish
 
 JSONL_FILE_PATH = "./data/30_median_smart_benchmark/trial_reports.jsonl"
 
@@ -115,6 +116,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--realistic", action="store_true", help="Send realistic events from JSONL file"
     )
+    parser.add_argument("--rag_demo", action="store_true", help="Send RAG demo events")
     parser.add_argument(
         "--random", action="store_true", help="Send selected events in random order"
     )
@@ -135,6 +137,7 @@ if __name__ == "__main__":
     STRATIFIED = args.stratified
     REVERSE = args.reverse
     RAG = args.rag
+    RAG_DEMO = args.rag_demo
 
     MAIN_CFG_PATH = os.getenv("CLUSTER_CFG_FILE", "/srv/config.yaml")
     config_valid = True
@@ -173,6 +176,13 @@ if __name__ == "__main__":
     if STRATIFIED:
         print("Sending events stratified by event type")
         stratified_publish(events_to_send, producer, slow=SLOW)
+        sys.exit(0)
+    elif RAG_DEMO:
+        realistic_events = create_realistic_events_from_jsonl_test_output(
+            JSONL_FILE_PATH
+        )
+        rag_demo_publish(realistic_events, producer, slow=SLOW)
+        sys.exit(0)
 
     if SLOW:
         print("Sending events one at a time")
