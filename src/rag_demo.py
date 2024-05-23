@@ -122,7 +122,10 @@ def rag_demo_publish(events_to_send, producer, slow=False):
         tes_assignment.version_uuid,
         file_group_1.uuid,
     )
-    one_at_a_time_events.append([reg_sub_1, file_group_1, sub_1])
+    # one_at_a_time_events.append([reg_sub_1, file_group_1, sub_1])
+    demo_setup_events.append(reg_sub_1)
+    demo_setup_events.append(file_group_1)
+    demo_setup_events.append(sub_1)
     reg_sub_2 = RegisterSubmissionPublicUUIDEvent(
         reg_assignment_event.lms_id,
         student_lms_ids[1],
