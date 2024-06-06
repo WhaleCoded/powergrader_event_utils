@@ -1,3 +1,4 @@
+from canvas_data import canvas_data_as_events
 from confluent_kafka import Producer
 from tqdm import tqdm
 import argparse
@@ -7,7 +8,11 @@ import os
 import logging
 import sys
 from typing import List
-from powergrader_event_utils.events import PowerGraderEvent, EventType
+# from powergrader_event_utils.events import PowerGraderEvent, EventType
+
+
+from powergrader_event_utils.events import PowerGraderEvent
+from powergrader_event_utils.events.event import EventType
 from powergrader_event_utils.testing import (
     create_demo_events,
     create_realistic_events_from_jsonl_test_output,
@@ -128,6 +133,11 @@ if __name__ == "__main__":
         action="store_true",
         help="Send events by event type and only on user approval.",
     )
+    parser.add_argument(
+        "--canvas",
+        action="store_true",
+        help="Send events from the canvas_data.py file to populate the db",
+    )
     args = parser.parse_args()
 
     SLOW = args.s
@@ -138,6 +148,7 @@ if __name__ == "__main__":
     REVERSE = args.reverse
     RAG = args.rag
     RAG_DEMO = args.rag_demo
+    CANVAS = args.canvas
 
     MAIN_CFG_PATH = os.getenv("CLUSTER_CFG_FILE", "/srv/config.yaml")
     config_valid = True
@@ -159,6 +170,10 @@ if __name__ == "__main__":
     elif RAG:
         print("Sending RAG events")
         events_to_send = rag_validation.create_and_send_rag_events()
+
+    elif CANVAS:
+        print("Sending events from canvas_data.py")
+        events_to_send = canvas_data_as_events()
 
     if DUPLICATE:
         print("Sending duplicate events")
